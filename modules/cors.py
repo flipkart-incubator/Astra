@@ -83,7 +83,7 @@ def cors_main(url,method,headers,body):
 						 "alert": "CORS Misconfiguration",
 						 "impact": result['impact'],
 						 "req_headers": headers,
-						 "req_body" : body
+						 "req_body" : body,
 						 "res_headers": option_response.headers,
 						 "res_body" : "NA"
 
