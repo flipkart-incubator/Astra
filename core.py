@@ -7,7 +7,7 @@ import ast
 import utils.logger as logger
 import utils.logs as logs
 
-from apiscan import *
+from core.apiscan import *
 from core.parsers import *
 from utils.logger import *
 from core.login import APILogin

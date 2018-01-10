@@ -87,7 +87,7 @@ def brute_force(url,method,headers,body,attack_params):
 							 "alert": "Missing Rate limit",
 							 "impact": "High",
 							 "req_headers": headers,
-							 "req_body" : body
+							 "req_body" : body,
 							 "res_headers": brute_request.headers,
 							 "res_body" : brute_request.text
 
