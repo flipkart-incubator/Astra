@@ -20,9 +20,9 @@ REST API penetration testing is complex due to continuous changes in existing AP
 ## Installation
 
 ```
-git clone -b apiscan https://github.com/Flipkart/REST-API-Automation.git
+git clone -b apiscan https://github.com/flipkart-incubator/apiscan
 
-cd REST-API-Automation/
+cd apiscan
 
 pyhton setup.py
 
@@ -74,4 +74,4 @@ optional arguments:
                         HTTP request method
 
 ```
-# apiscan
+
