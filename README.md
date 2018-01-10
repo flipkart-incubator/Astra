@@ -40,7 +40,7 @@ pyhton setup.py
 ## Usage 
 
 ```
-$ python core.py --help
+$ python apiscan.py --help
 
      	    	    _   ____ ___ ____
 		   / \  |  _ \_ _/ ___|  ___ __ _ _ __
