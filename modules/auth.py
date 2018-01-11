@@ -82,7 +82,7 @@ def session_fixation(url,method,headers,body):
 												  "alert": "Session Fixation",
 												  "impact" : "Medium", 
 												  "req_headers" : login_headers,
-												  "req_body" : req_body
+												  "req_body" : req_body,
 												  "res_headers" : "NA",
 												  "res_body" : "NA"
 												})
@@ -116,7 +116,7 @@ def auth_check(url,method,headers,body):
 													  "alert": "Broken Authentication and session management",
 													  "impact" : "High", 
 													  "req_headers" : headers,
-													  "req_body" : body
+													  "req_body" : body,
 													  "res_headers" : auth_request.headers,
 													  "res_body" : auth_request.text
 													})
