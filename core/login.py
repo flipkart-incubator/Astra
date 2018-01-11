@@ -1,5 +1,5 @@
 import requests
-import apiscan
+import zapscan
 import parsers
 import utils.logger
 import json
@@ -15,7 +15,7 @@ from utils.config import update_value
 class APILogin:
 
     def __init__(self):
-        self.api_logger = apiscan.logger()
+        self.api_logger = zapscan.logger()
         self.parse_data = parsers.PostmanParser()
 
     def fetch_logintoken(self,url,method,headers,body=None,relogin=None):
