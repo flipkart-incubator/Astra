@@ -7,7 +7,7 @@ import ast
 import utils.logger as logger
 import utils.logs as logs
 
-from core.apiscan import *
+from core.zapscan import *
 from core.parsers import *
 from utils.logger import *
 from core.login import APILogin
@@ -163,8 +163,8 @@ def main():
         login_require = True
 
     # Configuring ZAP before starting a scan
-    global status
-    status = zap_start()
+    #global status
+    #status = zap_start()
 
     scan_core(collection_type,collection_name,loginurl,loginheaders,logindata,loginmethod,login_require) 
 
