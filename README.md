@@ -74,4 +74,8 @@ optional arguments:
                         HTTP request method
 
 ```
+## Lead Developers
+- Sagar Popat (@popat_sagar) 
 
+## Project Contributors
+- Harsh Grover
