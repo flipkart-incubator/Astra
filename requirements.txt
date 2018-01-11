@@ -1,3 +1,4 @@
 requests
 logger
 pymongo
+ConfigParser
