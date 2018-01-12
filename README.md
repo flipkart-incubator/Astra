@@ -1,6 +1,6 @@
 ## APIScan
 
-REST API penetration testing is complex due to continuous changes in existing APIs and newly added APIs.  Security engineers or developers can use APIScan as an integral part of their process, so they can detect and patch vulnerabilities early during development cycle. API collection can be given as an input so this can be easily integrated into CICD pipeline. Following are the checks performed by APIScan. 
+REST API penetration testing is complex due to continuous changes in existing APIs and newly added APIs. APIScan can be used by security engineers or developers as an integral part of their process, so they can detect and patch vulnerabilities early during development cycle. APIScan can automatically detect and test login & logout (Authentication API), so it's easy for anyone to integrate this into CICD pipeline. APIScan can take API collection as an input so this can also be used for testing apis in standalone mode.
 
 - SQL injection
 - Cross site scripting
