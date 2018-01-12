@@ -74,6 +74,9 @@ optional arguments:
                         HTTP request method
 
 ```
+
+![alt text](https://raw.githubusercontent.com/flipkart-incubator/apiscan/7539de1beefb7941d4224bf9b15c584592a0cd81/utils/report.png)
+
 ## Lead Developers
 - Sagar Popat (@popat_sagar) 
 
