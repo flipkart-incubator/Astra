@@ -20,7 +20,7 @@ REST API penetration testing is complex due to continuous changes in existing AP
 ## Installation
 
 ```
-git clone -b apiscan https://github.com/flipkart-incubator/apiscan
+git clone https://github.com/flipkart-incubator/apiscan
 
 cd apiscan
 
