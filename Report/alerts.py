@@ -68,4 +68,4 @@ def return_alerts():
 	result = fetch_records()
 	return jsonify(result)
 
-app.run(debug=True,port=3229)
+app.run(debug=True,port=3129)
