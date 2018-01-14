@@ -18,21 +18,16 @@ def db_connect():
 		db = client.apiscan
 
 def fetch_records():
-		print "sss"
 		db_connect()
 		vul_list = []
 		records = db.vulnerbilities.find({})
-		print records
 		if records:
 			for data in records:
 				data.pop('_id')
 				data =  ast.literal_eval(json.dumps(data))
 				try:
-					print "iiddd",	data['id']
 					if data['id'] == "NA":
-							print "ins"
 							all_data = {'url' : data['url'], 'impact' : data['impact'], 'name' : data['name'], 'req_headers' : data['req_headers'], 'req_body' : data['req_body'], 'res_headers' : data['res_headers'], 'res_body' : data['res_body'], 'Description' : data['Description'], 'remediation' : data['remediation']}
-							print "aaa",all_data
 							vul_list.append(all_data)
 
 					if data['id']:
@@ -59,7 +54,6 @@ def fetch_records():
 
 @app.route('/report', methods=['GET'])
 def alerts_report():
-	print "CCC",os.getcwd()
 	return render_template('report.html')
 
 
