@@ -17,7 +17,7 @@ from modules.cors import cors_main
 from modules.auth import auth_check
 from modules.rate_limit import rate_limit
 from modules.csrf import csrf_check
-#from core.zap_config import zap_start
+from core.zap_config import zap_start
 
 
 def parse_collection(collection_name,collection_type):
@@ -83,8 +83,8 @@ def scan_core(collection_type,collection_name,url,Headers,data,method,login_requ
             # Scanning API using different engines
 
             # check if the ZAP is started properly 
-            #if status is True:
-            #    api_scan.start_scan(url,method,headers,body)
+            if status is True:
+                api_scan.start_scan(url,method,headers,body)
                 
             if attack['cors'] == 'Y' or attack['cors'] == 'y':
                 cors_main(url,method,headers,body)
@@ -163,8 +163,8 @@ def main():
         login_require = True
 
     # Configuring ZAP before starting a scan
-    #global status
-    #status = zap_start()
+    global status
+    status = zap_start()
 
     scan_core(collection_type,collection_name,loginurl,loginheaders,logindata,loginmethod,login_require) 
 
