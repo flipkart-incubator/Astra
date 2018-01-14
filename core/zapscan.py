@@ -11,12 +11,14 @@ import socket
 import ast
 import urllib
 import sys
+import utils.logs as logs
 
 sys.path.append('../')
 
 from utils.logger import *
 from utils.config import *
 from utils.db import Database_update
+
 
 try:
     import requests
@@ -57,12 +59,20 @@ class zap_scan:
         except Exception as e:
             raise e
 
+    def update_db(self,url,alert,impact,messageId):
+        ''' This function gathers all the info of alert and update it into DB '''
+        message_url = '{0}/JSON/core/view/message/?zapapiformat=JSON&apikey={1}&formMethod=GET&id={2}'.format(self.zap_url,self.apitoken,messageId)
+        message_req = requests.get(message_url)
+        message_data = json.loads(message_req.text)
+        req_headers,req_body,res_headers,res_body = message_data['message']['requestHeader'],message_data['message']['requestBody'],message_data['message']['responseHeader'],message_data['message']['responseBody']
+        attack_result = { "id" : 0, "url" : url, "alert": alert, "impact": impact, "req_headers": req_headers, "req_body":req_body, "res_headers": res_headers,"res_body": res_body}
+        self.dbupdate.insert_record(attack_result)
+
+
     def check_scanalerts(self,url,scan_id):
         scan_alerts = '{0}/JSON/core/view/alerts/?zapapiformat=JSON&apikey={1}&formMethod=GET&baseurl={2}&start=&count='.format(self.zap_url,self.apitoken,url)
         alert_id = 0
         while True:
-            print alert_id
-            print "alert id is",alert_id
             time.sleep(10)
             scan_status = self.check_scanstatus(scan_id)
             if int(scan_status) == 100:
@@ -73,15 +83,19 @@ class zap_scan:
                 try:
                     url = zap_alerts['alerts'][alert_id]['url']
                     alert = zap_alerts['alerts'][alert_id]['alert']
+                    messageId = zap_alerts['alerts'][alert_id]['messageId']
+                    impact = zap_alerts['alerts'][alert_id]['risk']
                     print "%s[+]{0} is vulnerable to {1}%s".format(url,alert)% (self.api_logger.G, self.api_logger.W)
-                    #self.dbupdate.insert_record({"url" : url, "alert" : alert})
-                    self.dbupdate.insert_record({"url" : url, "alert" : alert})
+                    try:
+                        self.update_db(url,alert,impact,messageId)
+                    except Exception as e:
+                        logs.logging.info("Failed to update in db : %s",e)
+
                     alert_id = alert_id + 1
                 except:
                     pass
           
     def start_scan(self,url,method,Headers=None,data=None):
-        print "inside scan"
         data = json.dumps(data)
         data = data.replace('\\"',"'")
         cookies = get_value('config.property','login','auth')
@@ -93,25 +107,18 @@ class zap_scan:
             try:
                 access_url = requests.get(url,headers=Headers,proxies=self.proxy,cookies=cookies)
             except requests.exceptions.RequestException as e:
-                print e
                 return
 
         elif method.upper() == 'POST':
             try:
                 access_url = requests.post(url,headers=Headers,data=data,proxies=self.proxy,cookies=cookies,verify=False)
-                print url
-                print "Method", method
-                print "status",access_url.status_code
-                print access_url.text
             except requests.exceptions.RequestException as e:
-                print e
                 return
 
         elif method.upper() == 'PUT':
             try:
                 access_url = requests.put(url,headers=Headers,data=data,proxies=self.proxy)
             except requests.exceptions.RequestException as e:
-                print e
                 return
         
         ''' Check if URL is now present at scanning tree of ZAP.
