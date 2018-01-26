@@ -54,8 +54,35 @@ def generate_report():
     else:
         print "%s[-]Failed to generate a report%s"% (api_logger.R, api_logger.W)
 
-def scan_core(collection_type,collection_name,url,Headers,data,method,login_require):
+
+def modules_scan(url,method,headers,body,attack):
+    '''Scanning API using different engines '''
+    print attack
+    if attack['zap'] == "Y" or attack['zap'] == "y":
+        status = zap_start()
+        if status is True:
+            api_scan.start_scan(url,method,headers,body)
+    
+    # Custom modules scan      
+    if attack['cors'] == 'Y' or attack['cors'] == 'y':
+        cors_main(url,method,headers,body)
+    if attack['Broken auth'] == 'Y' or attack['Broken auth'] == 'y':
+        auth_check(url,method,headers,body)
+    if attack['Rate limit'] == 'Y' or attack['Rate limit'] == 'y':
+        rate_limit(url,method,headers,body)
+    if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
+        csrf_check(url,method,headers,body)
+
+
+def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require):
     #Scan API through different engines
+    try:
+        scan_policy = get_value('scan.property','scan-policy','attack')
+        attack = ast.literal_eval(scan_policy)
+    
+    except Exception as e:
+        print "Failed to parse scan property file."
+    
     if collection_type and collection_name is not None:
         parse_collection(collection_name,collection_type)
         if login_require is True:
@@ -71,35 +98,23 @@ def scan_core(collection_type,collection_name,url,Headers,data,method,login_requ
                 try:
                     headhers = add_headers(headers)
                 except:
-                    #Failed to add header 
                     pass
 
             if data['body'] != '':
                 body = json.loads(base64.b64decode(data['body']))
 
-            scan_policy = get_value('scan.property','scan-policy','attack')
-            attack = ast.literal_eval(scan_policy)
-            print attack
-            # Scanning API using different engines
-
-            # check if the ZAP is started properly 
-            if status is True:
-                api_scan.start_scan(url,method,headers,body)
-                
-            if attack['cors'] == 'Y' or attack['cors'] == 'y':
-                cors_main(url,method,headers,body)
-            if attack['Broken auth'] == 'Y' or attack['Broken auth'] == 'y':
-                auth_check(url,method,headers,body)
-            if attack['Rate limit'] == 'Y' or attack['Rate limit'] == 'y':
-                rate_limit(url,method,headers,body)
-            if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
-                csrf_check(url,method,headers,body)
             
+            modules_scan(url,method,headers,body,attack)        
             #auth_check(url,method,headers,body)
 
             
     elif url:
-        api_scan.start_scan(url,method,Headers,data)
+        # If the collection is not given as an input.
+        if headers is None:
+            headers = {'Content-Type' : 'application/json'}
+        modules_scan(url,method,headers,body,attack)
+        #api_scan.start_scan(url,method,headers,body)
+
     else:
         print "%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W)
     #generate_report()
@@ -113,29 +128,35 @@ def get_arg(args=None):
                             help='Type of API collection')
         parser.add_argument('-u', '--url',
                             help='URL of target API')
+        parser.add_argument('-headers', '--headers',
+                            help='Custom headers.Example: {"token" : "123"}')
+        parser.add_argument('-method', '--method',
+                            help='HTTP request method',
+                            default='GET',choices=('GET', 'POST'))
+        parser.add_argument('-b', '--body',
+                            help='Request body of API')
         parser.add_argument('-l', '--loginurl',
                             help='URL of login API')
         parser.add_argument('-H', '--loginheaders',
                             help='Headers should be in a dictionary format. Example: {"accesstoken" : "axzvbqdadf"}')
         parser.add_argument('-d', '--logindata',
                             help='login data of API')
-        parser.add_argument('-headers', '--headers',
-                            help='Custom headers.Example: {"token" : "123"}')
-        parser.add_argument('-m', '--loginmethod',
-                            help='HTTP request method',
-                            default='GET',choices=('GET', 'POST'))
-       
+    
+
         results = parser.parse_args(args)
         return (results.collection_type,
                 results.collection_name,
+                results.url,
+                results.headers,
+                results.method,
+                results.body,
                 results.loginurl,
                 results.loginheaders,
                 results.logindata,
-                results.loginmethod,
-                results.headers)
+                )
 
 def main():
-    collection_type,collection_name,loginurl,loginheaders,logindata,loginmethod,headers = get_arg(sys.argv[1:])
+    collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata = get_arg(sys.argv[1:])
     if loginheaders is None:
             loginheaders = {'Content-Type' : 'application/json'}
     if collection_type and collection_name and loginurl and loginmethod and logindata:
@@ -159,14 +180,24 @@ def main():
         #Custom headers
         update_value('login','header',headers)
         login_require = False
+    elif url and collection_name and headers:
+        #Custom headers
+        update_value('login','header',headers)
+        login_require = False
+    elif url:
+        if headers is None:
+            headers = {'Content-Type' : 'application/json'}
+        if method is None:
+            method = "GET"
+       
+        login_require = False
     else:
         login_require = True
 
     # Configuring ZAP before starting a scan
-    global status
-    status = zap_start()
+    get_auth = get_value('config.property','login','auth_type')
 
-    scan_core(collection_type,collection_name,loginurl,loginheaders,logindata,loginmethod,login_require) 
+    scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require) 
 
 
 if __name__ == '__main__':
