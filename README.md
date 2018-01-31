@@ -24,7 +24,7 @@ git clone https://github.com/flipkart-incubator/apiscan
 
 cd apiscan
 
-pyhton setup.py
+python setup.py
 
 ```
 
