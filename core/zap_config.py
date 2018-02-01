@@ -32,7 +32,6 @@ def zap_start():
 	port = get_config_value("zap_port")
 	api_key = get_config_value("zap_apikey")
 	apikey = 'api.key='+api_key
-	print "API key",apikey
 	result = check_status(port)
 	if result == True:
 		# Zap is already running. No need to start it again.
