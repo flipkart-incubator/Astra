@@ -33,7 +33,7 @@ class APILogin:
 
         try:
             cookie = {'cookie' : login_request.headers['Set-Cookie']}
-            print "Login respoinse is",login_request.text
+            print "Login successful"
             update_value('login','auth',cookie)
             update_value('login','auth_type','cookie')
             return True
@@ -110,7 +110,6 @@ class APILogin:
 
 
         for data in collection_data:
-            print "API",api_url,api_type
             if data['url'] == api_url:
                 url,method,headers,body =  data['url'],data['method'],data['headers'],data['body']
                 if api_type == 'login':
