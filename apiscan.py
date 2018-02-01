@@ -112,6 +112,8 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
         # If the collection is not given as an input.
         if headers is None:
             headers = {'Content-Type' : 'application/json'}
+
+        headers = ast.literal_eval(headers)
         modules_scan(url,method,headers,body,attack)
         #api_scan.start_scan(url,method,headers,body)
 
