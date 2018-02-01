@@ -10,7 +10,6 @@ def get_allvalues(section):
 
 def get_value(filename,section,name):
 	# Return only one value from config file
-	print os.getcwd()
 	file_name = 'utils/'+filename
 	Config = ConfigParser.ConfigParser()
 	Config.read(file_name)
