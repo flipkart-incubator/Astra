@@ -6,6 +6,8 @@ import time
 import ast
 import utils.logger as logger
 import utils.logs as logs
+import urlparse
+
 
 from core.zapscan import *
 from core.parsers import *
@@ -18,6 +20,7 @@ from modules.auth import auth_check
 from modules.rate_limit import rate_limit
 from modules.csrf import csrf_check
 from core.zap_config import zap_start
+from multiprocessing import Process
 
 
 def parse_collection(collection_name,collection_type):
@@ -55,10 +58,26 @@ def generate_report():
         print "%s[-]Failed to generate a report%s"% (api_logger.R, api_logger.W)
 
 
-def modules_scan(url,method,headers,body,attack):
+def read_scan_policy():
+    try:
+        scan_policy = get_value('scan.property','scan-policy','attack')
+        attack = ast.literal_eval(scan_policy)
+    
+    except Exception as e:
+        print "Failed to parse scan property file."
+
+    print "Scan",attack
+    return attack
+
+def modules_scan(url,method,headers,body):
     '''Scanning API using different engines '''
-    print attack
+    attack = read_scan_policy()
+    if attack is None:
+        print "Failed to start scan."
+        sys.exit(1)
+
     if attack['zap'] == "Y" or attack['zap'] == "y":
+        api_scan = zap_scan()
         status = zap_start()
         if status is True:
             api_scan.start_scan(url,method,headers,body)
@@ -73,16 +92,37 @@ def modules_scan(url,method,headers,body,attack):
     if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
         csrf_check(url,method,headers,body)
 
+def validate_data(url,method):
+    ''' Validate HTTP request data and return boolean value'''
+    validate_url = urlparse.urlparse(url)
+    http_method = ['GET','POST','DEL','OPTIONS','PUT']
+    if method in http_method and bool(validate_url.scheme) is True:
+        validate_result = True
+    else:
+        validate_result = False
+
+    return validate_result
+
+def scan_single_api(url, method, headers, body, api):
+    ''' This function deals with scanning a single API. '''
+    if headers is None or headers == '':
+            headers = {'Content-Type' : 'application/json'}
+    if type(headers) is not dict:
+        headers = ast.literal_eval(headers)
+
+    result = validate_data(url, method)
+    if result is False:
+        print "[-]Invalid Arguments"
+        return False
+
+    p = Process(target=modules_scan,args=(url,method,headers,body),name='module-scan')
+    p.start()
+    if api == "Y":
+        return True
+
 
 def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require):
-    #Scan API through different engines
-    try:
-        scan_policy = get_value('scan.property','scan-policy','attack')
-        attack = ast.literal_eval(scan_policy)
-    
-    except Exception as e:
-        print "Failed to parse scan property file."
-    
+    ''' Scan API through different engines ''' 
     if collection_type and collection_name is not None:
         parse_collection(collection_name,collection_type)
         if login_require is True:
@@ -105,17 +145,6 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
 
             
             modules_scan(url,method,headers,body,attack)        
-            #auth_check(url,method,headers,body)
-
-            
-    elif url:
-        # If the collection is not given as an input.
-        if headers is None:
-            headers = {'Content-Type' : 'application/json'}
-
-        headers = ast.literal_eval(headers)
-        modules_scan(url,method,headers,body,attack)
-        #api_scan.start_scan(url,method,headers,body)
 
     else:
         print "%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W)
@@ -199,12 +228,15 @@ def main():
     # Configuring ZAP before starting a scan
     get_auth = get_value('config.property','login','auth_type')
 
-    scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require) 
+    if collection_type and collection_name is not None:
+        scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require) 
+    else:
+        scan_single_api(url, method, headers, body, "False")
+
 
 
 if __name__ == '__main__':
     
-    api_scan = zap_scan()
     api_login = APILogin()
     parse_data = PostmanParser()
     api_logger = logger()
