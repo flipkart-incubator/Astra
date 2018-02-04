@@ -100,18 +100,24 @@ class zap_scan:
                     pass
           
     def start_scan(self,url,method,Headers=None,data=None):
-        data = json.dumps(data)
-        data = data.replace('\\"',"'")
-        cookies = get_value('config.property','login','auth')
-        cookies = ast.literal_eval(cookies)
-        if cookies is None or '':
+        try:
+            data = json.dumps(data)
+            data = data.replace('\\"',"'")
+        except:
+            pass
+        try:
+            cookies = get_value('config.property','login','auth')
+            cookies = ast.literal_eval(cookies)
+            if cookies is None or '':
+                cookies = ''
+        except:
             cookies = ''
 
         if method.upper() == 'GET':
             try:
                 access_url = requests.get(url,headers=Headers,proxies=self.proxy,cookies=cookies)
             except requests.exceptions.RequestException as e:
-                return
+                print e
 
         elif method.upper() == 'POST':
             try:
