@@ -45,7 +45,7 @@ def start_scan():
 
 ############################# Alerts API ##########################################
 
-# Returns vulnerbilities identified by tool
+# Returns vulnerbilities identified by tool 
 def fetch_records():
 		vul_list = []
 		records = db.vulnerbilities.find({})
