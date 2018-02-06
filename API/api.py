@@ -35,10 +35,10 @@ def start_scan():
     		# Success
     		msg = {"status" : "success"}
     	else:
-  			msg = {"status" : "Failed"}
+            msg = {"status" : "Failed"}
     
     except:
-    	msg = {"status" : "Failed"} 
+        msg = {"status" : "Failed"} 
     
     return jsonify(msg)
 
@@ -63,16 +63,16 @@ def fetch_records():
 						for vul in alerts:
 							if data['id'] == vul['id']:
 							    all_data = {
-							    			'url' : data['url'],
-							    			'impact' : data['impact'],
-							    			'name' : data['alert'],
-							    			'req_headers' : data['req_headers'],
-							    			'req_body' : data['req_body'],
-							    			'res_headers' : data['res_headers'],
-							    			'res_body' : data['res_body'],
-							    			'Description' : vul['Description'],
-							    			'remediation' : vul['remediation']
-							    			}
+                                    'url' : data['url'],
+                                    'impact' : data['impact'],
+                                    'name' : data['alert'],
+                                    'req_headers' : data['req_headers'],
+                                    'req_body' : data['req_body'],
+                                    'res_headers' : data['res_headers'],
+                                    'res_body' : data['res_body'],
+                                    'Description' : vul['Description'],
+                                    'remediation' : vul['remediation']
+                                    }
 							    vul_list.append(all_data)
 							    break
 
