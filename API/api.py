@@ -10,7 +10,7 @@ from flask import Flask
 from apiscan import scan_single_api
 from flask import jsonify
 from pymongo import MongoClient
-from utils.vulnerabilities import vuln
+from utils.vulnerabilities import alerts
  
 app = Flask(__name__)
  
@@ -60,7 +60,7 @@ def fetch_records():
 							vul_list.append(all_data)
 
 					if data['id']:
-						for vul in vuln:
+						for vul in alerts:
 							if data['id'] == vul['id']:
 							    all_data = {
 							    			'url' : data['url'],
