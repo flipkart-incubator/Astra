@@ -38,7 +38,7 @@ def cors_check(origin,resheaders):
 def check_custom_header(url, header_name):
 	# Check if custom header is allowed to send. 
 	request_header = {'Access-Control-Request-Headers' : header_name}
-	req_custom_header = requests.options(url, header_name)
+	req_custom_header = requests.options(url, header_name,verify=False)
 	try:
 		if req_custom_header.headers['Access-Control-Allow-Headers'] == header_name:
 			return True
@@ -64,8 +64,6 @@ def generate_origin(url):
 	return origin_headers
 
 def cors_main(url,method,headers,body):
-	#print "%s[!]{0} Checking for CORS Misconfiguration %s "% (api_logger.Y, api_logger.W)
-	print "Checking for CORS misconfiguration"
 	origin_headers = generate_origin(url)
 	logs.logging.info("List of origin headers: %s",origin_headers)
 	for origin in origin_headers:
@@ -73,7 +71,7 @@ def cors_main(url,method,headers,body):
 		headers.update(origin_header)
 		if method.upper() == 'GET' or method.upper() == 'POST' or method.upper() == "PUT":
 			''' If request method is POST then browser usually sends preflight request '''
-			option_response = requests.options(url,headers=headers)
+			option_response = requests.options(url,headers=headers,verify=False)
 			result = cors_check(origin,option_response.headers)
 			if result:	
 				print "%s[+]{0} is vulnerable to cross domain attack %s ".format(url)% (api_logger.G, api_logger.W)
