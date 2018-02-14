@@ -77,7 +77,7 @@ def session_fixation(url,method,headers,body):
 				logs.logging.info("Relogin Successful")
 				auth_new = get_value('config.property','login','auth')
 				if auth_old == auth_new:
-					attack_result.update({"id" : "5",
+					attack_result.update({"id" : 5,
 					   							  "url" : login_url,
 												  "alert": "Session Fixation",
 												  "impact" : "Medium", 
@@ -111,7 +111,7 @@ def auth_check(url,method,headers,body):
 							if fail_name.lower() in auth_request.content.lower():
 								logs.logging.info("API requires authentication hence it's not vulnerable %s", url)
 							else:
-								attack_result.update({"id" : "3",
+								attack_result.update({"id" : 3,
 						   							  "url" : url,
 													  "alert": "Broken Authentication and session management",
 													  "impact" : "High", 
@@ -130,7 +130,7 @@ def auth_check(url,method,headers,body):
 		if result is False:
 			# Marking it as vulnerable if there has no authentication header present in HTTP request 
 			brokenauth_request = req.api_request(url,method,headers,body)
-			attack_result.update({"id" : "4",
+			attack_result.update({"id" : 4,
 						   "url" : url,
 							"alert": "Broken Authentication and session management",
 							"impact" : "High", 
@@ -139,7 +139,6 @@ def auth_check(url,method,headers,body):
 							"res_headers" : brokenauth_request.headers,
 							"res_body" : brokenauth_request.text
 							})
-			print "[+]Vulnerable"
 			dbupdate.insert_record(attack_result)
 
 			# Test for session fixation
