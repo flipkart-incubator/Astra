@@ -129,17 +129,20 @@ def auth_check(url,method,headers,body):
 				
 		if result is False:
 			# Marking it as vulnerable if there has no authentication header present in HTTP request 
+			brokenauth_request = req.api_request(url,method,headers,body)
 			attack_result.update({"id" : "4",
 						   "url" : url,
 							"alert": "Broken Authentication and session management",
 							"impact" : "High", 
 							"req_headers" : headers,
-							"req_body" : "NA",
-							"res_headers" : "NA",
-							"res_body" : "NA"
+							"req_body" : body,
+							"res_headers" : brokenauth_request.headers,
+							"res_body" : brokenauth_request.text
 							})
-
+			print "[+]Vulnerable"
 			dbupdate.insert_record(attack_result)
+
+			# Test for session fixation
 			session_fixation(url,method,updated_headers,body)
 			return
 	except:
