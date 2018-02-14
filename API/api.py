@@ -56,8 +56,6 @@ def fetch_records():
             else:
                 req_body = data['req_body']
 
-            print "------",req_body,type(data['req_body'])
-
             data.pop('_id')
             data =  ast.literal_eval(json.dumps(data))
             print "Data",data
