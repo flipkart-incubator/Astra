@@ -51,23 +51,31 @@ def fetch_records():
     records = db.vulnerbilities.find({})
     if records:
         for data in records:
+            if data['req_body'] == 'null':
+                req_body = "NA"
+            else:
+                req_body = data['req_body']
+
+            print "------",req_body,type(data['req_body'])
+
             data.pop('_id')
             data =  ast.literal_eval(json.dumps(data))
-            
+            print "Data",data
             try:
                 if data['id'] == "NA":
-                    all_data = {'url' : data['url'], 'impact' : data['impact'], 'name' : data['name'], 'req_headers' : data['req_headers'], 'req_body' : data['req_body'], 'res_headers' : data['res_headers'], 'res_body' : data['res_body'], 'Description' : data['Description'], 'remediation' : data['remediation']}
+                    all_data = {'url' : data['url'], 'impact' : data['impact'], 'name' : data['name'], 'req_headers' : data['req_headers'], 'req_body' : req_body, 'res_headers' : data['res_headers'], 'res_body' : data['res_body'], 'Description' : data['Description'], 'remediation' : data['remediation']}
                     vul_list.append(all_data)
 
                 if data['id']:
                     for vul in alerts:
                         if data['id'] == vul['id']:
+                            print "inside"
                             all_data = {
                                         'url' : data['url'],
                                         'impact' : data['impact'],
                                         'name' : data['alert'],
                                         'req_headers' : data['req_headers'],
-                                        'req_body' : data['req_body'],
+                                        'req_body' : req_body,
                                         'res_headers' : data['res_headers'],
                                         'res_body' : data['res_body'],
                                         'Description' : vul['Description'],
@@ -79,6 +87,7 @@ def fetch_records():
             except:
                 pass
 
+        print vul_list
         return vul_list
         
 
@@ -89,4 +98,4 @@ def return_alerts():
     return jsonify(result)
 
 
-app.run(host='0.0.0.0', port= 8096)
+app.run(host='0.0.0.0', port= 8098)
