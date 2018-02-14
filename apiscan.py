@@ -175,6 +175,10 @@ def get_arg(args=None):
     
 
         results = parser.parse_args(args)
+        if len(args) == 0:
+            print "%sAt least one argument is needed to procced.\nFor further information check help: %spython apiscan.py --help%s"% (api_logger.R, api_logger.G, api_logger.W)
+            sys.exit(1)
+
         return (results.collection_type,
                 results.collection_name,
                 results.url,
