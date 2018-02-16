@@ -5,6 +5,7 @@ import sys
 sys.path.append('../')
 
 from flask import Flask
+from flask import Response,make_response
 from flask import request
 from flask import Flask
 from apiscan import scan_single_api
@@ -93,7 +94,9 @@ def fetch_records():
 @app.route('/alerts/', methods=['GET'])
 def return_alerts():
     result = fetch_records()
-    return jsonify(result)
+    resp = jsonify(result)
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    return resp
 
 
-app.run(host='0.0.0.0', port= 8099)
+app.run(host='0.0.0.0', port= 8099,debug=True)
