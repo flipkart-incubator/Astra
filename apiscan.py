@@ -62,11 +62,11 @@ def read_scan_policy():
     try:
         scan_policy = get_value('scan.property','scan-policy','attack')
         attack = ast.literal_eval(scan_policy)
-    
+
     except Exception as e:
+        print e
         print "Failed to parse scan property file."
 
-    print "Scan",attack
     return attack
 
 def modules_scan(url,method,headers,body):
@@ -109,6 +109,8 @@ def scan_single_api(url, method, headers, body, api):
             headers = {'Content-Type' : 'application/json'}
     if type(headers) is not dict:
         headers = ast.literal_eval(headers)
+    if method == '':
+        method = 'GET'
 
     result = validate_data(url, method)
     if result is False:
