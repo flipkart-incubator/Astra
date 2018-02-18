@@ -1,6 +1,8 @@
 import ast
 import json
 import sys
+import hashlib
+import time
 
 sys.path.append('../')
 
@@ -20,10 +22,17 @@ client = MongoClient('localhost',27017)
 global db
 db = client.apiscan
 
+
 ############################# Start scan API ######################################
+def generate_hash():
+    # Return md5 hash value of current timestmap 
+    scanid = hashlib.md5(str(time.time())).hexdigest()
+    return scanid
+
 # Start the scan and returns the message
 @app.route('/scan/', methods = ['POST'])
 def start_scan():
+    scanid = generate_hash()
     content = request.get_json()
     try:
         url = content['url']
@@ -34,7 +43,7 @@ def start_scan():
         scan_status = scan_single_api(url, method, headers, body, api)
         if scan_status is True:
             # Success
-            msg = {"status" : "success"}
+            msg = {"status" : scanid}
         else:
             msg = {"status" : "Failed"}
     
@@ -47,11 +56,14 @@ def start_scan():
 ############################# Alerts API ##########################################
 
 # Returns vulnerbilities identified by tool 
-def fetch_records():
+def fetch_records(scanid):
+    # Return alerts identified by the tool
     vul_list = []
-    records = db.vulnerbilities.find({})
+    records = db.vulnerbilities.find({"scanid":int(scanid)})
+    print "Records are ",records
     if records:
         for data in records:  
+            print "DATA is",data
             if data['req_body'] == None:
                 data['req_body'] = "NA" 
 
@@ -91,9 +103,10 @@ def fetch_records():
         return vul_list
         
 
-@app.route('/alerts/', methods=['GET'])
-def return_alerts():
-    result = fetch_records()
+@app.route('/alerts/<scanid>', methods=['GET'])
+def return_alerts(scanid):
+    print "ScanID is ",scanid
+    result = fetch_records(scanid)
     resp = jsonify(result)
     resp.headers["Access-Control-Allow-Origin"] = "*"
     return resp
