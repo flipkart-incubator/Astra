@@ -1,5 +1,5 @@
 import ConfigParser
-from utils.config import *
+import sys
 import os
 
 def get_allvalues(section):
@@ -10,7 +10,12 @@ def get_allvalues(section):
 
 def get_value(filename,section,name):
 	# Return only one value from config file
-	file_name = 'utils/'+filename
+	if os.getcwd().split('/')[-1] == 'API':
+		dir_name = '../utils/'
+	else:
+		dir_name = 'utils/'
+
+	file_name = dir_name+filename
 	Config = ConfigParser.ConfigParser()
 	Config.read(file_name)
 	return Config.get(section,name)
