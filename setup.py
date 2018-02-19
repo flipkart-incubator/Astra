@@ -11,7 +11,7 @@ def install_zap():
 	try:
 		os.system('curl -L https://github.com/zaproxy/zaproxy/releases/download/2.7.0/ZAP_2.7.0_Crossplatform.zip --output zap.zip')
 		os.system('sudo unzip zap.zip')
-		os.system('sudo mv -R zap core/')
+		os.system('sudo mv ZAP_2.7.0 core/')
 	except Exception as e:
 		print "Failed to install ZAP. Please install it manually",e
 	
