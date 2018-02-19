@@ -27,7 +27,7 @@ def install_mongo():
 			os.system("sudo cp /mongodb.service /etc/systemd/system/mongodb.service")
 			os.system("sudo systemctl start mongodb && sudo systemctl enable mongodb")
 
-		elif os_name == "darwin":
+		elif os_name == "Darwin":
 			os.system("brew update")
 			os.system("brew install mongodb")
 			os.system(mongod)
