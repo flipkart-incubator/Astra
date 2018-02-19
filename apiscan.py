@@ -69,7 +69,7 @@ def read_scan_policy():
 
     return attack
 
-def modules_scan(url,method,headers,body):
+def modules_scan(url,method,headers,body,scanid=None):
     '''Scanning API using different engines '''
     attack = read_scan_policy()
     if attack is None:
@@ -80,17 +80,17 @@ def modules_scan(url,method,headers,body):
         api_scan = zap_scan()
         status = zap_start()
         if status is True:
-            api_scan.start_scan(url,method,headers,body)
+            api_scan.start_scan(url,method,headers,body,scanid)
     
     # Custom modules scan      
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
-        cors_main(url,method,headers,body)
+        cors_main(url,method,headers,body,scanid)
     if attack['Broken auth'] == 'Y' or attack['Broken auth'] == 'y':
-        auth_check(url,method,headers,body)
+        auth_check(url,method,headers,body,scanid)
     if attack['Rate limit'] == 'Y' or attack['Rate limit'] == 'y':
-        rate_limit(url,method,headers,body)
+        rate_limit(url,method,headers,body,scanid)
     if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
-        csrf_check(url,method,headers,body)
+        csrf_check(url,method,headers,body,scanid)
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
@@ -103,7 +103,7 @@ def validate_data(url,method):
 
     return validate_result
 
-def scan_single_api(url, method, headers, body, api):
+def scan_single_api(url, method, headers, body, api, scanid=None):
     ''' This function deals with scanning a single API. '''
     if headers is None or headers == '':
             headers = {'Content-Type' : 'application/json'}
@@ -117,7 +117,7 @@ def scan_single_api(url, method, headers, body, api):
         print "[-]Invalid Arguments"
         return False
 
-    p = Process(target=modules_scan,args=(url,method,headers,body),name='module-scan')
+    p = Process(target=modules_scan,args=(url,method,headers,body,scanid),name='module-scan')
     p.start()
     if api == "Y":
         return True
