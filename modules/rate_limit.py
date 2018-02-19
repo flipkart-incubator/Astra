@@ -32,7 +32,7 @@ def generate_list(length,type):
 	print lis
 	return lis
 
-def brute_force(url,method,headers,body,attack_params):
+def brute_force(url,method,headers,body,attack_params,scanid):
 	attack_result = {}
 	failed_set = ['exceed','captcha','too many','rate limit','Maximum login']
 	print "attack params",attack_params
@@ -82,7 +82,8 @@ def brute_force(url,method,headers,body,attack_params):
 				
 			if result is True:
 				attack_result = {
-							 "id" : 6,
+							 "id" : 7,
+							 "scanid":scanid,
 							 "url" : url,
 							 "alert": "Missing Rate limit",
 							 "impact": "High",
@@ -96,7 +97,7 @@ def brute_force(url,method,headers,body,attack_params):
 			return attack_result
 			
 
-def rate_limit(url,method,headers,body):
+def rate_limit(url,method,headers,body,scanid=None):
 	try:
 		if method == "POST" or method == "PUT":
 			if body:
@@ -109,7 +110,7 @@ def rate_limit(url,method,headers,body):
 							attack_params.append(name.lower())
 
 				if attack_params:
-					attack_result = brute_force(url,method,headers,body,attack_params)
+					attack_result = brute_force(url,method,headers,body,attack_params,scanid)
 					dbupdate.insert_record(attack_result)
 	except:
 		print "Failed to test rate limit"

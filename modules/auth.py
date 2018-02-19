@@ -50,7 +50,7 @@ def add_authheader(auth_headers):
 		# If API is using access token as an auth
 		return headers
 
-def session_fixation(url,method,headers,body):
+def session_fixation(url,method,headers,body,scanid):
 	# This function deals with checking session fixation issue.
 	login_result = get_value('config.property','login','loginresult')
 	logout_result = get_value('config.property','logout','logoutresult')
@@ -78,6 +78,7 @@ def session_fixation(url,method,headers,body):
 				auth_new = get_value('config.property','login','auth')
 				if auth_old == auth_new:
 					attack_result.update({"id" : 5,
+										  "scanid": scanid,
 					   							  "url" : login_url,
 												  "alert": "Session Fixation",
 												  "impact" : "Medium", 
@@ -89,7 +90,7 @@ def session_fixation(url,method,headers,body):
 
 					dbupdate.insert_record(attack_result)
 
-def auth_check(url,method,headers,body):
+def auth_check(url,method,headers,body,scanid=None):
 	# This function removes auth header and check if server is accepting request without it
 	try:
 		attack_result = {}
@@ -112,6 +113,7 @@ def auth_check(url,method,headers,body):
 								logs.logging.info("API requires authentication hence it's not vulnerable %s", url)
 							else:
 								attack_result.update({"id" : 3,
+													  "scanid": scanid,
 						   							  "url" : url,
 													  "alert": "Broken Authentication and session management",
 													  "impact" : "High", 
@@ -122,7 +124,7 @@ def auth_check(url,method,headers,body):
 													})
 
 								dbupdate.insert_record(attack_result)
-								session_fixation(url,method,updated_headers,body)
+								session_fixation(url,method,updated_headers,body,scanid)
 								return
 				else:
 					result = False
@@ -131,6 +133,7 @@ def auth_check(url,method,headers,body):
 			# Marking it as vulnerable if there has no authentication header present in HTTP request 
 			brokenauth_request = req.api_request(url,method,headers,body)
 			attack_result.update({"id" : 4,
+						   "scanid": scanid,
 						   "url" : url,
 							"alert": "Broken Authentication and session management",
 							"impact" : "High", 
@@ -142,7 +145,7 @@ def auth_check(url,method,headers,body):
 			dbupdate.insert_record(attack_result)
 
 			# Test for session fixation
-			session_fixation(url,method,updated_headers,body)
+			session_fixation(url,method,updated_headers,body,scanid)
 			return
 	except:
 		print "Failed to test Broken authentication and session management"
