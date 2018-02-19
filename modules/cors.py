@@ -63,7 +63,7 @@ def generate_origin(url):
 	origin_headers.append(postfixurl)
 	return origin_headers
 
-def cors_main(url,method,headers,body):
+def cors_main(url,method,headers,body,scanid=None):
 	origin_headers = generate_origin(url)
 	logs.logging.info("List of origin headers: %s",origin_headers)
 	for origin in origin_headers:
@@ -77,6 +77,7 @@ def cors_main(url,method,headers,body):
 				print "%s[+]{0} is vulnerable to cross domain attack %s ".format(url)% (api_logger.G, api_logger.W)
 				attack_result = {
 						 "id" : 1,
+						 "scanid" : scanid,
 						 "url" : url,
 						 "alert": "CORS Misconfiguration",
 						 "impact": result['impact'],

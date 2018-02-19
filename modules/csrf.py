@@ -44,7 +44,7 @@ def generate_csrf_token(csrf_header_value):
 	new_csrf_value = ''.join(random.choice(string.ascii_letters) for i in range(length))
 	return new_csrf_value
 
-def csrf_attack_body(url,method,headers,body,csrf_param):
+def csrf_attack_body(url,method,headers,body,csrf_param,scanid):
 	http_status_code, response_size = csrf_request(url,method,headers,body)
 	csrf_param_value = generate_csrf_token(str(body['csrf_param']))
 	body['csrf_param'] = csrf_param_value
@@ -60,10 +60,10 @@ def csrf_attack_body(url,method,headers,body,csrf_param):
 					return
 				else:
 					print "%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W)
-					attack_result = { "id" : 6, "url" : url, "alert": "Blind CSRF", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": "NA"}
+					attack_result = { "id" : 6, "scanid":scanid, "url" : url, "alert": "Blind CSRF", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": "NA"}
 					dbupdate.insert_record(attack_result)
 
-def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type):
+def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type,scanid):
 	# This function performs CSRF attack with various techniques. 
 	if csrf_test_type == "header":
 		updated_headers = headers.copy()
@@ -79,7 +79,7 @@ def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type):
 		if csrf_req.status_code == http_status_code:
 			if len(csrf_req.text) == response_size:
 				print "%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W)
-				attack_result = { "id" : 6, "url" : url, "alert": "CSRF", "impact": "High", "req_headers": headers, "res_headers": csrf_req.headers,"res_body": csrf_req.text}
+				attack_result = { "id" : 6, "scanid":scanid, "url" : url, "alert": "CSRF", "impact": "High", "req_headers": headers, "res_headers": csrf_req.headers,"res_body": csrf_req.text}
 				dbupdate.insert_record(attack_result)
 				return
 
@@ -98,7 +98,7 @@ def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type):
 					result = check_custom_header(url, csrf_header) 
 					if result == True:
 						print "%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W)
-						attack_result = { "id" : 6, "url" : url, "alert": "CSRF", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": csrf_req.headers,"res_body": csrf_req.text}
+						attack_result = { "id" : 6, "scanid" : scanid, "url" : url, "alert": "CSRF", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": csrf_req.headers,"res_body": csrf_req.text}
 						dbupdate.insert_record(attack_result)
 
 		except Exception as e:
@@ -137,16 +137,16 @@ def verify_headers(headers):
 
 	return custom_header
 
-def csrf_check(url,method,headers,body):
+def csrf_check(url,method,headers,body,scanid=None):
 	try:
 		if method == "POST" or method == "PUT" or method == "DEL":
 			csrf_header = verify_headers(headers)
 			if csrf_header:
-				csrf_attack_header(url,method,headers,body,csrf_header,"header")
+				csrf_attack_header(url,method,headers,body,csrf_header,"header",scanid)
 			else:
 				csrf_param = verify_body(body)
 				if csrf_param is not False:
-					csrf_attack_body(url,method,headers,body,csrf_param)
+					csrf_attack_body(url,method,headers,body,csrf_param,scanid)
 
 	except Exception as e:
 		raise e
