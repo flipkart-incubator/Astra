@@ -5,10 +5,14 @@ import sys
 import ConfigParser
 import requests
 
+sys.path.append('../')
+
 from utils.config import get_value
 from utils.logger import logger
 
 api_logger = logger()
+
+
 
 def get_config_value(name):
 	# Return the value from config file. Ex Port, apikey
@@ -21,7 +25,7 @@ def check_status(port):
 		api_url = "http://127.0.0.1:"+port
 		api_status = requests.get(api_url)
 	except:
-		print "%s[-]Failed to start ZAP. Check if the port is busy%s " %(api_logger.R, api_logger.W)
+		#print "%s[-]Failed to start ZAP. Check if the port is busy%s " %(api_logger.R, api_logger.W)
 		return False
 
 	if api_status.status_code == 200:
@@ -36,9 +40,14 @@ def zap_start():
 	if result == True:
 		# Zap is already running. No need to start it again.
 		return
-	os.chdir("core/ZAP_2.7.0")
+	if os.getcwd().split('/')[-1] == 'API':
+		os.chdir("../core/ZAP_2.7.0")
+	else:
+		os.chdir("core/ZAP_2.7.0")
+
 	p = subprocess.Popen(['java', '-jar', 'zap-2.7.0.jar','-daemon','-port', port, '-config', apikey], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	time.sleep(10)
 	zap_status = check_status(port)
+	print "cur dir",os.getcwd()
 	os.chdir("../../")
 	return zap_status
