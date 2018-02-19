@@ -16,7 +16,7 @@ def install_zap():
 		print "Failed to install ZAP. Please install it manually",e
 	
 
-def install_mongo(self):
+def install_mongo():
 
 		os_name = platform.system()
 		if os_name == "linux" or os_name == "linux2":
