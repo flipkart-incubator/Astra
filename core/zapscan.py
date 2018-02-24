@@ -70,7 +70,7 @@ class zap_scan:
         self.dbupdate.insert_record(attack_result)
 
 
-    def check_scanalerts(self,url,scan_id):
+    def check_scanalerts(self,url,scan_id,scanid):
         scan_alerts = '{0}/JSON/core/view/alerts/?zapapiformat=JSON&apikey={1}&formMethod=GET&baseurl={2}&start=&count='.format(self.zap_url,self.apitoken,url)
         alert_id = 0
         while True:
@@ -90,16 +90,16 @@ class zap_scan:
                     solution = zap_alerts['alerts'][alert_id]['solution']
                     print "%s[+]{0} is vulnerable to {1}%s".format(url,alert)% (self.api_logger.G, self.api_logger.W)
                     try:
-                        self.update_db(url,alert,impact,description,solution,messageId)
+                        self.update_db(scanid,url,alert,impact,description,solution,messageId)
                     except Exception as e:
-                        print "eerrro",e
+                        
                         logs.logging.info("Failed to update in db : %s",e)
 
                     alert_id = alert_id + 1
                 except:
                     pass
           
-    def start_scan(self,url,method,Headers=None,data=None):
+    def start_scan(self,url,method,Headers=None,data=None,scanid=None):
         try:
             data = json.dumps(data)
             data = data.replace('\\"',"'")
@@ -151,7 +151,7 @@ class zap_scan:
                     scan_id = json.loads(start_ascan.text)['scan']
                     if int(scan_id) >= 0:
                         print "[+]Active Scan Started Successfully"
-                        self.check_scanalerts(url,scan_id)              
+                        self.check_scanalerts(url,scan_id,scanid)              
                 except:
                     pass
  
