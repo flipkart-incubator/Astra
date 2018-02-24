@@ -15,7 +15,6 @@ class Database_update:
 
 	def insert_record(self,data):
 		try:
-			self.db.vulnerbilities.insert(data)
+			self.db.vulnerabilities.insert(data)
 		except Exception as e:
-			print "Exception"
 			raise e
