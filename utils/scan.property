@@ -1,7 +1,8 @@
 [scan-policy]
 attack = {
-		  "cors" : "n",
-		  "Broken auth" : "n",
+		  "cors" : "y",
+		  "Broken auth" : "y",
 	      "Rate limit" : "n",
-	      "csrf" : 'y'
+	      "csrf" : 'n',
+	      "zap" : 'y'
 		 }
