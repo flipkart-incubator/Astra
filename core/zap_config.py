@@ -39,7 +39,7 @@ def zap_start():
 	result = check_status(port)
 	if result == True:
 		# Zap is already running. No need to start it again.
-		return
+		return result
 	if os.getcwd().split('/')[-1] == 'API':
 		os.chdir("../core/ZAP_2.7.0")
 	else:
