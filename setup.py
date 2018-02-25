@@ -1,37 +1,54 @@
 import os
 import platform
 
+
+os_name = platform.system()
+
 def os_dependencies():
 	try:
+		if os_name == "linux" or os_name == "linux2":
+			os.system("sudo apt-get install git")
+			os.system("sudo apt-get install curl")
+			os.system("sudo apt-get install python-pip")
+			os.system("sudo apt-get install openjdk-8-jre-headless")
+
 		os.system("pip install -r requirements.txt")
+
 	except Exception as e:
 		print "Failed to install dependencies"
 
 def install_zap():
 	try:
-		os.system('curl -L https://github.com/zaproxy/zaproxy/releases/download/2.7.0/ZAP_2.7.0_Crossplatform.zip --output zap.zip')
-		os.system('sudo unzip zap.zip')
-		os.system('sudo mv ZAP_2.7.0 core/')
+		os_name = platform.system()
+		if os_name == "linux" or os_name == "linux2":
+			os.system('curl -L https://github.com/zaproxy/zaproxy/releases/download/2.7.0/ZAP_2.7.0_Crossplatform.zip --output zap.zip')
+			os.system('sudo unzip zap.zip')
+			os.system('sudo mv ZAP_2.7.0 core/')
+
 	except Exception as e:
 		print "Failed to install ZAP. Please install it manually",e
 	
 
 def install_mongo():
-
 		os_name = platform.system()
 		if os_name == "linux" or os_name == "linux2":
-			os.system("sudo apt-get install python-pip")
-			os.system("sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927")
-			os.system('echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse"\ | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list')
-			os.system("sudo apt-get update && sudo apt-get install -y mongodb-org")
-			os.system("sudo cp /mongodb.service /etc/systemd/system/mongodb.service")
-			os.system("sudo systemctl start mongodb && sudo systemctl enable mongodb")
+			os.system("sudo apt-get install mongodb-server")
 
 		elif os_name == "Darwin":
 			os.system("brew update")
 			os.system("brew install mongodb")
-			os.system(mongod)
 
+		os.system("sudo mkdir -p /data/db/")
+		os.system("sudo nohup mongod &")
+
+		#Check if mongodb is started successfully
+		try:
+			from pymongo import MongoClient
+			mongo_connect = MongoClient('localhost',27017)
+			collections_list = mongo_connect.db.collection_names()  
+		except:
+			print "Failed to install mongodb. Please install it manually."
+	
 def main():
 	os_dependencies()
 	install_zap()
