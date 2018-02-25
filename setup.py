@@ -7,7 +7,6 @@ os_name = platform.system()
 def os_dependencies():
 	try:
 		if os_name == "linux" or os_name == "linux2":
-			os.system("sudo apt-get install git")
 			os.system("sudo apt-get install curl")
 			os.system("sudo apt-get install python-pip")
 			os.system("sudo apt-get install openjdk-8-jre-headless")
