@@ -6,7 +6,7 @@ import time
 
 sys.path.append('../')
 
-from flask import Flask
+from flask import Flask,render_template
 from flask import Response,make_response
 from flask import request
 from flask import Flask
@@ -15,7 +15,7 @@ from flask import jsonify
 from pymongo import MongoClient
 from utils.vulnerabilities import alerts
  
-app = Flask(__name__)
+app = Flask(__name__,template_folder='../Dashboard/templates',static_folder='../Dashboard/static')
  
 # Mongo DB connection 
 client = MongoClient('localhost',27017)
@@ -35,15 +35,20 @@ def start_scan():
     scanid = generate_hash()
     content = request.get_json()
     try:
+        name = content['appname']
         url = content['url']
         headers = content['headers']
         body = content['body']
         method = content['method']
         api = "Y"
-        scan_status = scan_single_api(url, method, headers, body, api)
+        scan_status = scan_single_api(url, method, headers, body, api, scanid)
         if scan_status is True:
             # Success
             msg = {"status" : scanid}
+            try:
+                db.scanids.insert({"scanid" : scanid, "name" : name})
+            except:
+                print "Failed to update DB"
         else:
             msg = {"status" : "Failed"}
     
@@ -53,17 +58,34 @@ def start_scan():
     return jsonify(msg)
 
 
+#############################  Fetch ScanID API #########################################
+@app.route('/scan/scanids/', methods=['GET'])
+def fetch_scanids():
+    scanids = []
+    records = db.scanids.find({})
+    if records:
+        for data in records:
+            data.pop('_id')
+            try:
+                data =  ast.literal_eval(json.dumps(data))
+                if data['scanid']:
+                    if data['scanid'] not in scanids:
+                        scanids.append({"scanid" : data['scanid'], "name" : data['name']}) 
+            except:
+                pass
+
+        return jsonify(scanids)
 ############################# Alerts API ##########################################
 
 # Returns vulnerbilities identified by tool 
 def fetch_records(scanid):
     # Return alerts identified by the tool
     vul_list = []
-    records = db.vulnerbilities.find({"scanid":int(scanid)})
+    records = db.vulnerabilities.find({"scanid":scanid})
     print "Records are ",records
     if records:
         for data in records:  
-            print "DATA is",data
+            print "Data is",data
             if data['req_body'] == None:
                 data['req_body'] = "NA" 
 
@@ -111,5 +133,11 @@ def return_alerts(scanid):
     resp.headers["Access-Control-Allow-Origin"] = "*"
     return resp
 
+#############################Dashboard#########################################
 
-app.run(host='0.0.0.0', port= 8099,debug=True)
+@app.route('/', defaults={'page': 'scan.html'})
+@app.route('/<page>')
+def view_dashboard(page):
+    return render_template('{}'.format(page))
+
+app.run(host='0.0.0.0', port= 8093,debug=True)
