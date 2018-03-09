@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Api-Scan</title>
+		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+		<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='scan.js') }}"></script>
+
+
+		<script src="script.js"></script>
+
+
+	</head>
+	<body>
+		<div class="side-nav" id="side">
+			<div class="logo">
+				<span>API SCAN</span>
+			</div>
+			<nav>   	
+				<ul>
+					<li>
+						<!-- <a onclick="showscan();"> -->
+							<a class="active" href="scan.html">
+							<span><i class="fa fa-flash"></i></span>
+							<span >Scan</span>
+						</a>
+					</li>
+					<li>
+						<a href="reports.html">
+							<span><i class="fa fa-envelope"></i></span>
+							<span>Reports</span>
+						</a>
+					</li>
+					<li>
+						<a onclick="showanalytics();">
+							<span><i class="fa fa-bar-chart"></i></span>
+							<span>Analytics</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div id="side-update">
+			
+		</div>
+
+		<script type="text/javascript">
+			function showscan() {
+         		var a = '<div class="main-content"> \
+					<div class="title">Scan</div> \
+					<div class="main"> \
+						<div class="widget"> \
+							<div class="chart"></div> \
+						\
+    					<form method="POST" action="#" enctype="multipart/form-data" class="col-md-6">\
+	     	 				<div class="form-group">\
+	      		   				<label for="url">URL</label>\
+	       		  				<input type="text" class="form-control" name="url" id="url"> \
+	     	   				</div>\
+\
+	     	  				<div class="form-group">\
+        						<label for="project_name">Project Name</label>\
+        						<input type="text" class="form-control" name="project_name" id="project_name">\
+          					</div>\
+          					\
+          					<div class="form-group">\
+        						<label for="project_name">Project Name</label>\
+        						<input type="text" class="form-control" name="project_name" id="project_name">\
+          					</div>\
+          				</form>\
+          				</div> \
+\
+	     			</div> \
+				</div>';
+
+	     document.getElementById("side-update").innerHTML = a;
+			}
+		</script>
+
+
+
+
+		<script>
+      	 	function showanalytics()
+         	{
+         		var a = '<div class="main-content"> \
+				<div class="title">Analytics</div> \
+			    <div class="main"> \
+					<div class="widget"> \
+						<div class="title">Security Issues in Project-1</div> \
+					<div class="chart"></div> \
+					</div> \
+				</div> \
+			</div>';
+
+		    document.getElementById("side-update").innerHTML = a;	
+            }
+   		</script>
+
+ 
+    <div class="main-content"> 
+			<div class="title"> 
+				Scanning Report
+			</div>
+			<div class="main"> 
+				<div class="widget"> 
+					<div class="title"><h4>Recent Scans</h4></div> 
+					<div id = "recentscans"></div>
+					<div class="chart"> 
+					</br>
+					 <script type="text/javascript">
+					 	loadDoc();
+
+                       function loadDoc()
+                       {
+                       	  if(location.hash)
+                       	  {
+                       	  	scanid = location.hash.substr(1);
+                       	  	var xhttp = new XMLHttpRequest();
+						  	xhttp.onreadystatechange = function() {
+						    if (this.readyState == 4 && this.status == 200)
+						     {
+						      
+							      data = this.responseText;
+							      data = JSON.parse(data);
+							     
+							      printResults(data);
+						    }
+						  };
+						 //xhttp.open("GET", "http://10.33.93.222:8099/alerts/", false);
+						  xhttp.open("GET", "/alerts/"+scanid, false);
+						  xhttp.send();
+                       	  }
+                       	  else
+                       	  {
+                       	  		//Show recent scans
+                       	  		recent_scans();
+                       	  }              
+						}
+
+						
+					function printResults(data){
+
+					 	for (var i=0; i<data.length; i++) {
+							switch(data[i]["impact"].toString()) {
+							    case "Info":
+							        color = "green";
+							        break;
+							    case "Medium":
+							        color = "Orange";
+							        break;
+							    case "High":
+							        color = "red";
+							        break;
+							    default:
+							        color="";
+							}
+
+							document.write('<button style="width: 750px; text-align: left; background-color: '+color+'" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo_'+i.toString()+'">'+data[i]["name"].toString()+"&nbsp;in&nbsp;"+(data[i]["url"]).toString()+'</button></br></br>');
+
+					 	
+					 		document.write('<div id="demo_'+i.toString()+'" class="collapse"><div>\
+       					  	<label>Summary:</label>\
+       						<div><pre wrap width="3" style="word-wrap:break-word;">\
+       						\n<b>&nbsp;&nbsp;Name:</b>'+ (data[i]["name"]).toString()
+       						+"\n"+"<b>&nbsp;&nbsp;"+"Impact:"+"</b>"+ (data[i]["impact"]).toString()
+       			            
+       						+"\n\n"+"<div class='col-sm-6'>"+"<b>"+"Request_Headers:"+"</b>"+"<div id='req_head_"+i.toString()+"'></div></div>"
+
+       						+"<div class='col-sm-6'>"+"<b>"+"Response_Headers:"+"</b>"+"<div id='res_head_"+i.toString()+"'></div></div><br>"		
+       						+"\n"+"<div class='col-sm-6'>"+"<b><br></b>"+"<div id='req_body_"+i.toString()+"'></div></div>"
+       						+"<div class='col-sm-6'>"+"<b><br></b>"+"<div id='res_body_"+i.toString()+"'></div></div>"
+
+       						+"&nbsp;<br><b>&nbsp;&nbsp;<br><br>&nbsp;&nbsp;Description:</b>"+ (data[i]["Description"]).toString()
+       						+"\n"+"&nbsp;<br><b>&nbsp;&nbsp;"+"Remidation:</b>"+(data[i]["remediation"]).toString()+'\
+       						</pre></div>\
+     					  </div><br/>\
+                     </div> ');
+					 		
+					 		printdata(i,data[i]);	
+							}
+						}
+
+
+                    	// Parsing HTTP request and response.  
+
+						function printdata(i,data){
+						
+							req_headers = data['req_headers'];
+							res_headers = data['res_headers'];
+							req_body = data['req_body'];
+							res_body = data['res_body'];
+
+							// console.log(headers);
+
+                  
+
+							if(typeof(req_headers) == "string")
+							{
+
+								document.getElementById('req_head_'+i.toString()).innerHTML += req_headers;
+							}
+							else{
+								for (ele in req_headers){
+
+									document.getElementById('req_head_'+i.toString()).innerHTML += ele+" : "+req_headers[ele]+"<br>";
+								}
+							}
+
+
+                            if(typeof(res_headers) == "string")
+							{
+
+								document.getElementById('res_head_'+i.toString()).innerHTML += res_headers;
+							}
+							else{
+								for (ele in res_headers){
+
+									document.getElementById('res_head_'+i.toString()).innerHTML += ele+" : "+res_headers[ele]+"<br>";
+								}
+							}
+
+
+							if(typeof(req_body) == "string")
+							{
+
+								document.getElementById('req_body_'+i.toString()).innerHTML += req_body;
+							}
+							else if(typeof(req_body) == "object")
+							{
+								document.getElementById('req_body_'+i.toString()).innerHTML += JSON.stringify(req_body);
+
+							}
+
+
+
+							if(typeof(res_body) == "string")
+							{
+
+								document.getElementById('res_body_'+i.toString()).innerHTML += res_body;
+							}
+							else if(typeof(res_body) == "object")
+							{
+								document.getElementById('res_body_'+i.toString()).innerHTML += JSON.stringify(res_body);
+
+							}
+
+						}
+					 
+					</script> 
+                     
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+
+
+     
+	</body>
+</html>
