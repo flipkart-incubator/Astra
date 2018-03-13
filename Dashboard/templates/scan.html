@@ -15,9 +15,19 @@
 
 		<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='scan.js') }}"></script>
+            
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
 
 	</head>
+
 	<body><script>
+
+                
+
 				function loadDoc() 
 				{
                     var appname = document.getElementById("appname").value;
@@ -111,12 +121,28 @@
 						        <textarea class="form-control" rows="5" name="req_body" id="req_body" placeholder='{"first_name":"flipkart","last_name":"appsec"}'></textarea>
 						     </div>
 						     
-						     <button type="button" name="btn_report" class="btn btn-primary" onclick=loadDoc();>Submit</button>
+						     <button type="button" name="btn_report" class="btn btn-primary" onclick=loadDoc();>Submit</button><br><br>
+          					
+                            <label>Recent Scans:</label><br><br>
+          					
+                            <div class="container">
+                                <table id="table">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id">No</th>
+                                        <th data-field="name">Product Name</th>
+                                        <th data-field="scanid">url</th>
+                                        <th data-field="price">Status</th>
 
-						    <div>
-          						<label><br><br>Recent Scans</label>
-          						<div id="recentscans">
-          						<script>
+                                    </tr>
+                                </thead>
+                            </table>
+                            </div>
+
+
+
+                                <script>
+
                                 document.onload = recent_scans(); 
         
 

@@ -17,6 +17,11 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='scan.js') }}"></script>
 
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
 
 		<script src="script.js"></script>
 
@@ -115,8 +120,23 @@
 			</div>
 			<div class="main"> 
 				<div class="widget"> 
-					<div class="title"><h4>Recent Scans</h4></div> 
-					<div id = "recentscans"></div>
+					<div class="title" id="scan-widget"><h4>Recent Scans:</h4></div> <br>
+          					
+                            <div class="container">
+                                <table id="table">
+                                <thead>
+                                    <tr>
+                                        <th data-field="no">No</th>
+                                        <th data-field="name">Product Name</th>
+                                        <th data-field="scanid">url</th>
+                                        <th data-field="price">Status</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                            </div>
+
+
 					<div class="chart"> 
 					</br>
 					 <script type="text/javascript">
@@ -136,6 +156,11 @@
 							      data = JSON.parse(data);
 							     
 							      printResults(data);
+							      var div = document.getElementById("table");
+							      div.style.display = "none";
+							      var div = document.getElementById("scan-widget");
+							      div.style.display = "none";
+
 						    }
 						  };
 						 //xhttp.open("GET", "http://10.33.93.222:8099/alerts/", false);
@@ -174,7 +199,7 @@
        					  	<label>Summary:</label>\
        						<div><pre wrap width="3" style="word-wrap:break-word;">\
        						\n<b>&nbsp;&nbsp;Name:</b>'+ (data[i]["name"]).toString()
-       						+"\n"+"<b>&nbsp;&nbsp;"+"Impact:"+"</b>"+ (data[i]["impact"]).toString()
+       						+"\n"+"<b>&nbsp;&nbsp;<br>&nbsp;&nbsp;"+"Impact:"+"</b>"+ (data[i]["impact"]).toString()
        			            
        						+"\n\n"+"<div class='col-sm-6'>"+"<b>"+"Request_Headers:"+"</b>"+"<div id='req_head_"+i.toString()+"'></div></div>"
 
