@@ -46,7 +46,7 @@ def start_scan():
             # Success
             msg = {"status" : scanid}
             try:
-                db.scanids.insert({"scanid" : scanid, "name" : name})
+                db.scanids.insert({"scanid" : scanid, "name" : name, "url" : url})
             except:
                 print "Failed to update DB"
         else:
@@ -70,7 +70,7 @@ def fetch_scanids():
                 data =  ast.literal_eval(json.dumps(data))
                 if data['scanid']:
                     if data['scanid'] not in scanids:
-                        scanids.append({"scanid" : data['scanid'], "name" : data['name']}) 
+                        scanids.append({"scanid" : data['scanid'], "name" : data['name'], "url" : data['url']}) 
             except:
                 pass
 
@@ -140,4 +140,4 @@ def return_alerts(scanid):
 def view_dashboard(page):
     return render_template('{}'.format(page))
 
-app.run(host='0.0.0.0', port= 8093,debug=True)
+app.run(host='0.0.0.0', port= 8094,debug=True)
