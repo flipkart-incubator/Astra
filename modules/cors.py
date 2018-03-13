@@ -65,6 +65,7 @@ def generate_origin(url):
 
 def cors_main(url,method,headers,body,scanid=None):
 	origin_headers = generate_origin(url)
+	print origin_headers
 	logs.logging.info("List of origin headers: %s",origin_headers)
 	for origin in origin_headers:
 		origin_header = {"origin" : origin}
@@ -90,5 +91,5 @@ def cors_main(url,method,headers,body,scanid=None):
 
 				dbupdate.insert_record(attack_result)
 				break
-
+			
 	logs.logging.info("Scan completed for cross domain attack: %s",url)

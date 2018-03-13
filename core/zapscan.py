@@ -59,14 +59,13 @@ class zap_scan:
         except Exception as e:
             raise e
 
-    def update_db(self,url,alert,impact,description,solution,messageId):
+    def update_db(self,scanid,url,alert,impact,description,solution,messageId):
         ''' This function gathers all the info of alert and update it into DB '''
-        print "Inside"
         message_url = '{0}/JSON/core/view/message/?zapapiformat=JSON&apikey={1}&formMethod=GET&id={2}'.format(self.zap_url,self.apitoken,messageId)
         message_req = requests.get(message_url)
         message_data = json.loads(message_req.text)
         req_headers,req_body,res_headers,res_body = message_data['message']['requestHeader'],message_data['message']['requestBody'],message_data['message']['responseHeader'],message_data['message']['responseBody']
-        attack_result = { "id" : "NA", "url" : url, "name": alert, "impact": impact, "req_headers": req_headers, "req_body":req_body, "res_headers": res_headers,"res_body": res_body, "Description" : description, "remediation" : solution}
+        attack_result = { "id" : "NA", "scanid" : scanid, "url" : url, "name": alert, "impact": impact, "req_headers": req_headers, "req_body":req_body, "res_headers": res_headers,"res_body": res_body, "Description" : description, "remediation" : solution}
         self.dbupdate.insert_record(attack_result)
 
 
@@ -92,7 +91,6 @@ class zap_scan:
                     try:
                         self.update_db(scanid,url,alert,impact,description,solution,messageId)
                     except Exception as e:
-                        
                         logs.logging.info("Failed to update in db : %s",e)
 
                     alert_id = alert_id + 1
