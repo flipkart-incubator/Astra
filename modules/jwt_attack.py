@@ -92,7 +92,7 @@ def jwt_brute(url, headers, body, jwt_token, jwt_alg, scanid=None):
             try:
                 jwt.decode(jwt_token, sign_key.rstrip(), algorithms=[jwt_alg])
                 print "%s[+]Weak JWT sign key found:{0}%s".format(sign_key.rstrip())% (api_logger.R, api_logger.W)
-                alert = "Weak JWT sing key-"+sign_key.rstrip()
+                alert = "Weak JWT sign key-"+sign_key.rstrip()
                 attack_result = {
                              "id" : 9,
                              "scanid":scanid,
