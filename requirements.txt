@@ -2,3 +2,4 @@ requests
 logger
 pymongo
 ConfigParser
+pyjwt
