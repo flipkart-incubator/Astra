@@ -92,12 +92,12 @@ def jwt_brute(url, headers, body, jwt_token, jwt_alg, scanid=None):
             try:
                 jwt.decode(jwt_token, sign_key.rstrip(), algorithms=[jwt_alg])
                 print "%s[+]Weak JWT sign key found:{0}%s".format(sign_key.rstrip())% (api_logger.R, api_logger.W)
-                alert = "Weak JWT sign key-"+sign_key.rstrip()
+                alert = "Weak JWT sign key:"+sign_key.rstrip()
                 attack_result = {
                              "id" : 9,
                              "scanid":scanid,
                              "url" : url,
-                             "alert": "JWT weak secret key",
+                             "alert": alert,
                              "impact": "High",
                              "req_headers": headers,
                              "req_body" : body,
@@ -121,7 +121,7 @@ def jwt_check(url,method,headers,body,scanid):
     if jwt_decoded_list:
         alg = ast.literal_eval(jwt_decoded_list[0])['alg']
         jwt_data = ast.literal_eval(jwt_decoded_list[1])
-        if alg == 'HS256' or alg == 'HS256' or alg == '384':
+        if alg == 'HS256' or alg == 'HS512' or alg == 'HS384':
             result = jwt_none(url,method, headers, body, jwt_loc, jwt_key, jwt_token, jwt_data)
             if result is True:
                 pass
