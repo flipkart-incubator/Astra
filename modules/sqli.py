@@ -12,12 +12,12 @@ api_logger = logger()
 
 # Sqlmap api URL list 
 base_url = "http://127.0.0.1:8775"
-new_task_url = base_url+"/task/new"
 api_header = {'Content-Type' : 'application/json'}
 
 def get_new_task_id():
     # Create a new task for scan
-    new_task = requests.get(new_task_url)
+    new_task_url = base_url+"/task/new"
+    new_task = req.api_request(new_task_url,"GET", api_header)
     if new_task.status_code == 200:
         return json.loads(new_task.text)['taskid']
 
