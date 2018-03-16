@@ -9,8 +9,7 @@ from utils.db import Database_update
 
 dbupdate = Database_update()
 api_logger = logger()
-
-# Sqlmap api URL list 
+ 
 base_url = "http://127.0.0.1:8775"
 api_header = {'Content-Type' : 'application/json'}
 
