@@ -19,6 +19,8 @@ from modules.cors import cors_main
 from modules.auth import auth_check
 from modules.rate_limit import rate_limit
 from modules.csrf import csrf_check
+from modules.jwt_attack import jwt_check
+from modules.sqli import sqli_check
 from core.zap_config import zap_start
 from multiprocessing import Process
 
@@ -91,6 +93,10 @@ def modules_scan(url,method,headers,body,scanid=None):
         rate_limit(url,method,headers,body,scanid)
     if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
         csrf_check(url,method,headers,body,scanid)
+    if attack['jwt'] == 'Y' or attack['jwt'] == 'y':
+        jwt_check(url,method,headers,body,scanid)
+    if attack['sqli'] == 'Y' or attack['sqli'] == 'y':
+        sqli_check(url,method,headers,body,scanid)
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
@@ -238,7 +244,6 @@ def main():
         scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require) 
     else:
         scan_single_api(url, method, headers, body, "False")
-
 
 
 if __name__ == '__main__':
