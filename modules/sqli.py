@@ -3,6 +3,9 @@ import requests
 import json
 import sendrequest as req
 import utils.logs as logs
+import subprocess
+import sys
+import os
 
 from utils.logger import logger
 from utils.db import Database_update
@@ -62,6 +65,25 @@ def scan_status(task_id):
             # Wait for 10 second and check the status again
             time.sleep(10)
 
+def sqlmap_start():
+    if os.getcwd().split('/')[-1] == 'API':
+        path = '../tools/sqlmap/sqlmapapi.py'
+    else:
+        path = 'tools/sqlmap/sqlmapapi.py'
+
+    try:
+        process = subprocess.Popen(['python',path,'-s'],stdout=subprocess.PIPE)
+    except:
+        logs.logging.info("Sqlmap subprocess error")
+        return 
+
+    time.sleep(5)
+    while True:
+        line = process.stdout.readline()
+        if "Admin" in line:
+            logs.logging.info("sqlmap is started")
+            return True
+
 def sqlmap_status():
     # Check if sqlmap is running or not.
     try:
@@ -70,7 +92,8 @@ def sqlmap_status():
             logs.logging.info("Sqlmap is running")
             return True
     except:
-        return False
+        result = sqlmap_start()
+        return result
 
 def sqli_check(url,method,headers,body,scanid=None):
     # Main function for sql injection
