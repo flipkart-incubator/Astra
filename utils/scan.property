@@ -2,7 +2,15 @@
 attack = {
 		  "cors" : "y",
 		  "Broken auth" : "y",
-	      "Rate limit" : "n",
-	      "csrf" : 'n',
-	      "zap" : 'y'
+	      "Rate limit" : "y",
+	      "csrf" : 'y',
+	      "zap" : 'y',
+          "jwt" : 'y',
+          "sqli" : 'y'
 		 }
+
+
+[modules]
+csrftoken-names = csrf,csrftoken,xsrftoken,token
+jwt_brute = Y
+
