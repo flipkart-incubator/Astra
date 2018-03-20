@@ -105,9 +105,15 @@ def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type,scanid
 			return
 
 
+def fetch_csrf_names():
+	# Returns the list of common CSRF token param names from config file.
+	csrf_names = get_value('scan.property','modules','csrftoken-names')
+	return csrf_names.split(',')
+
 def verify_body(body):
 	# Return the param name of CSRF
-	common_names = ['csrf','csrftoken','xsrftoken','token']
+	common_names = fetch_csrf_names()
+	print common_names
 	for csrf_name in common_names:
 		for key,value in body.items():
 			if csrf_name == key:
