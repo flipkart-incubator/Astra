@@ -1,0 +1,21 @@
+[Configuration]
+zap_ip = 127.0.0.1
+zap_port = 8123
+zap_apikey = test
+
+[login]
+auth_type = cookie
+loginresult = Y
+loginurl = 
+loginmethod = 
+loginheaders = 
+loginbody = 
+auth = 
+
+[logout]
+logoutheaders = 
+logoutresult = 
+logouturl = 
+logoutmethod = 
+logoutbody = 
+
