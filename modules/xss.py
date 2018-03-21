@@ -29,7 +29,8 @@ def fetch_xss_payload():
 def check_xss_impact(res_headers):
     # Return the impact of XSS based on content-type header
     if res_headers['Content-Type']:
-        if 'application/json' or 'text/plain'in xss_request['Content-Type']:
+        if 'application/json' or 'text/plain' in xss_request['Content-Type']:
+            # Possible XSS 
             impact = "Low"
         else:
             impact = "High"
@@ -73,19 +74,25 @@ def xss_get_method(url,method,headers,body,scanid=None):
                         parsed_url = url
 
                     xss_request_url = req.api_request(parsed_url+'/'+payload,"GET",headers)
+                    if xss_request_url.text.find(payload) != -1:
+                        impact = check_xss_impact()
+                        xss_result = True
+
                     xss_request_uri = req.api_request(parsed_url+'/?test='+payload,"GET",headers)             
-                    logs.logging.info("%s is vulnerable to XSS",url)
-                    if xss_request_url.text.find(payload) != -1 or xss_request_uri.text.find(payload) != -1:
-                        impact = check_xss_impact(xss_request_url.headers)
+                    if xss_request_url.text.find(payload) != -1:
+                        impact = check_xss_impact()
+                        xss_result = True
+
+                    if xss_result is True:
                         print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
                         attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request.headers ,"res_body": xss_request.text}
                         dbupdate.insert_record(attack_result)
-           
+               
             except:
                 logs.logging.info("XSS: No GET param found!")
 
 def xss_check(url,method,headers,body,scanid):
     # Main function for XSS attack
-    xss_payloads = fetch_xss_payload()
-    xss_get_method(url,method,headers,body,scanid)
-    xss_http_headers(url,method,headers,body,scanid)
+    if method == 'GET' or method == 'DEL':
+        xss_get_method(url,method,headers,body,scanid)
+        #xss_http_headers(url,method,headers,body,scanid)
