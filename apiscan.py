@@ -21,6 +21,7 @@ from modules.rate_limit import rate_limit
 from modules.csrf import csrf_check
 from modules.jwt_attack import jwt_check
 from modules.sqli import sqli_check
+from modules.xss import xss_check
 from core.zap_config import zap_start
 from multiprocessing import Process
 
@@ -97,6 +98,8 @@ def modules_scan(url,method,headers,body,scanid=None):
         jwt_check(url,method,headers,body,scanid)
     if attack['sqli'] == 'Y' or attack['sqli'] == 'y':
         sqli_check(url,method,headers,body,scanid)
+    if attack['xss'] == 'Y' or attack['xss'] == 'y':
+        xss_check(url,method,headers,body,scanid)
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
