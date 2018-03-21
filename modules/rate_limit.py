@@ -95,26 +95,20 @@ def brute_force(url,method,headers,body,attack_params,scanid):
 				}
 
 			return attack_result
-<<<<<<< HEAD
 
 def fetch_ratelimit_names():
 	# Returns the list of common param names from config file.
 	ratelimit_params = get_value('scan.property','modules','csrftoken-names')
 	return ratelimit_params.split(',')
-=======
-			
->>>>>>> 5f1ab07b2de44e8b2abebadd69f2c2556732bec7
 
 def rate_limit(url,method,headers,body,scanid=None):
 	try:
 		if method == "POST" or method == "PUT":
 			if body:
 				# Before we brute force, we need to find suspicious param to attack. 
-<<<<<<< HEAD
+
 				param_names = fetch_ratelimit_names()
-=======
 				param_names = ['pin','password','cvv','pass','otp']
->>>>>>> 5f1ab07b2de44e8b2abebadd69f2c2556732bec7
 				attack_params = []
 				for name in param_names:
 					for key,value in body.items():
