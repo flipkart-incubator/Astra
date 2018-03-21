@@ -90,25 +90,20 @@ def session_fixation(url,method,headers,body,scanid):
 
 					dbupdate.insert_record(attack_result)
 
-<<<<<<< HEAD
 def fetch_auth_names(name):
 	# Returns the list of common auth headers & auth failed messages from config file.
 	csrf_names = get_value('scan.property','modules', name)
 	return csrf_names.split(',')
 
-=======
->>>>>>> 5f1ab07b2de44e8b2abebadd69f2c2556732bec7
+
 def auth_check(url,method,headers,body,scanid=None):
 	# This function removes auth header and check if server is accepting request without it
 	try:
 		attack_result = {}
-<<<<<<< HEAD
 		auth_headers = fetch_auth_names("auth-headers")
 		auth_fail = fetch_auth_names("auth-failed-messages")
-=======
 		auth_headers = ['Cookie', 'Authorization', 'Authentication','X-API-Key']
 		auth_fail = ['Unauthorized','Denied', 'not logged in','not unauthorized']
->>>>>>> 5f1ab07b2de44e8b2abebadd69f2c2556732bec7
 		session_headers = headers
 		for auth_header in auth_headers:
 			for key,value in headers.items():
