@@ -1,3 +1,9 @@
 import logging
+import os
 
-logging.basicConfig(filename="logs.log", level=logging.INFO)
+if os.getcwd().split('/')[-1] == 'API':
+        path = '../logs/scan.log'
+else:
+        path = 'logs/scan.log'
+
+logging.basicConfig(filename=path, level=logging.INFO)
