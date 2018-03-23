@@ -10,19 +10,19 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - CSRF (including Blind CSRF)
 - Rate limit
 - CORS misonfiguration (including CORS bypass techniques)
+- JWT attack
 
 ## Coming soon
 - XXE 
-- JWT attack 
 - CSP misconfiguration
 
 
 ## Installation
 
 ```
-git clone https://github.com/flipkart-incubator/apiscan
+git clone https://github.com/flipkart-incubator/Astra
 
-cd apiscan
+cd Astra
 
 python setup.py
 
@@ -35,6 +35,7 @@ python setup.py
 - logger
 - pymongo
 - ConfigParser
+- pyjwt
 ```
 
 ## Usage 
