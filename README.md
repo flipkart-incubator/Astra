@@ -81,8 +81,15 @@ optional arguments:
 
 ![alt text](https://raw.githubusercontent.com/flipkart-incubator/apiscan/7539de1beefb7941d4224bf9b15c584592a0cd81/utils/report.png)
 
-## Lead Developers
+## Lead Developer
 - Sagar Popat (@popat_sagar) 
 
-## Project Contributors
+## Credits
 - Harsh Grover
+- Prajal Kulkarani
+- Ankur Bhargava
+- Mohan Kallepalli
+- Pardeep battu
+- Anirudh Anand
+- Divya Salu John
+

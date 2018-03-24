@@ -240,6 +240,9 @@ def main():
     else:
         login_require = True
 
+    if body:
+        body = ast.literal_eval(body)
+
     # Configuring ZAP before starting a scan
     get_auth = get_value('config.property','login','auth_type')
 
