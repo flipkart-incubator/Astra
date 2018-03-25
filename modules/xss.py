@@ -62,7 +62,7 @@ def xss_post_method(url,method,headers,body,scanid=None):
             xss_post_request = req.api_request(url, "POST", headers, temp_body)
             decoded_payload = xss_payload_decode(payload)
             if xss_post_request.text.find(decoded_payload) != -1:
-                impact = check_xss_impact(xss_post.body)
+                impact = check_xss_impact(xss_post_request.headers)
                 if db_update is not True:
                     attack_result = { "id" : 11, "scanid" : scanid, "url" : xss_url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request.headers ,"res_body": xss_request.text}
                     dbupdate.insert_record(attack_result)
