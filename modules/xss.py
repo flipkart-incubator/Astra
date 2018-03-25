@@ -101,7 +101,7 @@ def xss_http_headers(url,method,headers,body,scanid=None):
 
     # Test for Referer based XSS 
     for payload in xss_payloads:
-        referer_header_value = 'http://attackersite.com?test='+payload
+        referer_header_value = 'https://github.com?test='+payload
         referer_header = {"Referer" : referer_header_value}
         temp_headers.update(referer_header)
         ref_header_xss = req.api_request(url, "GET", temp_headers)
