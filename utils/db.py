@@ -18,3 +18,9 @@ class Database_update:
 			self.db.vulnerabilities.insert(data)
 		except Exception as e:
 			raise e
+
+	def update_record(self,find,update):
+		try:
+			self.db.scanids.update(find,update)
+		except Exception as e:
+			raise e

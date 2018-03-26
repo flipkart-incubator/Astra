@@ -10,7 +10,7 @@ from flask import Flask,render_template
 from flask import Response,make_response
 from flask import request
 from flask import Flask
-from apiscan import scan_single_api
+from astra import scan_single_api
 from flask import jsonify
 from pymongo import MongoClient
 from utils.vulnerabilities import alerts
