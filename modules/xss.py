@@ -90,14 +90,19 @@ def xss_http_headers(url,method,headers,body,scanid=None):
         host_header = {"Host" : parse_domain + '/' + payload}
         headers.update(host_header)
         host_header_xss = req.api_request(url, "GET", headers)
-        decoded_payload = xss_payload_decode(payload)
-        if host_header_xss.text.find(decoded_payload) != -1:
-            impact = "Low"
-            logs.logging.info("%s is vulnerable to XSS",url)
-            print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
-            attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": host_header_xss.headers ,"res_body": host_header_xss.text}
-            dbupdate.insert_record(attack_result)
-            break
+        try:
+            decoded_payload = xss_payload_decode(payload)
+            if host_header_xss.text.find(decoded_payload) != -1:
+                impact = "Low"
+                logs.logging.info("%s is vulnerable to XSS",url)
+                print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
+                attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": host_header_xss.headers ,"res_body": host_header_xss.text}
+                dbupdate.insert_record(attack_result)
+                break
+        except:
+            logs.logging.info("Failed to test XSS via Host header:%s",url)
+            return
+
 
     # Test for Referer based XSS 
     for payload in xss_payloads:
@@ -119,6 +124,7 @@ def xss_get_url(url,method,headers,body,scanid=None):
     # Check for URL based XSS. 
     # Ex: http://localhost/<payload>, http://localhost//?randomparam=<payload>
     result = ''
+    parsed_url = ''
     xss_payloads = fetch_xss_payload()
     uri_check_list = ['?', '&', '=', '%3F', '%26', '%3D']
     for uri_list in uri_check_list:
@@ -131,9 +137,9 @@ def xss_get_url(url,method,headers,body,scanid=None):
         parsed_url = url
 
     for payload in xss_payloads:
+        decoded_payload = xss_payload_decode(payload)
         xss_request_url = req.api_request(parsed_url+'/'+payload,"GET",headers)
         if result is not True:
-            decoded_payload = xss_payload_decode(payload)
             if xss_request_url.text.find(decoded_payload) != -1:
                 impact = check_xss_impact(xss_request_url.headers)
                 attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request_url.headers ,"res_body": xss_request_url.text}
@@ -187,7 +193,10 @@ def xss_get_uri(url,method,headers,body,scanid=None):
                                     vul_param += ','+key                  
         
             except:
-                logs.logging.info("XSS: No GET param found!")
+                pass
+
+    else:
+        logs.logging.info("XSS: No GET param found!")
 
         if vul_param:
             # Update all vulnerable params to db.
