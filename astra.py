@@ -77,9 +77,7 @@ def read_scan_policy():
 def update_scan_status(scanid, module_name=None, count=None):
     #Update scanning status and total scan of module into DB.
     time.sleep(3)
-    print count,scanid
     if count is not None:
-        print "inside"
         dbupdate.update_scan_record({"scanid": scanid}, {"$set" : {"total_scan" : count}})
     else:
         dbupdate.update_scan_record({"scanid": scanid}, {"$set" : {module_name : "Y"}})
