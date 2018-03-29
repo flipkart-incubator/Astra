@@ -59,6 +59,20 @@ def start_scan():
 
 
 #############################  Fetch ScanID API #########################################
+def check_scan_status(data):
+    # Return the Scan status
+    total_scan = data['total_scan']
+    count = 0
+    for key,value in data.items():
+        print key,value
+        if value == 'Y' or value == 'y':
+            count += 1
+
+    if total_scan == count:
+        return "Completed"
+    else:
+        return "In progress"
+
 @app.route('/scan/scanids/', methods=['GET'])
 def fetch_scanids():
     scanids = []
@@ -68,9 +82,10 @@ def fetch_scanids():
             data.pop('_id')
             try:
                 data =  ast.literal_eval(json.dumps(data))
+                scan_status = check_scan_status(data)
                 if data['scanid']:
                     if data['scanid'] not in scanids:
-                        scanids.append({"scanid" : data['scanid'], "name" : data['name'], "url" : data['url']}) 
+                        scanids.append({"scanid" : data['scanid'], "name" : data['name'], "url" : data['url'], "scan_status" : scan_status}) 
             except:
                 pass
 
@@ -95,7 +110,6 @@ def fetch_records(scanid):
             except:
                 print "Falied to parse"
 
-            print "Data",data
             try:
                 if data['id'] == "NA":
                     all_data = {'url' : data['url'], 'impact' : data['impact'], 'name' : data['name'], 'req_headers' : data['req_headers'], 'req_body' : data['req_body'], 'res_headers' : data['res_headers'], 'res_body' : data['res_body'], 'Description' : data['Description'], 'remediation' : data['remediation']}
@@ -122,8 +136,7 @@ def fetch_records(scanid):
                 pass
 
         print vul_list
-        return vul_list
-        
+        return vul_list        
 
 @app.route('/alerts/<scanid>', methods=['GET'])
 def return_alerts(scanid):
@@ -141,3 +154,4 @@ def view_dashboard(page):
     return render_template('{}'.format(page))
 
 app.run(host='0.0.0.0', port= 8094,debug=True)
+
