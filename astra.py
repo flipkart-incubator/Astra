@@ -24,7 +24,9 @@ from modules.sqli import sqli_check
 from modules.xss import xss_check
 from core.zap_config import zap_start
 from multiprocessing import Process
+from utils.db import Database_update
 
+dbupdate = Database_update()
 
 def parse_collection(collection_name,collection_type):
     if collection_type == 'Postman':
@@ -72,6 +74,15 @@ def read_scan_policy():
 
     return attack
 
+def update_scan_status(scanid, module_name=None, count=None):
+    #Update scanning status and total scan of module into DB.
+    time.sleep(3)
+    if count is not None:
+        dbupdate.update_scan_record({"scanid": scanid}, {"$set" : {"total_scan" : count}})
+    else:
+        dbupdate.update_scan_record({"scanid": scanid}, {"$set" : {module_name : "Y"}})
+
+
 def modules_scan(url,method,headers,body,scanid=None):
     '''Scanning API using different engines '''
     attack = read_scan_policy()
@@ -79,27 +90,44 @@ def modules_scan(url,method,headers,body,scanid=None):
         print "Failed to start scan."
         sys.exit(1)
 
+    if scanid is not None:
+        count = 0
+        for key,value in attack.items():
+            if value == 'Y' or value =='y':
+                count += 1
+        print "Va",count,scanid
+        update_scan_status(scanid,"",count)
+
+
     if attack['zap'] == "Y" or attack['zap'] == "y":
         api_scan = zap_scan()
         status = zap_start()
         if status is True:
             api_scan.start_scan(url,method,headers,body,scanid)
     
-    # Custom modules scan      
+    # Custom modules scan   
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
         cors_main(url,method,headers,body,scanid)
+        update_scan_status(scanid, "cors")
     if attack['Broken auth'] == 'Y' or attack['Broken auth'] == 'y':
         auth_check(url,method,headers,body,scanid)
+        update_scan_status(scanid, "auth")
     if attack['Rate limit'] == 'Y' or attack['Rate limit'] == 'y':
         rate_limit(url,method,headers,body,scanid)
+        update_scan_status(scanid, "Rate limit")
     if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
         csrf_check(url,method,headers,body,scanid)
+        update_scan_status(scanid, "csrf")
     if attack['jwt'] == 'Y' or attack['jwt'] == 'y':
         jwt_check(url,method,headers,body,scanid)
+        update_scan_status(scanid, "jwt")
     if attack['sqli'] == 'Y' or attack['sqli'] == 'y':
         sqli_check(url,method,headers,body,scanid)
+        update_scan_status(scanid, "sqli")
     if attack['xss'] == 'Y' or attack['xss'] == 'y':
         xss_check(url,method,headers,body,scanid)
+        update_scan_status(scanid, "xss")
+
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''

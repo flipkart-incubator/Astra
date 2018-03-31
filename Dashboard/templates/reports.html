@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Api-Scan</title>
+		<title>Astra</title>
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
@@ -126,10 +126,10 @@
                                 <table id="table">
                                 <thead>
                                     <tr>
-                                        <th data-field="no">No</th>
+                                        <th data-field="id">No</th>
                                         <th data-field="name">Product Name</th>
                                         <th data-field="scanid">url</th>
-                                        <th data-field="price">Status</th>
+                                        <th data-field="scan_status">Status</th>
 
                                     </tr>
                                 </thead>
@@ -260,7 +260,7 @@
 							if(typeof(req_body) == "string")
 							{
 
-								document.getElementById('req_body_'+i.toString()).innerHTML += req_body;
+								document.getElementById('req_body_'+i.toString()).innerText += req_body;
 							}
 							else if(typeof(req_body) == "object")
 							{
