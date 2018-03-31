@@ -82,8 +82,9 @@ optional arguments:
                         login data of API
 
 ```
-
-![alt text](https://raw.githubusercontent.com/flipkart-incubator/apiscan/7539de1beefb7941d4224bf9b15c584592a0cd81/utils/report.png)
+## Screenshots 
+## New scan
+![alt text](https://raw.githubusercontent.com/flipkart-incubator/Astra/dev/Dashboard/static/new%20scan.png)
 
 ## Lead Developer
 - Sagar Popat (@popat_sagar) 
