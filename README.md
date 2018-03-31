@@ -83,7 +83,7 @@ optional arguments:
 
 ```
 ## Screenshots 
-## New scan
+# New scan
 ![alt text](https://raw.githubusercontent.com/flipkart-incubator/Astra/dev/Dashboard/static/new%20scan.png)
 
 ## Lead Developer
