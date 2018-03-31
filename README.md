@@ -22,11 +22,11 @@ REST API penetration testing is complex due to continuous changes in existing AP
 ## Installation
 
 ```
-git clone https://github.com/flipkart-incubator/Astra
+$ git clone https://github.com/flipkart-incubator/Astra
 
-cd Astra
+$ cd Astra
 
-python setup.py
+$ python setup.py
 
 ```
 

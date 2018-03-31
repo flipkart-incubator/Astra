@@ -19,6 +19,17 @@ function recent_scans() {
                 }
 
                 // Update dictionary
+                console.log(resp[key]["scan_status"]);
+                if(resp[key]["scan_status"] == "Completed")
+                {
+                  resp[key].scan_status = '<span class="label label-success">Completed</span>';
+                }
+                else
+                {
+
+                  resp[key].scan_status = '<span class="label label-warning">In Progress</span>';
+
+                }
                 resp[key].scanid = scan_data;
                 resp[key].id = parseInt(key) + 1;
                 console.log(resp);
