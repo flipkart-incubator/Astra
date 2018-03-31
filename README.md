@@ -89,6 +89,10 @@ optional arguments:
 ### Scan Reports
 ![alt text](https://raw.githubusercontent.com/flipkart-incubator/Astra/dev/Dashboard/static/Reports.png)
 
+![alt text](https://raw.githubusercontent.com/flipkart-incubator/Astra/dev/Dashboard/static/Reports.png)
+
+
+
 ## Lead Developer
 - Sagar Popat (@popat_sagar) 
 
