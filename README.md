@@ -41,7 +41,7 @@ $ python setup.py
 - pyjwt
 ```
 
-## Usage 
+## Usage: CLI
 
 ```
 $ python astra.py --help
@@ -80,6 +80,13 @@ optional arguments:
                         {"accesstoken" : "axzvbqdadf"}
   -d LOGINDATA, --logindata LOGINDATA
                         login data of API
+
+```
+## Usage: Web interface
+Run the api.py and access the web interface at http://127.0.0.1:8094
+```
+$ cd API
+$ python api.py
 
 ```
 ## Screenshots 
