@@ -22,6 +22,7 @@ from modules.csrf import csrf_check
 from modules.jwt_attack import jwt_check
 from modules.sqli import sqli_check
 from modules.xss import xss_check
+from modules.redirect import open_redirect_check
 from core.zap_config import zap_start
 from multiprocessing import Process
 from utils.db import Database_update
@@ -127,6 +128,9 @@ def modules_scan(url,method,headers,body,scanid=None):
     if attack['xss'] == 'Y' or attack['xss'] == 'y':
         xss_check(url,method,headers,body,scanid)
         update_scan_status(scanid, "xss")
+    if attack['open-redirection'] == 'Y' or attack['open-redirection'] == 'y':
+        open_redirect_check(url,method,headers,body,scanid)
+        update_scan_status(scanid, "open-redirection")
 
 
 def validate_data(url,method):
@@ -183,7 +187,7 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
                 body = json.loads(base64.b64decode(data['body']))
 
             
-            modules_scan(url,method,headers,body,attack)        
+            modules_scan(url,method,headers,body,scanid)        
 
     else:
         print "%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W)
