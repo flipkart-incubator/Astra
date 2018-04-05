@@ -30,7 +30,7 @@ $ git clone https://github.com/flipkart-incubator/Astra
 
 $ cd Astra
 
-$ python setup.py
+$ sudo pip install -r requirements.txt
 
 ```
 
