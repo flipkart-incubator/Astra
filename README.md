@@ -19,6 +19,9 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - XXE 
 - CSP misconfiguration
 
+## Requirement
+- Python 2.7
+- mongoDB
 
 ## Installation
 
