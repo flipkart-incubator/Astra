@@ -42,6 +42,7 @@ $ python setup.py
 - pymongo
 - ConfigParser
 - pyjwt
+- flask
 ```
 
 ## Usage: CLI
