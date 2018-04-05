@@ -3,3 +3,4 @@ logger
 pymongo
 ConfigParser
 pyjwt
+flask
