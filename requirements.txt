@@ -4,3 +4,4 @@ pymongo
 ConfigParser
 pyjwt
 flask
+sqlmap

@@ -43,6 +43,7 @@ $ sudo pip install -r requirements.txt
 - ConfigParser
 - pyjwt
 - flask
+- sqlmap
 ```
 
 ## Usage: CLI
