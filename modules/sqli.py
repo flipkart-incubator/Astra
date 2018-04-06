@@ -41,6 +41,14 @@ def start_scan(task_id):
     scan_start_resp = req.api_request(scan_start_url, "POST", api_header, data)
     if scan_start_resp.status_code == 200:
         return json.loads(scan_start_resp.text)['success']
+        time.sleep(10)
+
+def delete_task(task_id):
+    # Delete the task once the scan is completed
+    delete_task_url = base_url+"/task/"+task_id+"/delete"
+    delete_task_req = req.api_request(delete_task_url, "GET", api_header)
+    if delete_task_req.status_code == 200:
+        return json.loads(delete_task_req.text)['success']
 
 def show_scan_data(task_id):
     scan_data_url = base_url+"/scan/"+task_id+"/data"
@@ -52,6 +60,7 @@ def show_scan_data(task_id):
         return True
     else:
         logs.logging.info("API is not vulnerable to sql injection")
+        return False
 
 def scan_status(task_id):
     # This function deals checking scan status and also check for vulnerability.
@@ -66,23 +75,25 @@ def scan_status(task_id):
             time.sleep(10)
 
 def sqlmap_start():
-    if os.getcwd().split('/')[-1] == 'API':
-        path = '../tools/sqlmap/sqlmapapi.py'
-    else:
-        path = 'tools/sqlmap/sqlmapapi.py'
-
     try:
-        process = subprocess.Popen(['python',path,'-s'],stdout=subprocess.PIPE)
+        p = subprocess.Popen(["pip", "show", "sqlmap"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if out:
+            location = out[out.find('Location:')+10:]
+            sqlmap_path = location[:location.find('\n')]+'/sqlmap/sqlmapapi.py'
+            if sqlmap_path:
+                # Sqlmap is found
+                start_sqlmap = subprocess.Popen(['python',sqlmap_path,'-s'],stdout=subprocess.PIPE)
+                time.sleep(5)
+                while True:
+                    line = start_sqlmap.stdout.readline()
+                    if "Admin" in line:
+                        logs.logging.info("sqlmap is started")
+                        return True
+                        
     except:
-        logs.logging.info("Sqlmap subprocess error")
-        return 
-
-    time.sleep(5)
-    while True:
-        line = process.stdout.readline()
-        if "Admin" in line:
-            logs.logging.info("sqlmap is started")
-            return True
+        logs.logging.info("Failed to start sqlmap")
+        return
 
 def sqlmap_status():
     # Check if sqlmap is running or not.
@@ -117,3 +128,8 @@ def sqli_check(url,method,headers,body,scanid=None):
 
         else:
             logs.logging.info("Sqli - Failed to create a task.") 
+
+        task_result = delete_task(taskid)
+        if task_result is True:
+            # Task deleted successfully
+            logs.logging.info("SQLi - Task deleted: %s",taskid)
