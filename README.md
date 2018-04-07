@@ -19,6 +19,9 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - XXE 
 - CSP misconfiguration
 
+## Requirement
+- Python 2.7
+- mongoDB
 
 ## Installation
 
@@ -27,7 +30,7 @@ $ git clone https://github.com/flipkart-incubator/Astra
 
 $ cd Astra
 
-$ python setup.py
+$ sudo pip install -r requirements.txt
 
 ```
 
@@ -39,6 +42,8 @@ $ python setup.py
 - pymongo
 - ConfigParser
 - pyjwt
+- flask
+- sqlmap
 ```
 
 ## Usage: CLI
