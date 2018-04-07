@@ -1,19 +1,18 @@
 [scan-policy]
 attack = {
-		  "cors" : "n",
-		  "Broken auth" : "n",
-	      "Rate limit" : "n",
-	      "csrf" : 'n',
+		  "cors" : "y",
+		  "Broken auth" : "y",
+	      "Rate limit" : "y",
+	      "csrf" : 'y',
 	      "zap" : 'n',
-          "jwt" : 'n',
-          "sqli" : 'n',
-          "xss" : 'n',
+          "jwt" : 'y',
+          "sqli" : 'y',
+          "xss" : 'y',
           "open-redirection" : "y"
 		 }
 
 
 [modules]
 csrftoken-names = csrf,csrftoken,xsrftoken,token
-open-redirection-names = url,redirect,login,logout,uri,redirection,next,returnto, return_to, origin,callback,authorize_callback, target
-jwt_brute = Y
-
+open-redirection-names = url,redirect,login,logout,uri,redirection,next,returnto, return_to, origin,callback,authorize_callback, target,link
+jwt_brute = N

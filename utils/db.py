@@ -21,6 +21,12 @@ class Database_update:
 
 	def update_record(self,find,update):
 		try:
+			self.db.vulnerabilities.update(find,update)
+		except Exception as e:
+			raise e
+
+	def update_scan_record(self,find,update):
+		try:
 			self.db.scanids.update(find,update)
 		except Exception as e:
 			raise e
