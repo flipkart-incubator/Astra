@@ -32,8 +32,6 @@ dbupdate = Database_update()
 def parse_collection(collection_name,collection_type):
     if collection_type == 'Postman':
         parse_data.postman_parser(collection_name)
-    elif collection_type == 'Swagger':
-        print collection_type
     else:
         print "[-]Failed to Parse collection"
         sys.exit(1)
@@ -96,7 +94,6 @@ def modules_scan(url,method,headers,body,scanid=None):
         for key,value in attack.items():
             if value == 'Y' or value =='y':
                 count += 1
-        print "Va",count,scanid
         update_scan_status(scanid,"",count)
 
 
@@ -106,7 +103,7 @@ def modules_scan(url,method,headers,body,scanid=None):
         if status is True:
             api_scan.start_scan(url,method,headers,body,scanid)
     
-    # Custom modules scan   
+    # Custom modules scan
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
         cors_main(url,method,headers,body,scanid)
         update_scan_status(scanid, "cors")
@@ -130,7 +127,7 @@ def modules_scan(url,method,headers,body,scanid=None):
         update_scan_status(scanid, "xss")
     if attack['open-redirection'] == 'Y' or attack['open-redirection'] == 'y':
         open_redirect_check(url,method,headers,body,scanid)
-        update_scan_status(scanid, "open-redirection")
+        update_scan_status(scanid, "open-redirection") 
 
 
 def validate_data(url,method):
@@ -194,10 +191,10 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
     #generate_report()
 
 def get_arg(args=None):
-        parser = argparse.ArgumentParser(description='REST API Security testing Framework')
+        parser = argparse.ArgumentParser(description='Astra - REST API Security testing Framework')
         parser.add_argument('-c', '--collection_type',
                             help='Type of API collection',
-                            default='Postman',choices=('Postman', 'Swagger'))
+                            default='Postman')
         parser.add_argument('-n', '--collection_name',
                             help='Type of API collection')
         parser.add_argument('-u', '--url',
@@ -206,7 +203,7 @@ def get_arg(args=None):
                             help='Custom headers.Example: {"token" : "123"}')
         parser.add_argument('-method', '--method',
                             help='HTTP request method',
-                            default='GET',choices=('GET', 'POST'))
+                            default='GET',choices=('GET', 'POST', 'PUT','DELETE'))
         parser.add_argument('-b', '--body',
                             help='Request body of API')
         parser.add_argument('-l', '--loginurl',

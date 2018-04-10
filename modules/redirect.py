@@ -95,7 +95,7 @@ def fuzz_url(url,method,headers,body,scanid):
             target_url = target_domain + payload.replace("{target}", redirection_url)
         except:
             target_url = target_domain + payload
-        print target_url
+
         fuzz_req = req.api_request(target_url, "GET", headers)
         if str(fuzz_req.status_code)[0] == '3':
             if fuzz_req.headers['Location'].startswith(redirection_url) is True:

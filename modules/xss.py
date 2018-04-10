@@ -88,8 +88,8 @@ def xss_http_headers(url,method,headers,body,scanid=None):
     for payload in xss_payloads:
         parse_domain = urlparse.urlparse(url).netloc
         host_header = {"Host" : parse_domain + '/' + payload}
-        headers.update(host_header)
-        host_header_xss = req.api_request(url, "GET", headers)
+        temp_headers.update(host_header)
+        host_header_xss = req.api_request(url, "GET", temp_headers)
         try:
             decoded_payload = xss_payload_decode(payload)
             if host_header_xss.text.find(decoded_payload) != -1:
@@ -197,7 +197,6 @@ def xss_get_uri(url,method,headers,body,scanid=None):
 
     else:
         logs.logging.info("XSS: No GET param found!")
-
         if vul_param:
             # Update all vulnerable params to db.
             logs.logging.info("%s Vulnerable Params:",vul_param)

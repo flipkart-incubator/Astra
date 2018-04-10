@@ -64,7 +64,6 @@ def check_scan_status(data):
     total_scan = data['total_scan']
     count = 0
     for key,value in data.items():
-        print key,value
         if value == 'Y' or value == 'y':
             count += 1
 
@@ -135,12 +134,10 @@ def fetch_records(scanid):
             except:
                 pass
 
-        print vul_list
         return vul_list        
 
 @app.route('/alerts/<scanid>', methods=['GET'])
 def return_alerts(scanid):
-    print "ScanID is ",scanid
     result = fetch_records(scanid)
     resp = jsonify(result)
     resp.headers["Access-Control-Allow-Origin"] = "*"
