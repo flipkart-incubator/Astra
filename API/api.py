@@ -24,7 +24,7 @@ try:
     client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=maxSevSelDelay)
     client.server_info()
 except ServerSelectionTimeoutError as err:
-    exit("DB not connected Please Install Mongo")
+    exit("Failed to connect to MongoDB.")
 
 global db
 db = client.apiscan
