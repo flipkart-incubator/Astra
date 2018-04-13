@@ -36,7 +36,7 @@ def start_scan():
     content = request.get_json()
     try:
         name = content['appname']
-        url = content['url']
+        url = str(content['url'])
         headers = content['headers']
         body = content['body']
         method = content['method']

@@ -102,7 +102,6 @@ def modules_scan(url,method,headers,body,scanid=None):
         status = zap_start()
         if status is True:
             api_scan.start_scan(url,method,headers,body,scanid)
-    
     # Custom modules scan
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
         cors_main(url,method,headers,body,scanid)
@@ -282,7 +281,6 @@ def main():
 
 
 if __name__ == '__main__':
-    
     api_login = APILogin()
     parse_data = PostmanParser()
     api_logger = logger()
