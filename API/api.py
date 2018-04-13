@@ -6,19 +6,26 @@ import time
 
 sys.path.append('../')
 
-from flask import Flask,render_template
-from flask import Response,make_response
+from flask import Flask, render_template
+from flask import Response, make_response
 from flask import request
 from flask import Flask
 from astra import scan_single_api
 from flask import jsonify
 from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError
 from utils.vulnerabilities import alerts
- 
-app = Flask(__name__,template_folder='../Dashboard/templates',static_folder='../Dashboard/static')
- 
-# Mongo DB connection 
-client = MongoClient('localhost',27017)
+
+app = Flask(__name__, template_folder='../Dashboard/templates', static_folder='../Dashboard/static')
+
+# Mongo DB connection
+maxSevSelDelay = 1
+try:
+    client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=maxSevSelDelay)
+    client.server_info()
+except ServerSelectionTimeoutError as err:
+    exit("DB not connected Please Install Mongo")
+
 global db
 db = client.apiscan
 
