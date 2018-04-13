@@ -12,8 +12,8 @@ dbupdate = Database_update()
 api_logger = logger()
 
 redirection_url = "www.google.com"
-
-def fetch_open_redirect_payload():
+        
+def fetch_open_redirect_payload():      
     # Returns open redirect payloads in list type
     payload_list = []
     if os.getcwd().split('/')[-1] == 'API':
