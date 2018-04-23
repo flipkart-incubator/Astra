@@ -2,8 +2,8 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Welcome to Astra\n\n\nOverview\n\n\nREST API penetration testing is complex due to continuous changes in existing APIs and addition of new APIs. Astra can be used by security engineers or developers as an integral part of their process, so they can detect and patch vulnerabilities in the initial phase of the development cycle. Astra can automatically detect and test login \n logout (Authentication API), which makes it easy for anyone to integrate this into CICD pipeline. Astra can take API collection as an input so this can also be used for testing APIs in stand-alone mode.\n\n\nFollowing are the attacks performed by Astra: \n\n\n\n\nSQL Injection\n\n\nCross-site Scripting\n\n\nInformation Leakage\n\n\nBroken Authentication and Session Management\n\n\nCSRF (including Blind CSRF)\n\n\nRate limit\n\n\nCORS misconfiguration (including CORS bypass techniques)\n\n\nJWT attack\n\n\nOpen redirection", 
-            "title": "Home"
+            "text": "Welcome to Astra\n\n\n Overview \n\n\nREST API penetration testing is complex due to continuous changes in existing APIs and addition of new APIs. Astra can be used by security engineers or developers as an integral part of their process, so they can detect and patch vulnerabilities in the initial phase of the development cycle. Astra can automatically detect and test login \n logout (Authentication API), which makes it easy for anyone to integrate this into CICD pipeline. Astra can take API collection as an input so this can also be used for testing APIs in stand-alone mode.\n\n\n Attacks Performed \n\n\n\n\nSQL Injection\n\n\nCross-site Scripting\n\n\nInformation Leakage\n\n\nBroken Authentication and Session Management\n\n\nCSRF (including Blind CSRF)\n\n\nRate limit\n\n\nCORS misconfiguration (including CORS bypass techniques)\n\n\nJWT attack\n\n\nOpen redirection", 
+            "title": "Overview"
         }, 
         {
             "location": "/#welcome-to-astra", 
@@ -12,8 +12,38 @@
         }, 
         {
             "location": "/#overview", 
-            "text": "REST API penetration testing is complex due to continuous changes in existing APIs and addition of new APIs. Astra can be used by security engineers or developers as an integral part of their process, so they can detect and patch vulnerabilities in the initial phase of the development cycle. Astra can automatically detect and test login   logout (Authentication API), which makes it easy for anyone to integrate this into CICD pipeline. Astra can take API collection as an input so this can also be used for testing APIs in stand-alone mode.  Following are the attacks performed by Astra:    SQL Injection  Cross-site Scripting  Information Leakage  Broken Authentication and Session Management  CSRF (including Blind CSRF)  Rate limit  CORS misconfiguration (including CORS bypass techniques)  JWT attack  Open redirection", 
+            "text": "REST API penetration testing is complex due to continuous changes in existing APIs and addition of new APIs. Astra can be used by security engineers or developers as an integral part of their process, so they can detect and patch vulnerabilities in the initial phase of the development cycle. Astra can automatically detect and test login   logout (Authentication API), which makes it easy for anyone to integrate this into CICD pipeline. Astra can take API collection as an input so this can also be used for testing APIs in stand-alone mode.", 
             "title": "Overview"
+        }, 
+        {
+            "location": "/#attacks-performed", 
+            "text": "SQL Injection  Cross-site Scripting  Information Leakage  Broken Authentication and Session Management  CSRF (including Blind CSRF)  Rate limit  CORS misconfiguration (including CORS bypass techniques)  JWT attack  Open redirection", 
+            "title": "Attacks Performed"
+        }, 
+        {
+            "location": "/installation/", 
+            "text": "Installing Astra is very straightforward. You can clone the github repo and use pip to install all the required dependencies. \n\n\n Requirement \n\n\nAs of now, Astra can be installed only on Linux and MacOS. Please make sure that your system meets the following requirements.\n\n\n- Linux or MacOS\n- Python 2.7\n- MongoDB\n\n\n\n\n Dependencies \n\n\n- requests\n- logger\n- pymongo\n- ConfigParser\n- pyjwt\n- flask\n- sqlmap\n\n\n\n\n Steps \n\n\nFollow these steps to install Astra:\n\n\n$ git clone https://github.com/flipkart-incubator/Astra\n$ cd Astra\n$ sudo pip install -r requirements.txt\n\n\n\n\nInstalling and launching Astra:\n\n\n\n\n\nNote:\n\n1. Upgrade your \npip\n to the latest version.\n\n2. After installing \nMongoDB\n, create this directory \n/data/db/\n. For more information, please refer this doc: \nhttps://docs.mongodb.com/manual/administration/install-community/", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/installation/#requirement", 
+            "text": "As of now, Astra can be installed only on Linux and MacOS. Please make sure that your system meets the following requirements.  - Linux or MacOS\n- Python 2.7\n- MongoDB", 
+            "title": "Requirement"
+        }, 
+        {
+            "location": "/installation/#dependencies", 
+            "text": "- requests\n- logger\n- pymongo\n- ConfigParser\n- pyjwt\n- flask\n- sqlmap", 
+            "title": "Dependencies"
+        }, 
+        {
+            "location": "/installation/#steps", 
+            "text": "Follow these steps to install Astra:  $ git clone https://github.com/flipkart-incubator/Astra\n$ cd Astra\n$ sudo pip install -r requirements.txt  Installing and launching Astra:   Note: \n1. Upgrade your  pip  to the latest version. \n2. After installing  MongoDB , create this directory  /data/db/ . For more information, please refer this doc:  https://docs.mongodb.com/manual/administration/install-community/", 
+            "title": "Steps"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "", 
+            "title": "Usage"
         }
     ]
 }
