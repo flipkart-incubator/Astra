@@ -1,0 +1,19 @@
+site_name: Astra
+pages:
+- Overview : 'index.md'
+- Installation: 'installation.md'
+- Usage: 'usage.md'
+theme: 
+   name: 'material'
+extra:
+  feature:
+    tabs: true
+  palette:
+    primary: deep purple
+    accent: indigo
+  social:
+    - type: github-alt
+      link: https://github.com/flipkart-incubator/Astra
+
+repo_name: Astra
+repo_url: https://github.com/flipkart-incubator/Astra
