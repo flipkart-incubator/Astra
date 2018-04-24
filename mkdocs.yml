@@ -3,6 +3,8 @@ pages:
 - Overview : 'index.md'
 - Installation: 'installation.md'
 - Usage: 'usage.md'
+- Credits: 'credits.md'
+- Roadmap: 'roadmap.md'
 theme: 
    name: 'material'
 extra:
