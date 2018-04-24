@@ -36,7 +36,7 @@
     
     
       
-        <title>Usage - Astra</title>
+        <title>Credits - Astra</title>
       
     
     
@@ -89,10 +89,6 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
     
-      <a href="#astra-cli" tabindex="1" class="md-skip">
-        Skip to content
-      </a>
-    
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
@@ -115,7 +111,7 @@
                 Astra
               </span>
               <span class="md-header-nav__topic">
-                Usage
+                Credits
               </span>
             
           
@@ -254,6 +250,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../usage/" title="Usage" class="md-nav__link">
+      Usage
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -262,63 +270,10 @@
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
     
     
-      <label class="md-nav__link md-nav__link--active" for="toc">
-        Usage
-      </label>
-    
-    <a href="./" title="Usage" class="md-nav__link md-nav__link--active">
-      Usage
-    </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#astra-cli" title="Astra CLI" class="md-nav__link">
-    Astra CLI
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuring-astra" title="Configuring Astra" class="md-nav__link">
-    Configuring Astra
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#web-interface" title="Web Interface" class="md-nav__link">
-    Web Interface
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../credits/" title="Credits" class="md-nav__link">
+    <a href="./" title="Credits" class="md-nav__link md-nav__link--active">
       Credits
     </a>
+    
   </li>
 
     
@@ -341,146 +296,26 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#astra-cli" title="Astra CLI" class="md-nav__link">
-    Astra CLI
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuring-astra" title="Configuring Astra" class="md-nav__link">
-    Configuring Astra
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#web-interface" title="Web Interface" class="md-nav__link">
-    Web Interface
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/flipkart-incubator/Astra/edit/master/docs/usage.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/flipkart-incubator/Astra/edit/master/docs/credits.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>Usage</h1>
+                  <h1>Credits</h1>
                 
-                <p>Once you have set up astra, you can use either CLI or web interface to start a scan.</p>
-<h2 id="astra-cli"><strong> Astra CLI </strong></h2>
-<pre><code>$ python astra.py --help
-                        _
-            /\       | |
-           /  \   ___| |_ _ __ __ _
-          / /\ \ / __| __| '__/ _` |
-         / ____ \__ \ |_| | | (_| |
-        /_/    \_\___/\__|_|  \__,_|
-
-
-
-usage: astra.py [-h] [-c COLLECTION_TYPE] [-n COLLECTION_NAME] [-u URL]
-                [-headers HEADERS] [-method {GET,POST,PUT,DELETE}] [-b BODY]
-                [-l LOGINURL] [-H LOGINHEADERS] [-d LOGINDATA]
-
-Astra - REST API Security testing Framework
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -c COLLECTION_TYPE, --collection_type COLLECTION_TYPE
-                        Type of API collection
-  -n COLLECTION_NAME, --collection_name COLLECTION_NAME
-                        Type of API collection
-  -u URL, --url URL     URL of target API
-  -headers HEADERS, --headers HEADERS
-                        Custom headers.Example: {&quot;token&quot; : &quot;123&quot;}
-  -method {GET,POST,PUT,DELETE}, --method {GET,POST,PUT,DELETE}
-                        HTTP request method
-  -b BODY, --body BODY  Request body of API
-  -l LOGINURL, --loginurl LOGINURL
-                        URL of login API
-  -H LOGINHEADERS, --loginheaders LOGINHEADERS
-                        Headers should be in a dictionary format. Example:
-                        {&quot;accesstoken&quot; : &quot;axzvbqdadf&quot;}
-  -d LOGINDATA, --logindata LOGINDATA
-                        login data of API
-
-</code></pre>
-
-<p>You can use above arguments as per your need.<br />
-<strong>Example 1:</strong> In order to start a scan for GET api, use the following command. <br />
-<code>$python astra.py -u http://localhost</code><br><br />
-<strong>Example 2:</strong> In order to start a scan for POST api with request headers, use the following command. <br />
-<code>$python astra.py -u http://localhost -m POST --headers '{"token" : "123456789"}' --body '{"name" : "astra"}'</code><br><br>
-<strong>Example 3:</strong> Astra also provides a feature to scan all the apis using <code>Postman</code> collection. Astra automatically detects login and logout apis and prompts the user to verify the apis.  </p>
-<pre><code>$ python astra.py -n test
-                        _
-            /\       | |
-           /  \   ___| |_ _ __ __ _
-          / /\ \ / __| __| '__/ _` |
-         / ____ \__ \ |_| | | (_| |
-        /_/    \_\___/\__|_|  \__,_|
-
-Is it a correct login URL(y/n),http://127.0.0.1/api/login.php: y
-[+]Login successful
-
-</code></pre>
-
-<p>Astra stores api login &amp; logout information in <code>utils/config.property</code> file.<br />
-<strong>Note:</strong> Postman allows you to export apis as a collection and you can pass this collection to astra to start the scan. As of now, only command line interface supports API security testing via <code>Postman</code> collection.</p>
-<h2 id="configuring-astra"><strong> Configuring Astra</strong></h2>
-<p>You can configure the attacks using <code>utils/scan.property</code>.  </p>
-<pre><code>[scan-policy]
-attack = {
-          &quot;cors&quot; : &quot;n&quot;,
-          &quot;Broken auth&quot; : &quot;n&quot;,
-          &quot;Rate limit&quot; : &quot;n&quot;,
-          &quot;csrf&quot; : 'n',
-          &quot;zap&quot; : 'n',
-          &quot;jwt&quot; : 'y',
-          &quot;sqli&quot; : 'n',
-          &quot;xss&quot; : 'n',
-          &quot;open-redirection&quot; : &quot;y&quot;
-         }
-
-
-[modules]
-csrftoken-names = csrf,csrftoken,xsrftoken,token,
-open-redirection-names = url,redirect,login,logout,uri,redirection,next,returnto, return_to, origin,callback,authorize_callback, target,link
-jwt_brute = Y
-</code></pre>
-
-<h2 id="web-interface"><strong> Web Interface </strong></h2>
-<p>Run the api.py and access the web interface at http://127.0.0.1:8094</p>
-<pre><code>$ cd API
-$ python api.py
+                <p>We would like give a credit to the following tools and contributors.  <br></p>
+<p>sqlmap : <a href="https://github.com/sqlmapproject/sqlmap">https://github.com/sqlmapproject/sqlmap</a></p>
+<p>Team:</p>
+<pre><code>- Harsh Grover
+- Prajal Kulkarani
+- Ankur Bhargava
+- Mohan Kallepalli
+- Pardeep battu
+- Anirudh Anand
+- Divya Salu John
 </code></pre>
                 
                   
@@ -502,7 +337,7 @@ $ python api.py
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../installation/" title="Installation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../usage/" title="Usage" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -511,19 +346,19 @@ $ python api.py
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Installation
+                Usage
               </span>
             </div>
           </a>
         
         
-          <a href="../credits/" title="Credits" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../roadmap/" title="Roadmap" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Credits
+                Roadmap
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
