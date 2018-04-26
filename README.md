@@ -113,9 +113,4 @@ $ python api.py
 
 ## Credits
 - Harsh Grover
-- Prajal Kulkarani
-- Ankur Bhargava
-- Mohan Kallepalli
-- Pardeep battu
-- Anirudh Anand
-- Divya Salu John
+- Flipkart security team
