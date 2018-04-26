@@ -46,6 +46,8 @@ $ sudo pip install -r requirements.txt
 - flask
 - sqlmap
 ```
+## Documentation
+[https://www.astra-security.info](https://www.astra-security.info)
 
 ## Usage: CLI
 
