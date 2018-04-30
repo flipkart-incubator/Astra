@@ -146,7 +146,7 @@ def xss_get_url(url,method,headers,body,scanid=None):
                 dbupdate.insert_record(attack_result)
                 result = True
 
-        xss_request_uri = req.api_request(parsed_url+'/?test='+payload,"GET",headers)             
+        xss_request_url = req.api_request(parsed_url+'/?test='+payload,"GET",headers)             
         if xss_request_url.text.find(decoded_payload) != -1:
             impact = check_xss_impact(xss_request_uri.headers)
             logs.logging.info("%s is vulnerable to XSS",url)
