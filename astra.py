@@ -38,12 +38,11 @@ def parse_collection(collection_name,collection_type):
 
 def add_headers(headers):
     # This function deals with adding custom header and auth value .
-    get_auth = get_value('config.property','login','auth_type')
-    if get_auth == 'cookie':
-        cookie = get_value('config.property','login','auth')
-        cookie_dict = ast.literal_eval(cookie)
-        cookie_header = {'Cookie': cookie_dict['cookie']}
-        headers.update(cookie_header)
+    cookie = get_value('config.property','login','auth')
+    cookie_dict = ast.literal_eval(cookie)
+    cookie_header = {'Cookie': cookie_dict['cookie']}
+    headers.update(cookie_header)
+    
     try:
         custom_header = get_value('config.property','login','headers')
         custom_header = ast.literal_eval(custom_header)
@@ -144,8 +143,18 @@ def scan_single_api(url, method, headers, body, api, scanid=None):
     ''' This function deals with scanning a single API. '''
     if headers is None or headers == '':
             headers = {'Content-Type' : 'application/json'}
-    if type(headers) is not dict:
-        headers = ast.literal_eval(headers)
+    
+    try:
+        # Convert header and body in dict format
+        if type(headers) is not dict:
+            headers = ast.literal_eval(headers)
+
+        if body:
+            if type(body) is not dict:
+                body = ast.literal_eval(body)
+    except:
+        return False
+    
     if method == '':
         method = 'GET'
 
@@ -162,6 +171,7 @@ def scan_single_api(url, method, headers, body, api, scanid=None):
 
 def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require):
     ''' Scan API through different engines ''' 
+    scanid = ''
     if collection_type and collection_name is not None:
         parse_collection(collection_name,collection_type)
         if login_require is True:
