@@ -12,7 +12,7 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - Broken Authentication and session management
 - CSRF (including Blind CSRF)
 - Rate limit
-- CORS misonfiguration (including CORS bypass techniques)
+- CORS misconfiguration (including CORS bypass techniques)
 - JWT attack
 
 ## Coming soon
