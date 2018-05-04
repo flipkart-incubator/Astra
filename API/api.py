@@ -44,8 +44,8 @@ def start_scan():
     try:
         name = content['appname']
         url = str(content['url'])
-        headers = content['headers']
-        body = content['body']
+        headers = str(content['headers'])
+        body = str(content['body'])
         method = content['method']
         api = "Y"
         scan_status = scan_single_api(url, method, headers, body, api, scanid)
@@ -103,10 +103,8 @@ def fetch_records(scanid):
     # Return alerts identified by the tool
     vul_list = []
     records = db.vulnerabilities.find({"scanid":scanid})
-    print "Records are ",records
     if records:
         for data in records:  
-            print "Data is",data
             if data['req_body'] == None:
                 data['req_body'] = "NA" 
 
