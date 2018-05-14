@@ -8,6 +8,9 @@ COPY . $app
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "./astra.py"]
-CMD ["--help"]
+WORKDIR API/
+
+EXPOSE 8094
+ENTRYPOINT ["python", "./api.py"]
+CMD ["tail -f /app/logs/scan.log"]
 
