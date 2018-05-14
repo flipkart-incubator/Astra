@@ -1,9 +1,22 @@
 from pymongo import MongoClient
 import ast
+import os
 
 class Database_update:
 	def __init__(self):
-		self.client = MongoClient('localhost',27017)
+		# Mongo DB connection
+		mongo_host = 'localhost'
+		mongo_port = 27017
+		
+		maxSevSelDelay = 1
+
+		if 'MONGO_PORT_27017_TCP_ADDR' in os.environ :
+			mongo_host = os.environ['MONGO_PORT_27017_TCP_ADDR']
+
+		if 'MONGO_PORT_27017_TCP_PORT' in os.environ:
+			mongo_port = int(os.environ['MONGO_PORT_27017_TCP_PORT'])
+
+		self.client = MongoClient(mongo_host, mongo_port, serverSelectionTimeoutMS=maxSevSelDelay)
 		self.db = self.client.apiscan
 
 	def fetch_records(self):
