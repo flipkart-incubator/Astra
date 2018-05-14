@@ -1,4 +1,5 @@
 import ast
+import os
 import json
 import sys
 import hashlib
@@ -21,8 +22,18 @@ app = Flask(__name__, template_folder='../Dashboard/templates', static_folder='.
 # Mongo DB connection
 maxSevSelDelay = 1
 try:
-    client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=maxSevSelDelay)
+    mongo_host = 'localhost'
+    mongo_port = 27017
+
+    if 'MONGO_PORT_27017_TCP_ADDR' in os.environ :
+        mongo_host = os.environ['MONGO_PORT_27017_TCP_ADDR']
+
+    if 'MONGO_PORT_27017_TCP_PORT' in os.environ:
+        mongo_port = int(os.environ['MONGO_PORT_27017_TCP_PORT'])
+
+    client = MongoClient(mongo_host, mongo_port, serverSelectionTimeoutMS=maxSevSelDelay)
     client.server_info()
+
 except ServerSelectionTimeoutError as err:
     exit("Failed to connect to MongoDB.")
 
@@ -155,5 +166,5 @@ def return_alerts(scanid):
 def view_dashboard(page):
     return render_template('{}'.format(page))
 
-app.run(host='0.0.0.0', port= 8094,debug=True)
+app.run(host='0.0.0.0', port= 8094,debug=False)
 
