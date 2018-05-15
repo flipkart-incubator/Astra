@@ -15,9 +15,8 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - CORS misconfiguration (including CORS bypass techniques)
 - JWT attack
 
-## Coming soon
-- XXE 
-- CSP misconfiguration
+## Roadmap
+[https://www.astra-security.info/roadmap/](https://www.astra-security.info/roadmap/)
 
 ## Requirement
 - Linux or MacOS
@@ -33,6 +32,33 @@ $ cd Astra
 
 $ sudo pip install -r requirements.txt
 
+```
+
+## Docker Installation
+
+### Run Mongo Container:
+
+```
+$ docker pull mongo
+$ docker run --name astra-mongo -d mongo
+```
+
+### Installing GUI Docker: 
+
+```
+$ git clone https://github.com/flipkart-incubator/Astra.git
+$ cd Astra
+$ docker build -t astra .
+$ docker run --rm -it --link astra-mongo:mongo -p 8094:8094 astra
+```
+
+### Installing CLI Docker :
+
+```
+$ git clone -b docker-cli https://github.com/flipkart-incubator/Astra.git
+$ cd Astra
+$ docker build -t astra-cli .
+$ docker run --rm -it --link astra-mongo:mongo astra-cli 
 ```
 
 ## Dependencies
@@ -113,5 +139,6 @@ $ python api.py
 - Sagar Popat (@popat_sagar) 
 
 ## Credits
+- Ankur Bhargava
 - Harsh Grover
 - Flipkart security team
