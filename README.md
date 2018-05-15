@@ -15,9 +15,8 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - CORS misconfiguration (including CORS bypass techniques)
 - JWT attack
 
-## Coming soon
-- XXE 
-- CSP misconfiguration
+## Roadmap
+[https://www.astra-security.info/roadmap/](https://www.astra-security.info/roadmap/)
 
 ## Requirement
 - Linux or MacOS
