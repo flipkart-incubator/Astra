@@ -12,7 +12,7 @@ def api_request(url,method,headers,body=None):
         if method.upper() == "GET":
             auth_request = requests.get(url,headers=headers, allow_redirects=False)
         elif method.upper() == "POST":
-            auth_request = requests.post(url,headers=headers,json=body, allow_redirects=False,proxies={'http':'http://127.0.0.1:8080'})
+            auth_request = requests.post(url,headers=headers,json=body, allow_redirects=False)
         elif method.upper() == "PUT":
             auth_request = requests.put(url,headers=headers,data=body, allow_redirects=False)
         elif method.upper() == "OPTIONS":
