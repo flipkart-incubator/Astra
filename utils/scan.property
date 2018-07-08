@@ -3,12 +3,12 @@ attack = {
           "cors" : "y",
           "Broken auth" : "y",
           "Rate limit" : "y",
-          "csrf" : 'n',
+          "csrf" : 'y',
           "zap" : 'n',
           "jwt" : 'n',
-          "sqli" : 'n',
-          "xss" : 'n',
-          "open-redirection" : "n"
+          "sqli" : 'y',
+          "xss" : 'y',
+          "open-redirection" : "y"
          }
 
 
