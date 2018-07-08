@@ -31,6 +31,11 @@ def get_authdata():
 	logout_data = get_allvalues('config.property','logout')
 	return login_data,logout_data
 
+def fetch_auth_config(name):
+	# Returns the list of common authentication headers names and auth error from config file.
+	auth_config_value = get_value('scan.property','modules',name)
+	return auth_config_value.split(',')
+
 def add_authheader(auth_headers):
 	# This function reads auth value from config file and add auth header in HTTP request. 
 	auth_type = get_value('config.property','login','auth_type')
@@ -39,7 +44,6 @@ def add_authheader(auth_headers):
 		auth_headers = ast.literal_eval(auth_headers) 
 		if auth_headers['Cookie']:
 			del auth_headers['Cookie']
-			print "Updated auth headers",auth_headers
 			auth_headers.update({'Cookie' : auth})
 			logs.logging.info("Updated header for session fixation %s",auth_headers)
 			return auth_headers,auth
@@ -92,20 +96,23 @@ def session_fixation(url,method,headers,body,scanid):
 
 def auth_check(url,method,headers,body,scanid=None):
 	# This function removes auth header and check if server is accepting request without it
+	temp_headers = {}
+	temp_headers.update(headers)
 	try:
 		attack_result = {}
-		auth_headers = ['Cookie', 'Authorization', 'Authentication','X-API-Key']
-		auth_fail = ['Unauthorized','Denied', 'not logged in','not unauthorized']
+		auth_headers = fetch_auth_config("auth_headers")
+		auth_fail = fetch_auth_config("auth_fail")
 		session_headers = headers
 		for auth_header in auth_headers:
-			for key,value in headers.items():
+			for key,value in temp_headers.items():
 				if key.lower() == auth_header.lower():
-					del headers[auth_header]
-					updated_headers = headers
+					del temp_headers[auth_header]
+					updated_headers = temp_headers
 					logs.logging.info("Auth header is %s", auth_header)
-					auth_request = req.api_request(url,method,headers,body)
+					auth_request = req.api_request(url,method,updated_headers,body)
 					if auth_request.status_code == 401:
 						logs.logging.info("API requires authentication hence it's not vulnerable %s", url)
+						return
 					elif auth_request.status_code == 200 or auth_request.status_code == 400:
 						# Check for false positive
 						for fail_name in auth_fail:	
@@ -117,15 +124,17 @@ def auth_check(url,method,headers,body,scanid=None):
 						   							  "url" : url,
 													  "alert": "Broken Authentication and session management",
 													  "impact" : "High", 
-													  "req_headers" : headers,
+													  "req_headers" : updated_headers,
 													  "req_body" : body,
 													  "res_headers" : auth_request.headers,
 													  "res_body" : auth_request.text
 													})
 
 								dbupdate.insert_record(attack_result)
-								session_fixation(url,method,updated_headers,body,scanid)
 								return
+
+					session_fixation(url,method,temp_headers,body,scanid)
+					
 				else:
 					result = False
 				
