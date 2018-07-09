@@ -21,7 +21,6 @@ api_login = APILogin()
 
 def generate_list(length,type):
 	# Generate different possible param value for brute force
-	print "legnth is", length
 	lis = []
 	if type == 'int':
 		length = '%0'+str(length)+'d' 
@@ -29,18 +28,14 @@ def generate_list(length,type):
 	elif type == 'str':
 		for a in range(1,50):
 			lis += [''.join(random.choice(string.ascii_letters) for i in range(length))]
-	print lis
 	return lis
 
 def brute_force(url,method,headers,body,attack_params,scanid):
 	attack_result = {}
 	failed_set = ['exceed','captcha','too many','rate limit','Maximum login']
-	print "attack params",attack_params
-
 	if len(attack_params) == 1:
 		# attack_params[0] is a first value from list Ex Pin, password
 		param_value = body[attack_params[0]] # param_value is a value of param. Example: 1234
-		print type(param_value)
 		if type(param_value) == int:
 			length = len(str(param_value))
 			brute_list = generate_list(length,'int')
