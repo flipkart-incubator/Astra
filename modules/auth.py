@@ -157,4 +157,4 @@ def auth_check(url,method,headers,body,scanid=None):
 			session_fixation(url,method,updated_headers,body,scanid)
 			return
 	except:
-		print "Failed to test Broken authentication and session management"
+		pass
