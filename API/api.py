@@ -4,6 +4,7 @@ import json
 import sys
 import hashlib
 import time
+import json
 
 sys.path.append('../')
 
@@ -16,6 +17,7 @@ from flask import jsonify
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 from utils.vulnerabilities import alerts
+from jinja2 import utils
 
 app = Flask(__name__, template_folder='../Dashboard/templates', static_folder='../Dashboard/static')
 
@@ -46,6 +48,17 @@ def generate_hash():
     # Return md5 hash value of current timestmap 
     scanid = hashlib.md5(str(time.time())).hexdigest()
     return scanid
+
+def xss_filter(data):
+    data = str(data)
+    # Filter special chars to prevent XSS
+    filterd_data =  data.replace("<","&lt;").replace(">","&gt;")
+    try:
+        filterd_data = ast.literal_eval(filterd_data)
+    except:
+        pass
+
+    return filterd_data
 
 # Start the scan and returns the message
 @app.route('/scan/', methods = ['POST'])
@@ -102,11 +115,13 @@ def fetch_scanids():
                 scan_status = check_scan_status(data)
                 if data['scanid']:
                     if data['scanid'] not in scanids:
-                        scanids.append({"scanid" : data['scanid'], "name" : data['name'], "url" : data['url'], "scan_status" : scan_status}) 
+                        url = xss_filter(data['url'])
+                        scanids.append({"scanid" : data['scanid'], "name" : xss_filter(data['name']), "url" : url, "scan_status" : scan_status}) 
             except:
                 pass
 
         return jsonify(scanids)
+
 ############################# Alerts API ##########################################
 
 # Returns vulnerbilities identified by tool 
@@ -122,9 +137,9 @@ def fetch_records(scanid):
             data.pop('_id')
             try:
                 data =  ast.literal_eval(json.dumps(data))
-            except:
-                print "Falied to parse"
-
+            except Exception as e:
+                print "Falied to parse",e
+            
             try:
                 if data['id'] == "NA":
                     all_data = {'url' : data['url'], 'impact' : data['impact'], 'name' : data['name'], 'req_headers' : data['req_headers'], 'req_body' : data['req_body'], 'res_headers' : data['res_headers'], 'res_body' : data['res_body'], 'Description' : data['Description'], 'remediation' : data['remediation']}
@@ -133,14 +148,15 @@ def fetch_records(scanid):
                 if data['id']:
                     for vul in alerts:
                         if data['id'] == vul['id']:
+                            #print "response body",data['req_headers'],type(data['req_headers'])
                             all_data = {
-                                        'url' : data['url'],
+                                        'url' : xss_filter(data['url']),
                                         'impact' : data['impact'],
-                                        'name' : data['alert'],
+                                        'name' : xss_filter(data['alert']),
                                         'req_headers' : data['req_headers'],
-                                        'req_body' : data['req_body'],
-                                        'res_headers' : data['res_headers'],
-                                        'res_body' : data['res_body'],
+                                        'req_body' : xss_filter(data['req_body']),
+                                        'res_headers' : xss_filter(data['res_headers']),
+                                        'res_body' : xss_filter(data['res_body']),
                                         'Description' : vul['Description'],
                                         'remediation' : vul['remediation']
                                         }

@@ -51,6 +51,7 @@ def xss_post_method(url,method,headers,body,scanid=None):
     # This function checks XSS through POST method.
     temp_body = {}
     post_vul_param = ''
+    db_update = ''
     for key,value in body.items():
         xss_payloads = fetch_xss_payload()
         for payload in xss_payloads:
@@ -61,20 +62,21 @@ def xss_post_method(url,method,headers,body,scanid=None):
             if xss_post_request.text.find(decoded_payload) != -1:
                 impact = check_xss_impact(xss_post_request.headers)
                 if db_update is not True:
-                    attack_result = { "id" : 11, "scanid" : scanid, "url" : xss_url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request.headers ,"res_body": xss_request.text}
+                    attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":temp_body, "res_headers": xss_post_request.headers ,"res_body": xss_post_request.text}
                     dbupdate.insert_record(attack_result)
                     db_update = True
-                    vul_param += key
+                    post_vul_param += key
+                    break
                 else:
-                    result = True
-                    if vul_param == '':
+                    if post_vul_param == '':
                         post_vul_param += key
                     else:
                         post_vul_param += ','+key 
+                    break
 
     if post_vul_param:
         # Update all vulnerable params to db.
-        logs.logging.info("%s Vulnerable Params:",vul_param)
+        logs.logging.info("%s Vulnerable Params:",post_vul_param)
         dbupdate.update_record({"scanid": scanid}, {"$set" : {"scan_data" : post_vul_param+" are vulnerable to XSS"}})
 
 
@@ -147,7 +149,7 @@ def xss_get_url(url,method,headers,body,scanid=None):
                 result = True
 
         xss_request_uri = req.api_request(parsed_url+'/?test='+payload,"GET",headers)             
-        if xss_request_url.text.find(decoded_payload) != -1:
+        if xss_request_uri.text.find(decoded_payload) != -1:
             impact = check_xss_impact(xss_request_uri.headers)
             logs.logging.info("%s is vulnerable to XSS",url)
             print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
@@ -173,7 +175,7 @@ def xss_get_uri(url,method,headers,body,scanid=None):
                     # Example : http://localhost/?firstname=<payload>&lastname=<payload>
                     if result is not True:
                         parsed_url = urlparse.urlparse(url)
-                        xss_url = parsed_url.scheme+"://"+parsed_url.netloc+parsed_url.path+"/?"+parsed_url.query.replace(value[0], payload)
+                        xss_url = parsed_url.scheme+"://"+parsed_url.netloc+parsed_url.path+"?"+parsed_url.query.replace(value[0], payload)
                         xss_request = req.api_request(xss_url,"GET",headers)
                         decoded_payload = xss_payload_decode(payload)
                         if xss_request.text.find(decoded_payload) != -1:
