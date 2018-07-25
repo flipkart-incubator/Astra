@@ -36,26 +36,9 @@ def fetch_auth_config(name):
 	auth_config_value = get_value('scan.property','modules',name)
 	return auth_config_value.split(',')
 
-def add_authheader(auth_headers):
-	# This function reads auth value from config file and add auth header in HTTP request. 
-	auth_type = get_value('config.property','login','auth_type')
-	auth = get_value('config.property','login','auth')
-	if auth_type == "cookie":
-		auth_headers = ast.literal_eval(auth_headers) 
-		if auth_headers['Cookie']:
-			del auth_headers['Cookie']
-			auth_headers.update({'Cookie' : auth})
-			logs.logging.info("Updated header for session fixation %s",auth_headers)
-			return auth_headers,auth
-		else:
-			logs.logging.info("Updated header for session fixation %s",auth_headers)
-	
-	elif auth_type == "token":
-		# If API is using access token as an auth
-		return headers
-
 def session_fixation(url,method,headers,body,scanid):
 	# This function deals with checking session fixation issue.
+	attack_result = {}
 	login_result = get_value('config.property','login','loginresult')
 	logout_result = get_value('config.property','logout','logoutresult')
 	if login_result == 'Y' and logout_result == 'Y':
@@ -98,6 +81,7 @@ def auth_check(url,method,headers,body,scanid=None):
 	# This function removes auth header and check if server is accepting request without it
 	temp_headers = {}
 	temp_headers.update(headers)
+	print "headers form auth", headers
 	try:
 		attack_result = {}
 		auth_headers = fetch_auth_config("auth_headers")
@@ -131,6 +115,7 @@ def auth_check(url,method,headers,body,scanid=None):
 													})
 
 								dbupdate.insert_record(attack_result)
+								print "%s[+]{0} is vulnerable to broken Authentication and session management %s ".format(url)% (api_logger.R, api_logger.W)
 								return
 
 					session_fixation(url,method,temp_headers,body,scanid)
@@ -152,7 +137,7 @@ def auth_check(url,method,headers,body,scanid=None):
 							"res_body" : brokenauth_request.text
 							})
 			dbupdate.insert_record(attack_result)
-
+			print "%s[+]{0} is vulnerable to broken Authentication and session management %s ".format(url)% (api_logger.R, api_logger.W)
 			# Test for session fixation
 			session_fixation(url,method,updated_headers,body,scanid)
 			return
