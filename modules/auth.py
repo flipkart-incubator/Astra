@@ -81,7 +81,6 @@ def auth_check(url,method,headers,body,scanid=None):
 	# This function removes auth header and check if server is accepting request without it
 	temp_headers = {}
 	temp_headers.update(headers)
-	print "headers form auth", headers
 	try:
 		attack_result = {}
 		auth_headers = fetch_auth_config("auth_headers")
