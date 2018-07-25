@@ -94,7 +94,7 @@ def fuzz_url(url,method,headers,body,scanid):
         try:
             target_url = target_domain + payload.replace("{target}", redirection_url)
         except:
-            target_url = target_domain + payload
+            target_url = str(target_domain) + str(payload)
 
         fuzz_req = req.api_request(target_url, "GET", headers)
         if str(fuzz_req.status_code)[0] == '3':
