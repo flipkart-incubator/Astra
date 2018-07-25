@@ -4,13 +4,17 @@ zap_port = 8123
 zap_apikey = test
 
 [login]
-auth_type = cookie
-loginresult = Y
+auth_type = 
+auth_names = cookie,accesstoken,access_token,token,auth_token
+auth_header = 
+loginresult = 
 loginurl = 
 loginmethod = 
 loginheaders = 
 loginbody = 
-auth = 
+auth_success = 
+auth_success_token = 
+auth_success_param = 
 
 [logout]
 logoutheaders = 
