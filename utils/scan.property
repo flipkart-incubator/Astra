@@ -5,7 +5,7 @@ attack = {
           "Rate limit" : "y",
           "csrf" : 'y',
           "zap" : 'n',
-          "jwt" : 'n',
+          "jwt" : 'y',
           "sqli" : 'y',
           "xss" : 'y',
           "open-redirection" : "y"
