@@ -6,4 +6,10 @@ if os.getcwd().split('/')[-1] == 'API':
 else:
         path = 'logs/scan.log'
 
-logging.basicConfig(filename=path, level=logging.INFO)
+
+logger = logging.getLogger()
+fh = logging.FileHandler(path)
+logger.addHandler(fh)
+logger.setLevel(logging.INFO)
+
+#logging.basicConfig(filename=path, level=logging.INFO)

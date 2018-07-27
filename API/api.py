@@ -5,6 +5,8 @@ import sys
 import hashlib
 import time
 import json
+import threading
+import logging
 
 sys.path.append('../')
 
@@ -12,14 +14,31 @@ from flask import Flask, render_template
 from flask import Response, make_response
 from flask import request
 from flask import Flask
-from astra import scan_single_api
+#from astra import scan_single_api
 from flask import jsonify
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 from utils.vulnerabilities import alerts
 from jinja2 import utils
 
+
+if os.getcwd().split('/')[-1] == 'API':
+    from astra import scan_single_api
+
+
 app = Flask(__name__, template_folder='../Dashboard/templates', static_folder='../Dashboard/static')
+
+
+class ServerThread(threading.Thread):
+
+  def __init__(self):
+    threading.Thread.__init__(self)
+
+  def run(self):
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+    app.run(host='0.0.0.0', port= 8094)
+
 
 # Mongo DB connection
 maxSevSelDelay = 1
@@ -182,5 +201,17 @@ def return_alerts(scanid):
 def view_dashboard(page):
     return render_template('{}'.format(page))
 
-app.run(host='0.0.0.0', port= 8094,debug=False)
+def start_server():
+    app.run(host='0.0.0.0', port= 8094)
 
+#if __name__ == "__main__":
+
+def main():
+    if os.getcwd().split('/')[-1] == 'API':
+        start_server()
+    else:
+        thread = ServerThread()
+        thread.daemon = True
+        thread.start()
+
+main()
