@@ -9,7 +9,7 @@ import sys
 import time
 import utils.logs as logs
 
-from utils.config import update_value
+from utils.config import update_value,get_value
 
 
 class APILogin:
@@ -22,30 +22,58 @@ class APILogin:
         if method.upper() == "GET":
             login_request = requests.get(url,headers=headers)
         elif method.upper() == "POST":
-            #print headers,body
             login_request = requests.post(url,headers=headers,json=body)
-            #debugging
             logs.logging.info("HTTP response of login API : %s %s %s",login_request.status_code,headers,body)
         else:
             print "[-]Invalid request"
             sys.exit(1)
 
-
         try:
-            cookie = {'cookie' : login_request.headers['Set-Cookie']}
-            print "Login successful"
-            update_value('login','auth',cookie)
-            update_value('login','auth_type','cookie')
-            return True
+            login_response = json.loads(login_request.text)
         except:
-            if relogin is not None:
+            pass
+
+        if relogin is not None:
                 print "Session fixation attack won't be tested since it failed to re-login."
                 return
-            login_response = raw_input("Failed to fetch cookie. Do you want to continue scanning without cookie(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)
+
+        auth_names = get_value('config.property','login','auth_names')
+        auth_type = get_value('config.property','login','auth_type')
+        auth_names = auth_names.split(',')
+        #auth_header = get_value('config.property','login','auth_header')
+        
+        # Auth types: 
+        # 1. Cookie
+        # 2. Basic 
+        # 3. Oauth 
+        auth_status = False
+        if auth_type == 'cookie':
+            if login_request.headers['Set-Cookie']:
+                auth_cookie = {'cookie' : login_request.headers['Set-Cookie']}
+                print "[+]Login successful"
+                update_value('login','auth_success','Y')
+                update_value('login','cookie',auth_cookie)
+                auth_status = True
+        
+        # Basic and oauth auth type code will come here(yet to develop).
+        else:
+            for auth_name in auth_names:
+                if auth_name in login_response:
+                    auth_success_token = login_response[auth_name]
+                    print "[+]Login successful"
+                    update_value('login','auth_success','Y')
+                    update_value('login','auth_success_param',auth_name)
+                    update_value('login','auth_success_token',auth_success_token)
+                    auth_status = True
+                    break
+
+        if not auth_status:
+            login_response = raw_input("Failed to login. Do you want to continue scanning without cookie(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)
             if login_response == 'Y' or login_response == 'y':
                 return
             elif login_response == 'n' or login_response == 'N':
                 sys.exit(1)
+
 
     def create_urllist(self,collection_data):
         url_list = []
@@ -82,7 +110,7 @@ class APILogin:
             api_types = logout_names
 
         url_list = self.create_urllist(collection_data)
-        
+
         for url in url_list:
             for name in api_types:
                 if name in url:
@@ -108,7 +136,6 @@ class APILogin:
             else: 
                 sys.exit(1)
 
-
         for data in collection_data:
             if data['url'] == api_url:
                 url,method,headers,body =  data['url'],data['method'],data['headers'],data['body']
@@ -128,7 +155,6 @@ class APILogin:
                         for key,value in auth_data.items():
                             update_value("login",key,value)
                         return
-
 
     def parse_logindata(self,loginurl):
         for data in self.parse_data.api_lst:

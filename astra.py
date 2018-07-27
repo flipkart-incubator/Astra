@@ -38,11 +38,22 @@ def parse_collection(collection_name,collection_type):
 
 def add_headers(headers):
     # This function deals with adding custom header and auth value .
-    cookie = get_value('config.property','login','auth')
-    cookie_dict = ast.literal_eval(cookie)
-    cookie_header = {'Cookie': cookie_dict['cookie']}
-    headers.update(cookie_header)
-    
+    auth_type = get_value('config.property','login','auth_type')
+    if auth_type == 'cookie':
+        cookie = get_value('config.property','login','cookie')
+        if cookie:
+            cookie_dict = ast.literal_eval(cookie)
+            cookie_header = {'Cookie': cookie_dict['cookie']}
+            headers.update(cookie_header)
+    else:
+        auth_success = get_value('config.property','login','auth_success')
+        if auth_success == 'Y':
+            auth_success_token = get_value('config.property','login','auth_success_token')
+            #auth_request_header = get_value('config.property','login','auth_request_token')
+            auth_success_param = get_value('config.property','login','auth_success_param')
+            auth_header = {auth_success_param : auth_success_token }
+            headers.update(auth_header)
+
     try:
         custom_header = get_value('config.property','login','headers')
         custom_header = ast.literal_eval(custom_header)
@@ -101,6 +112,7 @@ def modules_scan(url,method,headers,body,scanid=None):
         status = zap_start()
         if status is True:
             api_scan.start_scan(url,method,headers,body,scanid)
+            
     # Custom modules scan
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
         cors_main(url,method,headers,body,scanid)
