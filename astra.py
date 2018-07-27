@@ -7,7 +7,8 @@ import ast
 import utils.logger as logger
 import utils.logs as logs
 import urlparse
-
+import hashlib
+import webbrowser
 
 from core.zapscan import *
 from core.parsers import *
@@ -27,6 +28,11 @@ from core.zap_config import zap_start
 from multiprocessing import Process
 from utils.db import Database_update
 
+
+if os.getcwd().split('/')[-1] != 'API':
+    from API.api import main
+    
+
 dbupdate = Database_update()
 
 def parse_collection(collection_name,collection_type):
@@ -35,6 +41,17 @@ def parse_collection(collection_name,collection_type):
     else:
         print "[-]Failed to Parse collection"
         sys.exit(1)
+
+def scan_complete():
+    print "[+]Scan has been completed"
+    webbrowser.open("http://127.0.0.1:8094/reports.html#"+scanid)
+    while True:
+        pass
+
+def generate_scanid():
+    global scanid
+    scanid = hashlib.md5(str(time.time())).hexdigest()
+    return scanid
 
 def add_headers(headers):
     # This function deals with adding custom header and auth value .
@@ -62,15 +79,6 @@ def add_headers(headers):
         pass
 
     return headers
-
-def generate_report():
-    # Generating report once the scan is complete.
-    result = api_scan.generate_report()
-    if result is True:
-        print "%s[+]Report is generated successfully%s"% (api_logger.G, api_logger.W)
-    else:
-        print "%s[-]Failed to generate a report%s"% (api_logger.R, api_logger.W)
-
 
 def read_scan_policy():
     try:
@@ -112,7 +120,7 @@ def modules_scan(url,method,headers,body,scanid=None):
         status = zap_start()
         if status is True:
             api_scan.start_scan(url,method,headers,body,scanid)
-            
+
     # Custom modules scan
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
         cors_main(url,method,headers,body,scanid)
@@ -139,7 +147,6 @@ def modules_scan(url,method,headers,body,scanid=None):
         open_redirect_check(url,method,headers,body,scanid)
         update_scan_status(scanid, "open-redirection") 
 
-
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
     validate_url = urlparse.urlparse(url)
@@ -155,7 +162,7 @@ def scan_single_api(url, method, headers, body, api, scanid=None):
     ''' This function deals with scanning a single API. '''
     if headers is None or headers == '':
             headers = {'Content-Type' : 'application/json'}
-    
+
     try:
         # Convert header and body in dict format
         if type(headers) is not dict:
@@ -175,20 +182,23 @@ def scan_single_api(url, method, headers, body, api, scanid=None):
         print "[-]Invalid Arguments"
         return False
 
-    p = Process(target=modules_scan,args=(url,method,headers,body,scanid),name='module-scan')
-    p.start()
     if api == "Y":
-        return True
+        p = Process(target=modules_scan,args=(url,method,headers,body,scanid),name='module-scan')
+        p.start()
+        if api == "Y":
+            return True
+    else:
+        modules_scan(url,method,headers,body,scanid)
 
 
 def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require):
     ''' Scan API through different engines ''' 
-    scanid = ''
+    scanid = generate_scanid()
     if collection_type and collection_name is not None:
         parse_collection(collection_name,collection_type)
         if login_require is True:
             api_login.verify_login(parse_data.api_lst)
-        msg = True
+
         for data in parse_data.api_lst:
             try:
                 url = data['url']['raw']
@@ -197,14 +207,13 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
             headers,method,body = data['headers'],data['method'],''
             if headers:
                 try:
-                    headhers = add_headers(headers)
+                    headers = add_headers(headers)
                 except:
                     pass
 
             if data['body'] != '':
                 body = json.loads(base64.b64decode(data['body']))
 
-            
             modules_scan(url,method,headers,body,scanid)        
 
     else:
@@ -299,8 +308,10 @@ def main():
     if collection_type and collection_name is not None:
         scan_core(collection_type,collection_name,url,headers,method,body,loginurl,loginheaders,logindata,login_require) 
     else:
-        scan_single_api(url, method, headers, body, "False")
+        scanid = generate_scanid()
+        scan_single_api(url, method, headers, body, "F", scanid)
 
+    scan_complete()
 
 if __name__ == '__main__':
     api_login = APILogin()
