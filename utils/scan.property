@@ -9,7 +9,8 @@ attack = {
           "sqli" : 'y',
           "xss" : 'y',
           "open-redirection" : "y",
-          "xxe" : "y"
+          "xxe" : "y",
+	  "crlf" : "y"
          }
 
 
