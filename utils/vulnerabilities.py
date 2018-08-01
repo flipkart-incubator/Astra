@@ -76,6 +76,12 @@ alerts = [
       'remediation': 'Sanitize input by creating a list of trusted URL\'s (lists of hosts or a regex).'
       },
       {
+      'id': 13,
+      'name': 'CRLF',
+      'Description':  'The term CRLF refers to Carriage Return (ASCII 13) Line Feed (ASCII 10). They are used to note the termination of a line, however, dealt with differently in today’s popular Operating Systems. For example: in Windows both a CR and LF are required to note the end of a line, whereas in Linux/UNIX a LF is only required. In the HTTP protocol, the CR-LF sequence is always used to terminate a line.',
+      'remediation': 'Sanitise the CRLF characters before passing into the header or to encode the data which will prevent the CRLF sequences entering the header.'
+      },
+      {
       'id': 14,
       'name': 'XML External Entity Attack',
       'Description':  'An XML External Entity attack is a type of attack against an application that parses XML input. This attack occurs when XML input containing a reference to an external entity is processed by a weakly configured XML parser. This attack may lead to the disclosure of confidential data, denial of service, server side request forgery, port scanning from the perspective of the machine where the parser is located, and other system impacts.',

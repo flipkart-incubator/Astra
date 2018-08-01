@@ -1,0 +1,16 @@
+%0aCRLF-Test: crlf=injection
+%0d%0aCRLF-Test: crlf=injection
+%0dCRLF-Test: crlf=injection
+%23%0aCRLF-Test: crlf=injection
+%23%0d%0aCRLF-Test: crlf=injection
+%23%0dCRLF-Test: crlf=injection
+%25%30%61CRLF-Test: crlf=injection
+%25%30aCRLF-Test: crlf=injection
+%250aCRLF-Test: crlf=injection
+%25250aCRLF-Test: crlf=injection
+%2e%2e%2f%0d%0aCRLF-Test: crlf=injection
+%2f%2e%2e%0d%0aCRLF-Test: crlf=injection
+%2F..%0d%0aCRLF-Test: crlf=injection
+%3f%0d%0aCRLF-Test: crlf=injection
+%3f%0dCRLF-Test: crlf=injection
+%u000aCRLF-Test: crlf=injection
