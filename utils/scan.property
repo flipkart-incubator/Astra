@@ -8,7 +8,8 @@ attack = {
           "jwt" : 'y',
           "sqli" : 'y',
           "xss" : 'y',
-          "open-redirection" : "y"
+          "open-redirection" : "y",
+          "xxe" : "y"
          }
 
 
