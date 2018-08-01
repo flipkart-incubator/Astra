@@ -74,5 +74,11 @@ alerts = [
       'name': 'Open redirection',
       'Description':  'Unvalidated redirects and forwards are possible when an application accepts untrusted input that could cause an application to redirect the request to a URL contained within untrusted input. By modifying untrusted URL input to a malicious site, an attacker may successfully launch a phishing scam and steal user credentials. Because the server name in the modified link is identical to the original site, phishing attempts may have a more trustworthy appearance. Unvalidated redirect and forward attacks can also be used to maliciously craft a URL that would pass the application’s access control check and then forward the attacker to privileged functions that they would normally not be able to access.',
       'remediation': 'Sanitize input by creating a list of trusted URL\'s (lists of hosts or a regex).'
+      },
+      {
+      'id': 14,
+      'name': 'XML External Entity Attack',
+      'Description':  'An XML External Entity attack is a type of attack against an application that parses XML input. This attack occurs when XML input containing a reference to an external entity is processed by a weakly configured XML parser. This attack may lead to the disclosure of confidential data, denial of service, server side request forgery, port scanning from the perspective of the machine where the parser is located, and other system impacts.',
+      'remediation': 'The XML processor should be configured to use a local static DTD and disallow any declared DTD included in the XML document.'
       }
 ]
