@@ -24,6 +24,7 @@ from modules.jwt_attack import jwt_check
 from modules.sqli import sqli_check
 from modules.xss import xss_check
 from modules.redirect import open_redirect_check
+from modules.xxe import xxe_scan
 from core.zap_config import zap_start
 from multiprocessing import Process
 from utils.db import Database_update
@@ -32,7 +33,7 @@ from utils.db import Database_update
 if os.getcwd().split('/')[-1] != 'API':
     from API.api import main
     
-
+xxe = xxe_scan()
 dbupdate = Database_update()
 
 def parse_collection(collection_name,collection_type):
@@ -145,7 +146,11 @@ def modules_scan(url,method,headers,body,scanid=None):
         update_scan_status(scanid, "xss")
     if attack['open-redirection'] == 'Y' or attack['open-redirection'] == 'y':
         open_redirect_check(url,method,headers,body,scanid)
-        update_scan_status(scanid, "open-redirection") 
+        update_scan_status(scanid, "open-redirection")
+    if attack['xxe'] == 'Y' or attack['xxe'] == 'y':
+        xxe.xxe_test(url,method,headers,body,scanid)
+        update_scan_status(scanid, "xxe") 
+
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
@@ -218,7 +223,6 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
 
     else:
         print "%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W)
-    #generate_report()
 
 def get_arg(args=None):
         parser = argparse.ArgumentParser(description='Astra - REST API Security testing Framework')
