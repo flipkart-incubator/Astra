@@ -24,6 +24,7 @@ Content-Length: 6\r\n\
 Hello!\
 '''
 
+
 class xxe_scan:
     def __init__(self):
         self.port = 1111
@@ -42,6 +43,7 @@ class xxe_scan:
             logs.logging.info("XXE: Can't bind to port. Port may be busy or check firewall setting.")      
 
     def start_listening(self):
+        global vulnerable
         try:
             while True:
                 # Wait for 5 seconds
@@ -51,7 +53,6 @@ class xxe_scan:
                 if self.data and unique_id in self.data:
                     #External DTD is enable. URL is suspecious to XXE
                     self.conn.sendall(data)
-                    global vulnerable
                     vulnerable = True
 
             self.conn.close()
