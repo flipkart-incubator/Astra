@@ -44,6 +44,7 @@ class xxe_scan:
 
     def start_listening(self):
         global vulnerable
+        vulnerable = False
         try:
             while True:
                 # Wait for 5 seconds
