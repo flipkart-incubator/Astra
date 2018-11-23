@@ -17,7 +17,7 @@ from scanstatus import check_scan_status, scan_status
 
 sys.path.append('../')
 
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from flask import Response, make_response
 from flask import request
 from flask import Flask
@@ -277,5 +277,9 @@ def main():
         thread.daemon = True
         thread.start()
 
-main()
 
+@app.route('/robots.txt', methods=['GET'])
+def robots():
+    return send_from_directory(app.static_folder, "robots.txt")
+
+main()

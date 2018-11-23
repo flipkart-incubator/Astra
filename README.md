@@ -14,6 +14,8 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - Rate limit
 - CORS misconfiguration (including CORS bypass techniques)
 - JWT attack
+- CRLF detection
+- Blind XXE injection 
 
 ## Roadmap
 [https://www.astra-security.info/roadmap/](https://www.astra-security.info/roadmap/)
@@ -142,3 +144,4 @@ $ python api.py
 - Ankur Bhargava
 - Harsh Grover
 - Flipkart security team
+- Pardeep Battu
