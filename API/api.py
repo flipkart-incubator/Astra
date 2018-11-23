@@ -7,6 +7,13 @@ import time
 import json
 import threading
 import logging
+import requests
+import socket
+import urlparse
+import re
+
+from dbconnection import db_connect
+from scanstatus import check_scan_status, scan_status
 
 sys.path.append('../')
 
@@ -14,16 +21,20 @@ from flask import Flask, render_template, send_from_directory
 from flask import Response, make_response
 from flask import request
 from flask import Flask
-#from astra import scan_single_api
 from flask import jsonify
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
+
+
+
 from utils.vulnerabilities import alerts
+#from utils.sendemail import send_email
 from jinja2 import utils
+from utils.email_cron import send_email_notification
 
 
 if os.getcwd().split('/')[-1] == 'API':
-    from astra import scan_single_api
+    from astra import scan_single_api, scan_postman_collection
 
 
 app = Flask(__name__, template_folder='../Dashboard/templates', static_folder='../Dashboard/static')
@@ -40,26 +51,9 @@ class ServerThread(threading.Thread):
     app.run(host='0.0.0.0', port= 8094)
 
 
-# Mongo DB connection
-maxSevSelDelay = 1
-try:
-    mongo_host = 'localhost'
-    mongo_port = 27017
-
-    if 'MONGO_PORT_27017_TCP_ADDR' in os.environ :
-        mongo_host = os.environ['MONGO_PORT_27017_TCP_ADDR']
-
-    if 'MONGO_PORT_27017_TCP_PORT' in os.environ:
-        mongo_port = int(os.environ['MONGO_PORT_27017_TCP_PORT'])
-
-    client = MongoClient(mongo_host, mongo_port, serverSelectionTimeoutMS=maxSevSelDelay)
-    client.server_info()
-
-except ServerSelectionTimeoutError as err:
-    exit("Failed to connect to MongoDB.")
-
+db_object = db_connect()
 global db
-db = client.apiscan
+db = db_object.apiscan
 
 
 ############################# Start scan API ######################################
@@ -107,20 +101,6 @@ def start_scan():
     
     return jsonify(msg)
 
-
-#############################  Fetch ScanID API #########################################
-def check_scan_status(data):
-    # Return the Scan status
-    total_scan = data['total_scan']
-    count = 0
-    for key,value in data.items():
-        if value == 'Y' or value == 'y':
-            count += 1
-
-    if total_scan == count:
-        return "Completed"
-    else:
-        return "In progress"
 
 @app.route('/scan/scanids/', methods=['GET'])
 def fetch_scanids():
@@ -204,7 +184,90 @@ def view_dashboard(page):
 def start_server():
     app.run(host='0.0.0.0', port= 8094)
 
-#if __name__ == "__main__":
+
+############################Postman collection################################
+
+def postman_collection_download(url):
+    # Download postman collection from URL
+    postman_req = requests.get(url,allow_redirects=True, verify=False)
+    try:
+        filename = url[url.rfind("/")+1:]+"_"+generate_hash()
+        open("../Files/"+filename, 'wb').write(postman_req.content)
+        return "../Files/"+filename
+    except:
+        return False
+
+
+def verify_email(email):
+    # credit : www.scottbrady91.com
+    match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+    return match
+
+
+@app.route('/scan/postman/', methods = ['POST'])
+def scan_postman():
+    content = request.get_json()
+    try:
+        # mandatory inputs
+        appname = content['appname']
+        postman_url = content['postman_url']
+        env_type = content['env_type']
+        if "email" in content.keys():
+            email_verify_result = verify_email(content['email'])
+            if email_verify_result == None:
+                # Not a valid email id
+                email = "NA"
+            else:
+                email = content['email']
+        else:
+            email = "NA"
+
+        try:
+            # IP address param is optional.
+            url = "NA"
+            if "ip" in content.keys():
+                url = content['ip']
+                if urlparse.urlparse(url).scheme == "http" or urlparse.urlparse(url).scheme == "https":
+                    ip = urlparse.urlparse(url).netloc
+                    socket.inet_aton(ip)
+                    ip_result = 1
+
+            else:
+                ip_result = 0
+        except:
+            print "Missing Arugument or invalid IP address!"
+            ip_result = 0
+
+
+        result = postman_collection_download(postman_url)
+
+        if result is False:
+            msg = {"status" : "Failed to Download Postman collection"}
+            return msg
+        else:
+            try:
+                scan_id = generate_hash()
+                db.scanids.insert({"scanid" : scan_id, "name" : appname, "url" : postman_url,"env_type": env_type, "url" : url,"email" : email})
+                if ip_result == 1:
+                    scan_result = scan_postman_collection(result,scan_id,url)
+                else:
+                    scan_result = scan_postman_collection(result,scan_id)
+            except:
+                #Failed to update the DB
+                pass
+
+            if scan_result == True:
+                 # Update the email notification collection 
+                db.email.insert({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
+                msg = {"status" : "Success", "scanid" : scan_id}
+            else:
+                msg = {"status" : "Failed!"}
+            
+
+    except:
+        msg = {"status" "Failed. Application name and postman URL is required!"}
+
+    return jsonify(msg)
 
 def main():
     if os.getcwd().split('/')[-1] == 'API':
@@ -214,9 +277,9 @@ def main():
         thread.daemon = True
         thread.start()
 
+
 @app.route('/robots.txt', methods=['GET'])
 def robots():
     return send_from_directory(app.static_folder, "robots.txt")
-
 
 main()
