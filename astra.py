@@ -9,6 +9,7 @@ import utils.logs as logs
 import urlparse
 import hashlib
 import webbrowser
+import re
 
 from core.zapscan import *
 from core.parsers import *
