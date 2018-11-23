@@ -29,6 +29,7 @@ from modules.crlf import crlf_check
 from core.zap_config import zap_start
 from multiprocessing import Process
 from utils.db import Database_update
+from utils.email_cron import email_start_cron
 
 
 if os.getcwd().split('/')[-1] != 'API':
@@ -42,6 +43,43 @@ def parse_collection(collection_name,collection_type):
     else:
         print "[-]Failed to Parse collection"
         sys.exit(1)
+
+def scan_postman_collection(file_name,scanid,new_url=None):
+    # Read and parse postman collection file
+    try:
+        parse_data = PostmanParser()
+        parse_data.postman_parser(file_name)
+        for data in parse_data.api_lst:
+            try:
+                url = data['url']['raw']
+            except:
+                url = data['url']
+            headers,method,body = data['headers'],data['method'],''
+            if headers:
+                try:
+                    headers = add_headers(headers)
+                except:
+                    pass
+
+            if data['body'] != '':
+                body = json.loads(base64.b64decode(data['body']))
+
+
+            if new_url is not None and new_url is not "NA":
+                uri = url[[m.start() for m in re.finditer('/',url)][2]:]
+                new_url = new_url+uri
+            else:
+                new_url = url
+
+            p = Process(target=modules_scan,args=(new_url,method,headers,body,scanid),name='module-scan')
+            p.start()
+
+        email_start_cron()
+        return True
+    
+    except:
+        return False
+
 
 def scan_complete():
     print "[+]Scan has been completed"
@@ -88,7 +126,6 @@ def read_scan_policy():
 
     except Exception as e:
         print e
-        print "Failed to parse scan property file."
 
     return attack
 
@@ -108,12 +145,15 @@ def modules_scan(url,method,headers,body,scanid=None):
         print "Failed to start scan."
         sys.exit(1)
 
-    if scanid is not None:
-        count = 0
-        for key,value in attack.items():
-            if value == 'Y' or value =='y':
-                count += 1
-        update_scan_status(scanid,"",count)
+    if scanid is None:
+        scanid = generate_scanid()
+    
+    count = 0
+    for key,value in attack.items():
+        if value == 'Y' or value =='y':
+            count += 1
+
+    update_scan_status(scanid,"",count)
 
 
     if attack['zap'] == "Y" or attack['zap'] == "y":
@@ -124,36 +164,44 @@ def modules_scan(url,method,headers,body,scanid=None):
 
     # Custom modules scan
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
-        cors_main(url,method,headers,body,scanid)
+        handleException(lambda: cors_main(url,method,headers,body,scanid), "CORS")
         update_scan_status(scanid, "cors")
     if attack['Broken auth'] == 'Y' or attack['Broken auth'] == 'y':
-        auth_check(url,method,headers,body,scanid)
+        handleException(lambda: auth_check(url,method,headers,body,scanid), "Authentication")
         update_scan_status(scanid, "auth")
     if attack['Rate limit'] == 'Y' or attack['Rate limit'] == 'y':
-        rate_limit(url,method,headers,body,scanid)
+        handleException(lambda: rate_limit(url,method,headers,body,scanid), "Rate limit")
         update_scan_status(scanid, "Rate limit")
     if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
-        csrf_check(url,method,headers,body,scanid)
+        handleException(lambda: csrf_check(url,method,headers,body,scanid), "CSRf")
         update_scan_status(scanid, "csrf")
     if attack['jwt'] == 'Y' or attack['jwt'] == 'y':
-        jwt_check(url,method,headers,body,scanid)
+        handleException(lambda: jwt_check(url,method,headers,body,scanid), "JWT")
         update_scan_status(scanid, "jwt")
     if attack['sqli'] == 'Y' or attack['sqli'] == 'y':
-        sqli_check(url,method,headers,body,scanid)
+        handleException(lambda: sqli_check(url,method,headers,body,scanid), "SQL injection")
         update_scan_status(scanid, "sqli")
     if attack['xss'] == 'Y' or attack['xss'] == 'y':
-        xss_check(url,method,headers,body,scanid)
+        handleException(lambda: xss_check(url,method,headers,body,scanid), "XSS")
         update_scan_status(scanid, "xss")
     if attack['open-redirection'] == 'Y' or attack['open-redirection'] == 'y':
-        open_redirect_check(url,method,headers,body,scanid)
+        handleException(lambda: open_redirect_check(url,method,headers,body,scanid), "Open redirect")
         update_scan_status(scanid, "open-redirection")
     if attack['xxe'] == 'Y' or attack['xxe'] == 'y':
         xxe = xxe_scan()
-        xxe.xxe_test(url,method,headers,body,scanid)
+        handleException(lambda: xxe.xxe_test(url,method,headers,body,scanid), "XXE")
         update_scan_status(scanid, "xxe")
     if attack['crlf'] == 'Y' or attack['crlf'] == 'y':
-        crlf_check(url,method,headers,body,scanid)
+        handleException(lambda: crlf_check(url,method,headers,body,scanid), "CRLF")
         update_scan_status(scanid, "crlf") 
+
+
+def handleException(method, module_name):
+    try:
+        #raise Exception("handle exception")
+        method()
+    except Exception:
+        print "exception in", module_name
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
@@ -222,7 +270,7 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
             if data['body'] != '':
                 body = json.loads(base64.b64decode(data['body']))
 
-            modules_scan(url,method,headers,body,scanid)        
+            modules_scan(url,method,headers,body,scanid)      
 
     else:
         print "%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W)
