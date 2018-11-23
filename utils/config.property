@@ -3,6 +3,15 @@ zap_ip = 127.0.0.1
 zap_port = 8123
 zap_apikey = test
 
+[SMTP]
+email_notification = Y
+ip = 127.0.0.1
+email_cc = email_cc@example.com
+email_subject = Scan completed!
+email_message = Hi, <br><br>The scan has been completed and the scan report can be viewed at 
+email_from = email_from@domain.com
+email_schedule = 100
+
 [login]
 auth_type = 
 auth_names = cookie,accesstoken,access_token,token,auth_token
