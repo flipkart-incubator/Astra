@@ -10,18 +10,15 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+		<script src="{{ url_for('static', filename='jquery.min.js')}}"></script>
+  		<script src="{{ url_for('static', filename='bootstrap.min.js')}}"></script>
 
 		<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='scan.js') }}"></script>
             
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+            <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table.min.css') }}">
+            <script src="{{ url_for('static', filename='bootstrap-table.min.js') }}"></script>
 
 	</head>
 
