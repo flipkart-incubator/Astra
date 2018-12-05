@@ -27,6 +27,7 @@ from modules.xss import xss_check
 from modules.redirect import open_redirect_check
 from modules.xxe import xxe_scan
 from modules.crlf import crlf_check
+from modules.security_headers_missing import security_headers_missing
 from core.zap_config import zap_start
 from multiprocessing import Process
 from utils.db import Database_update
@@ -194,8 +195,10 @@ def modules_scan(url,method,headers,body,scanid=None):
         update_scan_status(scanid, "xxe")
     if attack['crlf'] == 'Y' or attack['crlf'] == 'y':
         handleException(lambda: crlf_check(url,method,headers,body,scanid), "CRLF")
-        update_scan_status(scanid, "crlf") 
-
+        update_scan_status(scanid, "crlf")
+    if attack['security_headers'] == 'Y' or attack['security_headers'] == 'y':
+        handleException(lambda: security_headers_missing(url,method,headers,body,scanid), "security_headers")
+        update_scan_status(scanid, "security_headers") 
 
 def handleException(method, module_name):
     try:
