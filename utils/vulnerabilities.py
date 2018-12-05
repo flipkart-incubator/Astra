@@ -86,5 +86,64 @@ alerts = [
       'name': 'XML External Entity Attack',
       'Description':  'An XML External Entity attack is a type of attack against an application that parses XML input. This attack occurs when XML input containing a reference to an external entity is processed by a weakly configured XML parser. This attack may lead to the disclosure of confidential data, denial of service, server side request forgery, port scanning from the perspective of the machine where the parser is located, and other system impacts.',
       'remediation': 'The XML processor should be configured to use a local static DTD and disallow any declared DTD included in the XML document.'
+      },
+      {
+      'id': 15,
+      'name': 'Security Headers Missing',
+      'Description':  ' ',
+      'remediation': 'Implement proper CSP header.'
+      },
+      {
+      'id': 16,
+      'name': 'X-XSS-Protection Header Missing',
+      'Description':  'The HTTP X-XSS-Protection response header is a feature of Internet Explorer, Chrome and Safari that stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.',
+      'remediation': 'Implement X-XSS-Protection: 1; mode=block.'
+      },
+      {
+      'id': 17,
+      'name': 'X-XSS-Protection Header disabled',
+      'Description':  'The HTTP X-XSS-Protection response header is a feature of Internet Explorer, Chrome and Safari that stops pages from loading when they detect reflected cross-site scripting (XSS) attacks',
+      'remediation': 'X-XSS-Protection is Disabled. Implement X-XSS-Protection: 1; mode=block '
+      },
+      {
+      'id': 18,
+      'name': 'X-XSS-Protection Header not securly implemented',
+      'Description':  'The HTTP X-XSS-Protection response header is a feature of Internet Explorer, Chrome and Safari that stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.',
+      'remediation': 'Implement X-XSS-Protection: 1; mode=block.'
+      },
+      {
+      'id': 19,
+      'name': 'X-Frame-Options Header Missing',
+      'Description':  'The X-Frame-Options HTTP response header can be used to indicate whether or not a browser should be allowed to render a page in a &lt;frame&gt;, &lt;iframe&gt; or &lt;object&gt;',
+      'remediation': 'Set X-Frame-Options header to deny, sameorigin or allow-from <domain>'
+      },
+      {
+      'id': 20,
+      'name': 'X-Content-Type-Options Header Missing',
+      'Description':  'The X-Content-Type-Options response HTTP header is a marker used by the server to indicate that the MIME types advertised in the Content-Type headers should not be changed and be followed.',
+      'remediation': 'Implement X-Content-Type-Options: nosniff'
+      },
+      {
+      'id': 21,
+      'name': 'Strict-Transport-Security Header Missing',
+      'Description':  'The X-Content-Type-Options response HTTP header is a marker used by the server to indicate that the MIME types advertised in the Content-Type headers should not be changed and be followed.',
+      'remediation': 'Implement X-Content-Type-Options: nosniff'
+      },
+      {
+      'id': 22,
+      'name': 'Cookie not marked secure or httponly',
+      'Description':  'The secure flag is an option that can be set by the application server when sending a new cookie to the user within an HTTP Response. The purpose of the secure flag is to prevent cookies from being observed by unauthorized parties due to the transmission of a the cookie in clear text. Using the HttpOnly flag when generating a cookie helps mitigate the risk of client side script accessing the protected cookie.',
+      'remediation': 'Cookie should be marked secure and httponly.'
+      },
+      {
+      'id': 23,
+      'name': 'Version disclosed in response header',
+      'Description':  "Some of these headers, 'Server', 'X-Powered-By', 'X-AspNet-Version' are revealing server version number.",
+      'remediation': 'Configure these headers to give out generic server name in response.'
       }
+
 ]
+
+
+
+
