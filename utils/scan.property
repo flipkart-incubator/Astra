@@ -4,13 +4,13 @@ attack = {
           "Broken auth" : "n",
           "Rate limit" : "y",
           "csrf" : 'y',
-          "zap" : 'y',
-          "jwt" : 'y',
+          "zap" : 'n',
+          "jwt" : 'n',
           "sqli" : 'y',
           "xss" : 'y',
           "open-redirection" : "y",
           "xxe" : "y",
-	     "crlf" : "y",
+	  "crlf" : "y",
           "security_headers": "y"
          }
 
