@@ -2,7 +2,8 @@
 [![Github Release Version](https://img.shields.io/badge/python-2.7-blue.svg)](https://github.com/flipkart-incubator/Astra)
 
 [![BH 2018 USA](https://img.shields.io/badge/Black%20Hat%20Arsenal-USA%202018-blue.svg)](https://www.blackhat.com/us-18/arsenal/schedule/index.html#astra-automated-security-testing-for-rest-apis-11976)
-[![BH 2018 USA](https://img.shields.io/badge/Black%20Hat%20Arsenal-Europe%202018-blue.svg)](https://www.blackhat.com/eu-18/arsenal/schedule/index.html#astra-automated-security-testing-for-rest-apis-13353)
+
+[![BH 2018 Europe](https://img.shields.io/badge/Black%20Hat%20Arsenal-Europe%202018-blue.svg)](https://www.blackhat.com/eu-18/arsenal/schedule/index.html#astra-automated-security-testing-for-rest-apis-13353)
 
 ## Astra
 ![alt text](https://raw.githubusercontent.com/flipkart-incubator/Astra/dev/Dashboard/static/astra.png)
