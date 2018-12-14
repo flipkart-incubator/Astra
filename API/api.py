@@ -72,6 +72,17 @@ def xss_filter(data):
         pass
 
     return filterd_data
+# parser headers
+def headers_to_json(header_text):
+    to_json = {}
+    try:
+        for line in header_text.strip().split("\n"):
+            print(line)
+            to_json[line.split(":")[0]] = ":".join(line.split(":")[1:]) if len(line.split(":")) > 2 else line.split(":")[1]
+
+        return json.dumps(to_json)
+    except:
+        return header_text
 
 # Start the scan and returns the message
 @app.route('/scan/', methods = ['POST'])
@@ -81,7 +92,7 @@ def start_scan():
     try:
         name = content['appname']
         url = str(content['url'])
-        headers = str(content['headers'])
+        headers = headers_to_json(str(content['headers']))
         body = str(content['body'])
         method = content['method']
         api = "Y"
@@ -94,10 +105,10 @@ def start_scan():
             except:
                 print "Failed to update DB"
         else:
-            msg = {"status" : "Failed"}
-    
-    except:
-        msg = {"status" : "Failed"} 
+            msg = {"status" : "Failed aaaa"}
+
+    except Exception as e:
+        msg = {"status" : "Failed"}
     
     return jsonify(msg)
 
