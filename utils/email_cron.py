@@ -4,10 +4,17 @@ import sys
 import utils.logs as logs
 import time
 
+import os
 from utils.sendemail import send_email
 from utils.config import get_value
 from utils.db import Database_update
-from API.scanstatus import scan_status
+
+try:
+    from API.scanstatus import scan_status
+except Exception as e:
+    SCRIPT_PATH= os.path.split(os.path.realpath(__file__))[0]
+    sys.path.append(os.path.join(SCRIPT_PATH,'..','API'))
+    from scanstatus import scan_status
 
 email_db = Database_update()
 emails = send_email()

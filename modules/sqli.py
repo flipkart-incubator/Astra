@@ -29,6 +29,8 @@ def set_options_list(url, method, headers, body, task_id):
     data = {}
     data['url'], data['method'], data['headers'] = url, method, headers
     if method.upper() == 'POST' or method.upper() == 'PUT':
+        if headers['Content-Type']=='application/json':
+            body=json.dumps(body)
         data['data'] = body
     options_list = req.api_request(options_set_url, "POST", api_header, data)
     if options_list.status_code == 200:
