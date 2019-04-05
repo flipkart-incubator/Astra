@@ -30,12 +30,12 @@ from pymongo.errors import ServerSelectionTimeoutError
 from utils.vulnerabilities import alerts
 #from utils.sendemail import send_email
 from jinja2 import utils
-from utils.email_cron import send_email_notification
+# from utils.email_cron import send_email_notification
 
-
-if os.getcwd().split('/')[-1] == 'API':
-    from astra import scan_single_api, scan_postman_collection
-
+SCRIPT_PATH= os.path.split(os.path.realpath(__file__))[0]
+sys.path.append(os.path.join(SCRIPT_PATH,'..'))
+# import scan_single_api, scan_postman_collection
+from astra import *
 
 app = Flask(__name__, template_folder='../Dashboard/templates', static_folder='../Dashboard/static')
 
@@ -282,4 +282,5 @@ def main():
 def robots():
     return send_from_directory(app.static_folder, "robots.txt")
 
-main()
+if __name__ == '__main__':
+    main()
