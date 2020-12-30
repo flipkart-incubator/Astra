@@ -58,7 +58,7 @@ db = db_object.apiscan
 
 ############################# Start scan API ######################################
 def generate_hash():
-    # Return md5 hash value of current timestmap 
+    # Return md5 hash value of current timestamp 
     scanid = hashlib.md5(str(time.time())).hexdigest()
     return scanid
 
