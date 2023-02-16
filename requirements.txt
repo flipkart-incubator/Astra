@@ -29,7 +29,7 @@ tzlocal==4.2
 urllib3==1.24.3
 vine==5.0.0
 wcwidth==0.2.5
-Werkzeug==2.2.2
+Werkzeug==2.2.3
 zipp==3.10.0
 requests
 logger
@@ -68,7 +68,7 @@ tzlocal==4.2
 urllib3==1.24.3
 vine==5.0.0
 wcwidth==0.2.5
-Werkzeug==2.2.2
+Werkzeug==2.2.3
 zipp==3.10.0
 Flask==2.2.2
 Jinja2==3.0.3
