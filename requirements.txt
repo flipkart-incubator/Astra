@@ -26,7 +26,7 @@ six==1.16.0
 sqlmap==1.6.10
 tzdata==2022.7
 tzlocal==4.2
-urllib3==1.24.3
+urllib3==1.26.5
 vine==5.0.0
 wcwidth==0.2.5
 Werkzeug==2.2.2
@@ -65,7 +65,7 @@ six==1.16.0
 sqlmap==1.6.10
 tzdata==2022.7
 tzlocal==4.2
-urllib3==1.24.3
+urllib3==1.26.5
 vine==5.0.0
 wcwidth==0.2.5
 Werkzeug==2.2.2
