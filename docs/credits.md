@@ -4,6 +4,8 @@ sqlmap : [https://github.com/sqlmapproject/sqlmap](https://github.com/sqlmapproj
 
 Team:
 ```
+- Kinshuk Dua
+- Aastha
 - Harsh Grover
 - Prajal Kulkarani
 - Ankur Bhargava

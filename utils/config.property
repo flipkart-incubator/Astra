@@ -15,6 +15,7 @@ email_schedule = 100
 [login]
 auth_type = 
 auth_names = cookie,accesstoken,access_token,token,auth_token
+auth_token = Authorization
 auth_header = 
 loginresult = 
 loginurl = 

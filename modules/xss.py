@@ -1,14 +1,15 @@
 import os
-import urlparse
-import sendrequest as req
+import urllib.parse
+from . import sendrequest as req
 import utils.logs as logs
-import urlparse
+import urllib.parse
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from utils.logger import logger
 from utils.db import Database_update
 from utils.config import get_value
+from celery_app import app
 
 dbupdate = Database_update()
 api_logger = logger()
@@ -44,7 +45,7 @@ def check_xss_impact(res_headers):
 
 def xss_payload_decode(payload):
     # Return decoded payload of XSS. 
-    decoded_payload = urllib.unquote(payload).decode('utf8').encode('ascii','ignore')
+    decoded_payload = urllib.parse.unquote(payload)
     return decoded_payload
 
 def xss_post_method(url,method,headers,body,scanid=None):
@@ -52,7 +53,7 @@ def xss_post_method(url,method,headers,body,scanid=None):
     temp_body = {}
     post_vul_param = ''
     db_update = ''
-    for key,value in body.items():
+    for key,value in list(body.items()):
         xss_payloads = fetch_xss_payload()
         for payload in xss_payloads:
             temp_body.update(body)
@@ -88,7 +89,7 @@ def xss_http_headers(url,method,headers,body,scanid=None):
     temp_headers.update(headers)
     xss_payloads = fetch_xss_payload()
     for payload in xss_payloads:
-        parse_domain = urlparse.urlparse(url).netloc
+        parse_domain = urllib.parse.urlparse(url).netloc
         host_header = {"Host" : parse_domain + '/' + payload}
         temp_headers.update(host_header)
         host_header_xss = req.api_request(url, "GET", temp_headers)
@@ -97,7 +98,7 @@ def xss_http_headers(url,method,headers,body,scanid=None):
             if host_header_xss.text.find(decoded_payload) != -1:
                 impact = "Low"
                 logs.logging.info("%s is vulnerable to XSS",url)
-                print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
+                print("%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W))
                 attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": host_header_xss.headers ,"res_body": host_header_xss.text}
                 dbupdate.insert_record(attack_result)
                 break
@@ -116,7 +117,7 @@ def xss_http_headers(url,method,headers,body,scanid=None):
         if ref_header_xss.text.find(decoded_payload) != -1:
             impact = check_xss_impact(temp_headers)
             logs.logging.info("%s is vulnerable to XSS",url)
-            print "%s[{0}] {1} is vulnerable to XSS via referer header%s".format(impact,url)% (api_logger.G, api_logger.W)
+            print("%s[{0}] {1} is vulnerable to XSS via referer header%s".format(impact,url)% (api_logger.G, api_logger.W))
             attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting via referer header", "impact": impact, "req_headers": temp_headers, "req_body":body, "res_headers": ref_header_xss.headers ,"res_body": ref_header_xss.text}
             dbupdate.insert_record(attack_result)
             return
@@ -132,7 +133,7 @@ def xss_get_url(url,method,headers,body,scanid=None):
     for uri_list in uri_check_list:
         if uri_list in url:
             # Parse domain name from URI.
-            parsed_url = urlparse.urlparse(url).scheme+"://"+urlparse.urlparse(url).netloc+urlparse.urlparse(url).path
+            parsed_url = urllib.parse.urlparse(url).scheme+"://"+urllib.parse.urlparse(url).netloc+urllib.parse.urlparse(url).path
             break
 
     if parsed_url == '':
@@ -142,17 +143,18 @@ def xss_get_url(url,method,headers,body,scanid=None):
         decoded_payload = xss_payload_decode(payload)
         xss_request_url = req.api_request(parsed_url+'/'+payload,"GET",headers)
         if result is not True:
-            if xss_request_url.text.find(decoded_payload) != -1:
-                impact = check_xss_impact(xss_request_url.headers)
-                attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request_url.headers ,"res_body": xss_request_url.text}
-                dbupdate.insert_record(attack_result)
-                result = True
+            if xss_request_url:
+                if xss_request_url.text.find(decoded_payload) != -1:
+                    impact = check_xss_impact(xss_request_url.headers)
+                    attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request_url.headers ,"res_body": xss_request_url.text}
+                    dbupdate.insert_record(attack_result)
+                    result = True
 
         xss_request_uri = req.api_request(parsed_url+'/?test='+payload,"GET",headers)             
         if xss_request_uri.text.find(decoded_payload) != -1:
             impact = check_xss_impact(xss_request_uri.headers)
             logs.logging.info("%s is vulnerable to XSS",url)
-            print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
+            print("%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W))
             attack_result = { "id" : 11, "scanid" : scanid, "url" : url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request_url.headers ,"res_body": xss_request_url.text}
             dbupdate.insert_record(attack_result)
                 
@@ -162,10 +164,10 @@ def xss_get_uri(url,method,headers,body,scanid=None):
     # http://localhost/?firstname=<payload>&lastname=<payload>
     db_update = ''
     vul_param = ''
-    url_query = urlparse.urlparse(url)
-    parsed_query = urlparse.parse_qs(url_query.query)
+    url_query = urllib.parse.urlparse(url)
+    parsed_query = urllib.parse.parse_qs(url_query.query)
     if parsed_query:
-        for key,value in parsed_query.items():
+        for key,value in list(parsed_query.items()):
             try:
                 result = ''
                 logs.logging.info("GET param for xss : %s",key)
@@ -174,14 +176,14 @@ def xss_get_uri(url,method,headers,body,scanid=None):
                     # check for URI based XSS
                     # Example : http://localhost/?firstname=<payload>&lastname=<payload>
                     if result is not True:
-                        parsed_url = urlparse.urlparse(url)
+                        parsed_url = urllib.parse.urlparse(url)
                         xss_url = parsed_url.scheme+"://"+parsed_url.netloc+parsed_url.path+"?"+parsed_url.query.replace(value[0], payload)
                         xss_request = req.api_request(xss_url,"GET",headers)
                         decoded_payload = xss_payload_decode(payload)
                         if xss_request.text.find(decoded_payload) != -1:
                             impact = check_xss_impact(xss_request.headers)
                             logs.logging.info("%s is vulnerable to XSS",url)
-                            print "%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W)
+                            print("%s[{0}] {1} is vulnerable to XSS%s".format(impact,url)% (api_logger.G, api_logger.W))
                             if db_update is not True:
                                 attack_result = { "id" : 11, "scanid" : scanid, "url" : xss_url, "alert": "Cross Site Scripting", "impact": impact, "req_headers": headers, "req_body":body, "res_headers": xss_request.headers ,"res_body": xss_request.text}
                                 dbupdate.insert_record(attack_result)
@@ -204,7 +206,7 @@ def xss_get_uri(url,method,headers,body,scanid=None):
             logs.logging.info("%s Vulnerable Params:",vul_param)
             dbupdate.update_record({"scanid": scanid}, {"$set" : {"scan_data" : vul_param+" parameters are vulnerable to XSS"}})
 
-
+@app.task
 def xss_check(url,method,headers,body,scanid):
     # Main function for XSS attack
     if method == 'GET' or method == 'DEL':

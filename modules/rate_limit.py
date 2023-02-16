@@ -1,13 +1,13 @@
 import utils.logger as logger
 import utils.logs as logs
-import sendrequest as req
+from . import sendrequest as req
 import json
 import ast
 import base64
 import random
 import string
 import sys
-
+from celery_app import app
 sys.path.append('../')
 
 from utils.db import Database_update
@@ -40,7 +40,7 @@ def brute_force(url,method,headers,body,attack_params,scanid):
 			length = len(str(param_value))
 			brute_list = generate_list(length,'int')
 
-		elif type(param_value) == str or type(param_value) == unicode:
+		elif type(param_value) == str or type(param_value) == str:
 			length = len(param_value)
 			brute_list = generate_list(length,'str')
 
@@ -91,7 +91,7 @@ def brute_force(url,method,headers,body,attack_params,scanid):
 
 			return attack_result
 			
-
+@app.task
 def rate_limit(url,method,headers,body,scanid=None):
 	try:
 		if method == "POST" or method == "PUT":
@@ -100,7 +100,7 @@ def rate_limit(url,method,headers,body,scanid=None):
 				param_names = ['pin','password','cvv','pass','otp']
 				attack_params = []
 				for name in param_names:
-					for key,value in body.items():
+					for key,value in list(body.items()):
 						if name.lower() == key.lower():
 							attack_params.append(name.lower())
 
@@ -108,5 +108,5 @@ def rate_limit(url,method,headers,body,scanid=None):
 					attack_result = brute_force(url,method,headers,body,attack_params,scanid)
 					dbupdate.insert_record(attack_result)
 	except:
-		print "Failed to test rate limit"
+		print("Failed to test rate limit")
 					

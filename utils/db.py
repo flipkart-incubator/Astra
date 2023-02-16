@@ -20,11 +20,11 @@ class Database_update:
 		self.db = self.client.apiscan
 
 	def fetch_records(self):
-		records = self.db.vulnerbilities.find({})
+		records = self.db.vulnerabilities.find({})
 		if records:
 			for data in records:
 				data.pop('_id')
-				print data
+				print(data)
 
 	def insert_record(self,data):
 		try:

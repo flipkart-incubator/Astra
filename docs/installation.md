@@ -16,6 +16,7 @@ As of now, Astra can be installed only on Linux and MacOS. Please make sure that
 - pyjwt
 - flask
 - sqlmap
+- celery
 ```
 
 ## ** Steps **
@@ -24,6 +25,10 @@ Follow these steps to install Astra:
 $ git clone https://github.com/flipkart-incubator/Astra
 $ cd Astra
 $ sudo pip install -r requirements.txt
+$ sudo rabbitmq-server
+$ celery -A worker -loglevel=INFO
+$ cd API
+$ python3 api.py
 ```
 
 ## Docker Installation

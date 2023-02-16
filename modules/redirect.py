@@ -1,12 +1,13 @@
-import sendrequest as req
+from . import sendrequest as req
 import utils.logs as logs
 import os
-import urlparse
+import urllib.parse
 
 from itertools import islice
 from utils.logger import logger
 from utils.db import Database_update
 from utils.config import get_value
+from celery_app import app
 
 dbupdate = Database_update()
 api_logger = logger()
@@ -36,7 +37,7 @@ def fetch_redirection_names():
 def redirection_post_method(url,method,headers,body,scanid):
     # Check for POST based open redirection.
     temp_body = {}
-    for key,value in body.items():
+    for key,value in list(body.items()):
         param_names = fetch_redirection_names()
         for name in param_names:
             if key == name:
@@ -52,7 +53,7 @@ def redirection_post_method(url,method,headers,body,scanid):
                     post_req = req.api_request(url, "POST", headers, temp_body)
                     if str(post_req.status_code)[0] == '3':
                         if post_req.headers['Location'].startswith(redirection_url) is True:
-                            print "%s[Medium] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W)
+                            print("%s[Medium] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W))
                             logs.logging.info("%s is vulnerable to open redirection",url)
                             attack_result = { "id" : 12, "scanid" : scanid, "url" : url, "alert": "Open redirection", "impact": "Medium", "req_headers": headers, "req_body":body, "res_headers": post_req.headers ,"res_body": "NA"}
                             dbupdate.insert_record(attack_result)
@@ -61,9 +62,9 @@ def redirection_post_method(url,method,headers,body,scanid):
 
 def redirection_get_uri(url,method,headers,body,scanid):
     # This function checks for URI based redirection. Ex: http://localhost?url=<redirection URL>
-    url_query = urlparse.urlparse(url)
-    parsed_query = urlparse.parse_qs(url_query.query)
-    for key,value in parsed_query.items():
+    url_query = urllib.parse.urlparse(url)
+    parsed_query = urllib.parse.parse_qs(url_query.query)
+    for key,value in list(parsed_query.items()):
         redirect_name = fetch_redirection_names()
         for name in redirect_name:
             if name == key:
@@ -73,21 +74,44 @@ def redirection_get_uri(url,method,headers,body,scanid):
                         payload = payload[payload.find('=')+1:].replace('{target}',redirection_url)
                     else:
                         payload = payload.replace('{target}',redirection_url)
-                    parsed_url = urlparse.urlparse(url)
+                    parsed_url = urllib.parse.urlparse(url)
                     redirect_url = parsed_url.scheme+"://"+parsed_url.netloc+parsed_url.path+"/?"+parsed_url.query.replace(value[0], payload)
                     fuzz_req = req.api_request(redirect_url, "GET", headers)
                     if str(fuzz_req.status_code)[0] == '3':
                         if fuzz_req.headers['Location'].startswith(redirection_url) is True:
-                            print "%s[Medium] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W)
+                            print("%s[Medium] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W))
                             logs.logging.info("%s is vulnerable to open redirection",redirect_url)
                             attack_result = { "id" : 12, "scanid" : scanid, "url" : redirect_url, "alert": "Open redirection", "impact": "Medium", "req_headers": headers, "req_body":body, "res_headers": fuzz_req.headers ,"res_body": "NA"}
                             dbupdate.insert_record(attack_result)
                             return
 
-
 def fuzz_url(url,method,headers,body,scanid):
     # Fuzzing target URL with different params.
-    parsed_url = urlparse.urlparse(url)
+    parsed_url = urllib.parse.urlparse(url)
+    path = parsed_url.path
+    if path and path[-1] == "/":
+            path = path[:-1]
+    target_domain = parsed_url.scheme+"://"+parsed_url.netloc+path
+    redirect_payload = fetch_open_redirect_payload()
+    for payload in redirect_payload:
+        try:
+            target_url = target_domain + payload.replace("{target}", redirection_url)
+        except:
+            target_url = str(target_domain) + str(payload)
+        fuzz_req = req.api_request(target_url, "GET", headers)
+        if str(fuzz_req.status_code//100) == '3':
+            location_header = fuzz_req.headers['Location']
+            if  "google" in location_header.lower() or location_header.startswith(redirection_url):
+                print("%s[ Medium ] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W))
+                logs.logging.info("%s is vulnerable to open redirection",url)
+                attack_result = { "id" : 12, "scanid" : scanid, "url" : target_url, "alert": "Open redirection", "impact": "Medium", "req_headers": headers, "req_body":body, "res_headers": fuzz_req.headers ,"res_body": "NA"}
+                dbupdate.insert_record(attack_result)
+                return
+
+
+def fuzz_base_url(url,method,headers,body,scanid):
+    # Fuzzing target URL with different params.
+    parsed_url = urllib.parse.urlparse(url)
     target_domain = parsed_url.scheme+"://"+parsed_url.netloc+"/"
     redirect_payload = fetch_open_redirect_payload()
     for payload in redirect_payload:
@@ -95,16 +119,16 @@ def fuzz_url(url,method,headers,body,scanid):
             target_url = target_domain + payload.replace("{target}", redirection_url)
         except:
             target_url = str(target_domain) + str(payload)
-
         fuzz_req = req.api_request(target_url, "GET", headers)
-        if str(fuzz_req.status_code)[0] == '3':
+        if str(fuzz_req.status_code//100) == '3':
             if fuzz_req.headers['Location'].startswith(redirection_url) is True:
-                print "%s[ Medium ] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W)
+                print("%s[ Medium ] {0} is vulnerable to open redirection%s".format(url)% (api_logger.Y, api_logger.W))
                 logs.logging.info("%s is vulnerable to open redirection",url)
                 attack_result = { "id" : 12, "scanid" : scanid, "url" : target_url, "alert": "Open redirection", "impact": "Medium", "req_headers": headers, "req_body":body, "res_headers": fuzz_req.headers ,"res_body": "NA"}
                 dbupdate.insert_record(attack_result)
                 return
 
+@app.task
 def open_redirect_check(url,method,headers,body,scanid=None):
     # main function for open redirection.
     if method == 'GET':
@@ -112,3 +136,4 @@ def open_redirect_check(url,method,headers,body,scanid=None):
     if method == 'POST':
         redirection_post_method(url,method,headers,body,scanid)
     fuzz_url(url,method,headers,body,scanid)
+    fuzz_base_url(url,method,headers,body,scanid)

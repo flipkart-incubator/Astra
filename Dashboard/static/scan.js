@@ -9,7 +9,8 @@ function recent_scans() {
                 if(location.href.search('reports.html') != -1)
                 {
 
-                    scan_data = "<a href=/reports.html#"+resp[key]['scanid']+" onclick='location.reload()'>"+resp[key]['url']+"</a><br>";
+                    // scan_data = "<a href=/reports.html#"+resp[key]['scanid']+" onclick='location.reload()'>"+resp[key]['url']+"</a><br>";
+                    scan_data = "<a href=/reports.html#"+resp[key]['scanid']+' target="_blank">'+resp[key]['url']+"</a><br>";
                     
                 } 
                 else
@@ -19,7 +20,7 @@ function recent_scans() {
                 }
 
                 // Update dictionary
-                console.log(resp[key]["scan_status"]);
+                //console.log(resp[key]["scan_status"]);
                 if(resp[key]["scan_status"] == "Completed")
                 {
                   resp[key].scan_status = '<span class="label label-success">Completed</span>';
@@ -30,9 +31,10 @@ function recent_scans() {
                   resp[key].scan_status = '<span class="label label-warning">In Progress</span>';
 
                 }
+                resp[key].export_data = '<a href="/reports/'+resp[key]['scanid']+'"><u>Download</u></a>'
                 resp[key].scanid = scan_data;
                 resp[key].id = parseInt(key) + 1;
-                console.log(resp);
+                //console.log(resp);
                 
             }
 

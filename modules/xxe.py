@@ -6,10 +6,10 @@ import threading
 import time
 import hashlib
 import os
-import sendrequest as req
+from . import sendrequest as req
 import utils.logger as logger
 import utils.logs as logs
-
+from celery_app import app
 from utils.db import Database_update
 
 dbupdate = Database_update()
@@ -31,7 +31,7 @@ class xxe_scan:
         self.host = socket.gethostbyname(socket.gethostname())
 
     def generate_hash(self):
-        return hashlib.md5(str(time.time())).hexdigest()
+        return hashlib.md5(str(time.time()).encode('utf-8')).hexdigest()
 
     def start_server(self):
         self.s = socket.socket()
@@ -59,7 +59,7 @@ class xxe_scan:
             self.conn.close()
 
         except socket.error:
-            print "[-]URL might not be vulnerable to XXE. We reccomend you to check it manually"
+            print("[-]URL might not be vulnerable to XXE. We reccomend you to check it manually")
             self.conn.close()
 
     def fetch_xxe_payload(self):
@@ -90,13 +90,13 @@ class xxe_scan:
         for payload in xxe_payloads:
             payload = payload.replace("{host}",host)
             xxe_request = requests.post(url, headers=temp_headers, data=payload)
-            time.sleep(10)
+            # time.sleep(10)
             if vulnerable is True:
-                print "[+]{0} is vulnerable to XML External Entity Attack".format(url)
+                print("[+]{0} is vulnerable to XML External Entity Attack".format(url))
                 attack_result = { "id" : 14, "scanid" : scanid, "url" : url, "alert": "XML External Entity Attack", "impact": "High", "req_headers": temp_headers, "req_body":payload, "res_headers": xxe_request.headers ,"res_body": xxe_request.text}
                 dbupdate.insert_record(attack_result)
                 break
-            
+    @app.task 
     def xxe_test(self,url,method,headers,body,scanid=None):
         temp_headers = {}
         temp_headers.update(headers)

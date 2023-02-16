@@ -6,7 +6,7 @@ import time
 import ast
 import utils.logger as logger
 import utils.logs as logs
-import urlparse
+import urllib.parse
 import hashlib
 import webbrowser
 import re
@@ -24,29 +24,74 @@ from modules.csrf import csrf_check
 from modules.jwt_attack import jwt_check
 from modules.sqli import sqli_check
 from modules.xss import xss_check
-from modules.redirect import open_redirect_check
+from modules.redirect import open_redirect_check, fetch_redirection_names
 from modules.xxe import xxe_scan
 from modules.crlf import crlf_check
 from modules.security_headers_missing import security_headers_missing
+from modules.ssrf import ssrf_check
+from modules.template_injection import template_injection_check
+from modules.broken_auth import broken_auth_check
 from core.zap_config import zap_start
-from multiprocessing import Process
+from billiard import Process
 from utils.db import Database_update
 from utils.email_cron import email_start_cron
-
-
-if os.getcwd().split('/')[-1] != 'API':
-    from API.api import main
+from celery_app import app
+# if os.getcwd().split('/')[-1] != 'API':
+#     from API.api import main
     
 dbupdate = Database_update()
+
+def analyze_attack(url, headers, attack):
+
+    # SSRF/Open Redirect
+    # 1) Get param value -> if url present
+    # 2) Get param name has specific name 
+    # DONE 
+
+    # Prioritize 
+    # Trigger all
+
+    # SQLMAP
+    # Validate how POST requests are handled
+    # YES These are being handled correctly
+
+    # POSTMAN COlLECTION
+    # File upload
+    # Login endpoint (user + pass)
+    # Request for refresh token (pass exiting token)
+    # Test open API/altoromutual?
+    # 401 -> trigger login endpoint
+
+    parsed_url = urllib.parse.urlparse(url)
+
+    if parsed_url.query:
+        attack['ssrf'] = 'Y'
+        for param in fetch_redirection_names():
+            if param in parsed_url.query:
+                attack['open-redirection'] = 'Y'
+                attack['ssrf'] = 'Y'
+                break
+        urllib.parse.parse_qs(parsed_url.query)
+        if parsed_url.path and "." in parsed_url.path:
+            attack['ssrf'] = 'Y'
+    
+    if 'Authorization' in headers:
+        attack['Broken auth'] = 'Y'
+
 
 def parse_collection(collection_name,collection_type):
     if collection_type == 'Postman':
         parse_data.postman_parser(collection_name)
     else:
-        print "[-]Failed to Parse collection"
+        print("[-]Failed to Parse collection")
         sys.exit(1)
 
-def scan_postman_collection(file_name,scanid,new_url=None):
+def get_auth_from_url(url, body, token_name):
+    r = requests.post(url,data=body)
+    ret = r.json()
+    return ret[token_name]
+
+def scan_postman_collection(file_name,scanid,auth_token, new_url=None):
     # Read and parse postman collection file
     try:
         parse_data = PostmanParser()
@@ -62,36 +107,42 @@ def scan_postman_collection(file_name,scanid,new_url=None):
                     headers = add_headers(headers)
                 except:
                     pass
-
+            # Add the value for the authorization header here
+            login_body = ast.literal_eval(get_value('config.property','login','loginbody'))
+            auth_token_name = get_value('config.property','login','auth_token')
+            # print(login_body)
+            # print(auth_token_name)
+            headers['Authorization'] = auth_token#get_auth_from_url(os.environ["auth_url"],login_body, auth_token_name)
             if data['body'] != '':
                 body = json.loads(base64.b64decode(data['body']))
 
-
-            if new_url is not None and new_url is not "NA":
-                uri = url[[m.start() for m in re.finditer('/',url)][2]:]
-                new_url = new_url+uri
-            else:
-                new_url = url
-
+            # if new_url is not None and new_url != "NA":
+            #     uri = url[[m.start() for m in re.finditer('/',url)][2]:]
+            #     new_url = new_url+uri
+            # else:
+            #     new_url = url
+            new_url = url.replace("{{baseUrl}}",new_url)
             p = Process(target=modules_scan,args=(new_url,method,headers,body,scanid),name='module-scan')
             p.start()
 
-        email_start_cron()
+        #email_start_cron()
         return True
     
-    except:
+    except Exception as e:
+        # raise e
+        print (e)
         return False
 
 
 def scan_complete():
-    print "[+]Scan has been completed"
+    print("[+]Scan has been completed")
     webbrowser.open("http://127.0.0.1:8094/reports.html#"+scanid)
     while True:
         pass
 
 def generate_scanid():
     global scanid
-    scanid = hashlib.md5(str(time.time())).hexdigest()
+    scanid = hashlib.md5(str(time.time()).encode('utf-8')).hexdigest()
     return scanid
 
 def add_headers(headers):
@@ -127,7 +178,7 @@ def read_scan_policy():
         attack = ast.literal_eval(scan_policy)
 
     except Exception as e:
-        print e
+        print(e)
 
     return attack
 
@@ -139,19 +190,18 @@ def update_scan_status(scanid, module_name=None, count=None):
     else:
         dbupdate.update_scan_record({"scanid": scanid}, {"$set" : {module_name : "Y"}})
 
-
 def modules_scan(url,method,headers,body,scanid=None):
     '''Scanning API using different engines '''
     attack = read_scan_policy()
     if attack is None:
-        print "Failed to start scan."
+        print("Failed to start scan.")
         sys.exit(1)
 
     if scanid is None:
         scanid = generate_scanid()
     
     count = 0
-    for key,value in attack.items():
+    for key,value in list(attack.items()):
         if value == 'Y' or value =='y':
             count += 1
 
@@ -165,51 +215,57 @@ def modules_scan(url,method,headers,body,scanid=None):
             api_scan.start_scan(url,method,headers,body,scanid)
 
     # Custom modules scan
+    analyze_attack(url, headers, attack)
+    print(attack)
+    if attack['ssrf'] == 'Y' or attack['ssrf'] == 'y':
+        handleException(lambda: ssrf_check.delay(url,method,headers,body,scanid), scanid, "SSRF")
+
     if attack['cors'] == 'Y' or attack['cors'] == 'y':
-        handleException(lambda: cors_main(url,method,headers,body,scanid), "CORS")
-        update_scan_status(scanid, "cors")
+        handleException(lambda: cors_main.delay(url,method,headers,body,scanid), scanid, "CORS")
+
     if attack['Broken auth'] == 'Y' or attack['Broken auth'] == 'y':
-        handleException(lambda: auth_check(url,method,headers,body,scanid), "Authentication")
-        update_scan_status(scanid, "auth")
+        handleException(lambda: auth_check(url,method,headers,body,scanid), scanid, "Authentication")
+
     if attack['Rate limit'] == 'Y' or attack['Rate limit'] == 'y':
-        handleException(lambda: rate_limit(url,method,headers,body,scanid), "Rate limit")
-        update_scan_status(scanid, "Rate limit")
+        handleException(lambda: rate_limit.delay(url,method,headers,body,scanid), scanid, "Rate limit")
+
     if attack['csrf'] == 'Y' or attack['csrf'] == 'y':
-        handleException(lambda: csrf_check(url,method,headers,body,scanid), "CSRf")
-        update_scan_status(scanid, "csrf")
+        handleException(lambda: csrf_check.delay(url,method,headers,body,scanid), scanid, "CSRf")
+
     if attack['jwt'] == 'Y' or attack['jwt'] == 'y':
-        handleException(lambda: jwt_check(url,method,headers,body,scanid), "JWT")
-        update_scan_status(scanid, "jwt")
+        handleException(lambda: jwt_check.delay(url,method,headers,body,scanid), scanid, "JWT")
+
     if attack['sqli'] == 'Y' or attack['sqli'] == 'y':
-        handleException(lambda: sqli_check(url,method,headers,body,scanid), "SQL injection")
-        update_scan_status(scanid, "sqli")
+        handleException(lambda: sqli_check.delay(url,method,headers,body,scanid), scanid, "SQL injection")
+
     if attack['xss'] == 'Y' or attack['xss'] == 'y':
-        handleException(lambda: xss_check(url,method,headers,body,scanid), "XSS")
-        update_scan_status(scanid, "xss")
+        handleException(lambda: xss_check.delay(url,method,headers,body,scanid), scanid, "XSS")
+
     if attack['open-redirection'] == 'Y' or attack['open-redirection'] == 'y':
-        handleException(lambda: open_redirect_check(url,method,headers,body,scanid), "Open redirect")
-        update_scan_status(scanid, "open-redirection")
+        handleException(lambda: open_redirect_check.delay(url,method,headers,body,scanid), scanid, "Open redirect")
+
     if attack['xxe'] == 'Y' or attack['xxe'] == 'y':
         xxe = xxe_scan()
-        handleException(lambda: xxe.xxe_test(url,method,headers,body,scanid), "XXE")
-        update_scan_status(scanid, "xxe")
-    if attack['crlf'] == 'Y' or attack['crlf'] == 'y':
-        handleException(lambda: crlf_check(url,method,headers,body,scanid), "CRLF")
-        update_scan_status(scanid, "crlf")
-    if attack['security_headers'] == 'Y' or attack['security_headers'] == 'y':
-        handleException(lambda: security_headers_missing(url,method,headers,body,scanid), "security_headers")
-        update_scan_status(scanid, "security_headers") 
+        handleException(lambda: xxe.delay(url,method,headers,body,scanid), scanid, "XXE")
 
-def handleException(method, module_name):
+    if attack['crlf'] == 'Y' or attack['crlf'] == 'y':
+        handleException(lambda: crlf_check.delay(url,method,headers,body,scanid), scanid, "CRLF")
+
+    if attack['security_headers'] == 'Y' or attack['security_headers'] == 'y':
+        handleException(lambda: security_headers_missing.delay(url,method,headers,body,scanid), scanid, "security_headers")
+
+def handleException(method, scanid, module_name):
     try:
         #raise Exception("handle exception")
         method()
     except Exception:
-        print "exception in", module_name
+        print("exception in", module_name)
+    finally:
+        update_scan_status(scanid, module_name)
 
 def validate_data(url,method):
     ''' Validate HTTP request data and return boolean value'''
-    validate_url = urlparse.urlparse(url)
+    validate_url = urllib.parse.urlparse(url)
     http_method = ['GET','POST','DEL','OPTIONS','PUT']
     if method in http_method and bool(validate_url.scheme) is True:
         validate_result = True
@@ -239,11 +295,12 @@ def scan_single_api(url, method, headers, body, api, scanid=None):
 
     result = validate_data(url, method)
     if result is False:
-        print "[-]Invalid Arguments"
+        print("[-]Invalid Arguments")
         return False
 
     if api == "Y":
-        p = Process(target=modules_scan,args=(url,method,headers,body,scanid),name='module-scan')
+        # modules_scan(url,method,headers,body,scanid)
+        p = Process(target=modules_scan,args=(url,method,headers,body,scanid), name='module-scan')
         p.start()
         if api == "Y":
             return True
@@ -277,7 +334,7 @@ def scan_core(collection_type,collection_name,url,headers,method,body,loginurl,l
             modules_scan(url,method,headers,body,scanid)      
 
     else:
-        print "%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W)
+        print("%s [-]Invalid Collection. Please recheck collection Type/Name %s" %(api_logger.G, api_logger.W))
 
 def get_arg(args=None):
         parser = argparse.ArgumentParser(description='Astra - REST API Security testing Framework')
@@ -305,7 +362,7 @@ def get_arg(args=None):
 
         results = parser.parse_args(args)
         if len(args) == 0:
-            print "%sAt least one argument is needed to procced.\nFor further information check help: %spython astra.py --help%s"% (api_logger.R, api_logger.G, api_logger.W)
+            print("%sAt least one argument is needed to procced.\nFor further information check help: %spython astra.py --help%s"% (api_logger.R, api_logger.G, api_logger.W))
             sys.exit(1)
 
         return (results.collection_type,
@@ -333,7 +390,7 @@ def main():
         try:
             loginurl,lognheaders,loginmethod,logidata = api_login.parse_logindata(loginurl)
         except:
-           print "[-]%s Failed to detect login API from collection %s " %(api_logger.R, api_logger.W)
+           print("[-]%s Failed to detect login API from collection %s " %(api_logger.R, api_logger.W))
            sys.exit(1)
         api_login.fetch_logintoken(loginurl,loginmethod,loginheaders,logindata)
         login_require = False

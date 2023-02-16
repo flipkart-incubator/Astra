@@ -3,13 +3,13 @@ __author__ = 'Sagar Popat'
 import requests
 import sys
 import argparse
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
 import time
 import signal
 import socket
 import ast
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import sys
 import utils.logs as logs
 
@@ -24,7 +24,7 @@ try:
     import requests
     requests.packages.urllib3.disable_warnings()
 except:
-    print "[-]Failed to import requests module"
+    print("[-]Failed to import requests module")
 
 
 class zap_scan:
@@ -87,7 +87,7 @@ class zap_scan:
                     impact = zap_alerts['alerts'][alert_id]['risk']
                     description = zap_alerts['alerts'][alert_id]['description']
                     solution = zap_alerts['alerts'][alert_id]['solution']
-                    print "%s[+]{0} is vulnerable to {1}%s".format(url,alert)% (self.api_logger.G, self.api_logger.W)
+                    print("%s[+]{0} is vulnerable to {1}%s".format(url,alert)% (self.api_logger.G, self.api_logger.W))
                     try:
                         self.update_db(scanid,url,alert,impact,description,solution,messageId)
                     except Exception as e:
@@ -115,7 +115,7 @@ class zap_scan:
             try:
                 access_url = requests.get(url,headers=Headers,proxies=self.proxy,cookies=cookies)
             except requests.exceptions.RequestException as e:
-                print e
+                print(e)
 
         elif method.upper() == 'POST':
             try:
@@ -143,12 +143,12 @@ class zap_scan:
                         url = url.replace('&','%26')
                     active_scan = '{0}/JSON/ascan/action/scan/?zapapiformat=JSON&url={1}&recurse=False&inScopeOnly=False&scanPolicyName=&method={2}&postData=&apikey={3}'.format(self.zap_url,url,method,self.apitoken)
                 else:
-                    active_scan = '{0}/JSON/ascan/action/scan/?zapapiformat=JSON&url={1}&recurse=False&inScopeOnly=False&scanPolicyName=&method={2}&postData={3}&apikey={4}'.format(self.zap_url,url,method,urllib.quote(data),self.apitoken)
+                    active_scan = '{0}/JSON/ascan/action/scan/?zapapiformat=JSON&url={1}&recurse=False&inScopeOnly=False&scanPolicyName=&method={2}&postData={3}&apikey={4}'.format(self.zap_url,url,method,urllib.parse.quote(data),self.apitoken)
                 start_ascan = requests.get(active_scan)
                 try:
                     scan_id = json.loads(start_ascan.text)['scan']
                     if int(scan_id) >= 0:
-                        print "[+]Active Scan Started Successfully"
+                        print("[+]Active Scan Started Successfully")
                         self.check_scanalerts(url,scan_id,scanid)              
                 except:
                     pass

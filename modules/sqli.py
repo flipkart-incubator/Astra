@@ -1,7 +1,7 @@
 import time
 import requests
 import json
-import sendrequest as req
+from . import sendrequest as req
 import utils.logs as logs
 import subprocess
 import sys
@@ -9,6 +9,7 @@ import os
 
 from utils.logger import logger
 from utils.db import Database_update
+from celery_app import app
 
 dbupdate = Database_update()
 api_logger = logger()
@@ -23,24 +24,25 @@ def get_new_task_id():
     if new_task.status_code == 200:
         return json.loads(new_task.text)['taskid']
 
-def set_options_list(url, method, headers, body, task_id):
+def start_scan(url, method, headers, body, task_id):
     # Setting up url,headers, body for scan
-    options_set_url = base_url+"/option/"+task_id+"/set"
     data = {}
-    data['url'], data['method'], data['headers'] = url, method, headers
+    data['url'], data['headers'] = url, headers
     if method.upper() == 'POST' or method.upper() == 'PUT':
         if headers['Content-Type']=='application/json':
-            body=json.dumps(body)
-        data['data'] = body
-    options_list = req.api_request(options_set_url, "POST", api_header, data)
-    if options_list.status_code == 200:
-        return json.loads(options_list.text)['success']
-
-def start_scan(task_id):
-    # Starting a new scan
-    data = {}
-    scan_start_url = base_url+"/scan/"+task_id+"/start"
-    scan_start_resp = req.api_request(scan_start_url, "POST", api_header, data)
+            #data = '{"url": {}, "data": {}, "headers": {}, "technique": "B", "level": 5, "risk": 3}'.format(url, body, headers)
+            data['data'] = body
+            data['technique'] = "B"
+        data['level'] = 5
+        data['risk'] = 3
+        data = json.dumps(data)
+        scan_start_url = base_url+"/scan/"+task_id+"/start"
+        scan_start_resp = req.api_request(scan_start_url, "POST", api_header, data)
+    elif method.upper() == 'GET':
+        scan_start_url = base_url+"/scan/"+task_id+"/start"
+        data = '{"url": {}, "headers": {}}'.format(url, headers)
+        scan_start_resp = req.api_request(scan_start_url, "POST", api_header, data)
+        
     if scan_start_resp.status_code == 200:
         return json.loads(scan_start_resp.text)['success']
         time.sleep(10)
@@ -78,22 +80,22 @@ def scan_status(task_id):
 
 def sqlmap_start():
     try:
-        p = subprocess.Popen(["pip", "show", "sqlmap"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        if out:
-            location = out[out.find('Location:')+10:]
-            sqlmap_path = location[:location.find('\n')]+'/sqlmap/sqlmapapi.py'
-            if sqlmap_path:
-                # Sqlmap is found
-                start_sqlmap = subprocess.Popen(['python',sqlmap_path,'-s'],stdout=subprocess.PIPE)
-                time.sleep(5)
-                while True:
-                    line = start_sqlmap.stdout.readline()
-                    if "Admin" in line:
-                        logs.logging.info("sqlmap is started")
-                        return True
+        import sqlmap
+        location = sqlmap.__file__
+        sqlmap_path = location[:location.find('__init__')]+'sqlmapapi.py'
+        if sqlmap_path:
+            # Sqlmap is found
+            # change python3 to python
+            start_sqlmap = subprocess.Popen(['python3',sqlmap_path,'-s'],stdout=subprocess.PIPE)
+            time.sleep(5)
+            while True:
+                line = start_sqlmap.stdout.readline().decode()
+                if "Admin" in line:
+                    logs.logging.info("sqlmap is started")
+                    return True
                         
-    except:
+    except Exception as e:
+        logs.logging.info(e)
         logs.logging.info("Failed to start sqlmap")
         return
 
@@ -108,6 +110,7 @@ def sqlmap_status():
         result = sqlmap_start()
         return result
 
+@app.task
 def sqli_check(url,method,headers,body,scanid=None):
     # Main function for sql injection
     result = sqlmap_status()
@@ -115,18 +118,15 @@ def sqli_check(url,method,headers,body,scanid=None):
         taskid = get_new_task_id()
         if taskid:
             # Taskid is created.
-            set_option_status = set_options_list(url,method,headers,body,taskid)
-            if set_option_status is True:
-                # Everything is set to start the scan
-                start_scan_result = start_scan(taskid)
-                if start_scan_result is True:
-                    logs.logging.info("SQLi - Scan started.")
-                    result = scan_status(taskid)
-                    if result is True:
-                        # API is vulnerable
-                        print "%s[+]{0} is vulnerable to SQL injection%s".format(url)% (api_logger.R, api_logger.W)
-                        attack_result = { "id" : 10, "scanid" : scanid, "url" : url, "alert": "SQL injection", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": "NA" ,"res_body": "NA", "log" : scan_data}
-                        dbupdate.insert_record(attack_result)
+            start_scan_result = start_scan(url, method, headers, body, taskid)
+            if start_scan_result is True:
+                logs.logging.info("SQLi - Scan started.")
+                result = scan_status(taskid)
+                if result is True:
+                    # API is vulnerable
+                    print("%s[+]{0} is vulnerable to SQL injection%s".format(url)% (api_logger.R, api_logger.W))
+                    attack_result = { "id" : 10, "scanid" : scanid, "url" : url, "alert": "SQL injection", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": "NA" ,"res_body": "NA", "log" : scan_data}
+                    dbupdate.insert_record(attack_result)
 
         else:
             logs.logging.info("Sqli - Failed to create a task.") 

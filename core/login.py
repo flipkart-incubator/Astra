@@ -1,6 +1,6 @@
 import requests
-import zapscan
-import parsers
+from . import zapscan
+from . import parsers
 import utils.logger
 import json
 import base64
@@ -25,7 +25,7 @@ class APILogin:
             login_request = requests.post(url,headers=headers,json=body)
             logs.logging.info("HTTP response of login API : %s %s %s",login_request.status_code,headers,body)
         else:
-            print "[-]Invalid request"
+            print("[-]Invalid request")
             sys.exit(1)
 
         try:
@@ -34,7 +34,7 @@ class APILogin:
             pass
 
         if relogin is not None:
-                print "Session fixation attack won't be tested since it failed to re-login."
+                print("Session fixation attack won't be tested since it failed to re-login.")
                 return
 
         auth_names = get_value('config.property','login','auth_names')
@@ -50,7 +50,7 @@ class APILogin:
         if auth_type == 'cookie':
             if login_request.headers['Set-Cookie']:
                 auth_cookie = {'cookie' : login_request.headers['Set-Cookie']}
-                print "[+]Login successful"
+                print("[+]Login successful")
                 update_value('login','auth_success','Y')
                 update_value('login','cookie',auth_cookie)
                 auth_status = True
@@ -60,7 +60,7 @@ class APILogin:
             for auth_name in auth_names:
                 if auth_name in login_response:
                     auth_success_token = login_response[auth_name]
-                    print "[+]Login successful"
+                    print("[+]Login successful")
                     update_value('login','auth_success','Y')
                     update_value('login','auth_success_param',auth_name)
                     update_value('login','auth_success_token',auth_success_token)
@@ -68,7 +68,7 @@ class APILogin:
                     break
 
         if not auth_status:
-            login_response = raw_input("Failed to login. Do you want to continue scanning without cookie(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)
+            login_response = input("Failed to login. Do you want to continue scanning without cookie(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)
             if login_response == 'Y' or login_response == 'y':
                 return
             elif login_response == 'n' or login_response == 'N':
@@ -95,11 +95,11 @@ class APILogin:
                     logout_data = {'logouturl' : url, 'logoutmethod' : method ,'logoutheaders' : headers, 'logoutbody' : body,'logoutresult' : 'Y'}
                     break
 
-            for key,value in logout_data.items():
+            for key,value in list(logout_data.items()):
                 update_value("logout",key,value)
             return
         else:
-            print "Failed"
+            print("Failed")
 
     def auth_verify(self,collection_data,api):
         login_names = ['login', 'signin','authenticate']
@@ -115,9 +115,9 @@ class APILogin:
             for name in api_types:
                 if name in url:
                     if api == 'login':
-                        result = raw_input("Is it a correct login URL(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)
+                        result = input("Is it a correct login URL(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)
                     elif api == 'logout':
-                        result = raw_input("Is it a correct logout URL(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)  
+                        result = input("Is it a correct logout URL(y/n),"+self.api_logger.G+url+': '+self.api_logger.W)  
                             
                     if result == 'y' or result == 'Y': 
                         return url,api
@@ -130,7 +130,7 @@ class APILogin:
         api_url,api_type = self.auth_verify(collection_data,'login')
         logs.logging.info("API URL for login is : %s",api_url)
         if api_url is None:
-            auth_response = raw_input(self.api_logger.Y+"[-]Failed to detect login url. Do you want to contiune without authentication?(y/n):"+self.api_logger.W)
+            auth_response = input(self.api_logger.Y+"[-]Failed to detect login url. Do you want to contiune without authentication?(y/n):"+self.api_logger.W)
             if auth_response == 'y' or auth_response == 'Y':
                 return
             else: 
@@ -152,7 +152,7 @@ class APILogin:
                         logout_url, api_type = self.auth_verify(collection_data,"logout")
                         self.verify_logout(collection_data,logout_url)
                         auth_data = {'loginurl' : url, 'loginmethod' : method ,'loginheaders' : headers, 'loginbody' : body,'loginresult' : 'Y'}
-                        for key,value in auth_data.items():
+                        for key,value in list(auth_data.items()):
                             update_value("login",key,value)
                         return
 

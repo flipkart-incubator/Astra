@@ -31,6 +31,8 @@ Credit : https://github.com/fuzzdb-project/fuzzdb/blob/master/attack/redirect/re
 /login?to=//{target}
 /login?to=/\{target}
 /login?to=///{target}
+{target}
+/{target}
 //google.com/%2f..
 ///google.com/%2f..
 ////google.com/%2f..

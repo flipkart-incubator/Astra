@@ -2,12 +2,13 @@ import jwt
 import requests
 import base64
 import ast
-import urlparse
-import sendrequest as req
+import urllib.parse
+from . import sendrequest as req
 
 from utils.logger import logger
 from utils.db import Database_update
 from utils.config import get_value
+from celery_app import app
 
 dbupdate = Database_update()
 api_logger = logger()
@@ -43,7 +44,7 @@ def jwt_none(url,method, headers, body, jwt_loc, jwt_key, jwt_token, jwt_data,sc
     if str(jwt_request.status_code)[0] == '5' or str(jwt_request.status_code)[0] == '4':
         pass
     else:
-        print "%s[+]API is vulnearalbe to JWT none algo vulnerability%s".format(url)% (api_logger.R, api_logger.W)
+        print("%s[+]API is vulnearalbe to JWT none algo vulnerability%s".format(url)% (api_logger.R, api_logger.W))
         attack_result = {
                              "id" : 8,
                              "scanid":scanid,
@@ -66,9 +67,9 @@ def find_jwt(url,headers):
     # Identify JWT token from URL
     query_list = []
     global key,value
-    url_query = urlparse.urlparse(url)
-    parsed_query = urlparse.parse_qs(url_query.query)
-    for key,value in parsed_query.items():
+    url_query = urllib.parse.urlparse(url)
+    parsed_query = urllib.parse.parse_qs(url_query.query)
+    for key,value in list(parsed_query.items()):
         try:
             jwt_token =jwt.decode(value[0], verify=False)
             return "url", key, value[0]
@@ -76,7 +77,7 @@ def find_jwt(url,headers):
             pass
 
     # Identify JWT token from headers
-    for key,value in headers.items():
+    for key,value in list(headers.items()):
         try:
             jwt_token =jwt.decode(value, verify=False)
             return "header", key, value
@@ -91,7 +92,7 @@ def jwt_brute(url, headers, body, jwt_token, jwt_alg, scanid=None):
         for sign_key in sign_keys:
             try:
                 jwt.decode(jwt_token, sign_key.rstrip(), algorithms=[jwt_alg])
-                print "%s[+]Weak JWT sign key found:{0}%s".format(sign_key.rstrip())% (api_logger.R, api_logger.W)
+                print("%s[+]Weak JWT sign key found:{0}%s".format(sign_key.rstrip())% (api_logger.R, api_logger.W))
                 alert = "Weak JWT sign key:"+sign_key.rstrip()
                 attack_result = {
                              "id" : 9,
@@ -105,13 +106,14 @@ def jwt_brute(url, headers, body, jwt_token, jwt_alg, scanid=None):
                              "res_body" : "NA"
 
                         }
-                print "attack result",attack_result
+                print("attack result",attack_result)
 
                 dbupdate.insert_record(attack_result)
                 
             except:
                 pass
 
+@app.task
 def jwt_check(url,method,headers,body,scanid):
     # Main function for JWT test
     jwt_loc, jwt_key, jwt_token = find_jwt(url,headers)

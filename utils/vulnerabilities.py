@@ -90,7 +90,7 @@ alerts = [
       {
       'id': 15,
       'name': 'Security Headers Missing',
-      'Description':  ' ',
+      'Description':  '-',
       'remediation': 'Implement proper CSP header.'
       },
       {
@@ -140,6 +140,24 @@ alerts = [
       'name': 'Version disclosed in response header',
       'Description':  "Some of these headers, 'Server', 'X-Powered-By', 'X-AspNet-Version' are revealing server version number.",
       'remediation': 'Configure these headers to give out generic server name in response.'
+      },
+      {
+      'id': 24,
+      'name': 'Server-side request forgery',
+      'Description':  "In a Server-Side Request Forgery (SSRF) attack, the attacker can abuse functionality on the server to read or update internal resources.",
+      'remediation': 'Perform input sanitization as well as whitelist domains in DNS.'
+      },
+      {
+      'id': 25,
+      'name': 'Weak Password',
+      'Description': "Weak passwords can be easily brute-forced or cracked via dictionary attack",
+      'remidiation': "Use a stronger password"
+      },
+      {
+      'id': 25,
+      'name': 'Template Injection',
+      'Description': "-",
+      'remidiation': "-"
       }
 
 ]

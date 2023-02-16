@@ -2,7 +2,7 @@ import subprocess
 import os
 import time
 import sys
-import ConfigParser
+import configparser
 import requests
 
 sys.path.append('../')
@@ -29,7 +29,7 @@ def check_status(port):
 		return False
 
 	if api_status.status_code == 200:
-		print "%s[+]Zap started successfully%s" %(api_logger.Y, api_logger.W)
+		print("%s[+]Zap started successfully%s" %(api_logger.Y, api_logger.W))
 		return True
 
 def zap_start():
@@ -48,6 +48,6 @@ def zap_start():
 	p = subprocess.Popen(['java', '-jar', 'zap-2.7.0.jar','-daemon','-port', port, '-config', apikey], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	time.sleep(10)
 	zap_status = check_status(port)
-	print "cur dir",os.getcwd()
+	print("cur dir",os.getcwd())
 	os.chdir("../../")
 	return zap_status

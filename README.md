@@ -20,14 +20,18 @@ REST API penetration testing is complex due to continuous changes in existing AP
 - JWT attack
 - CRLF detection
 - Blind XXE injection 
+- Server-side Requrest Forgery
+- Template Injection
 
 ## Roadmap
 [https://www.astra-security.info/roadmap/](https://www.astra-security.info/roadmap/)
 
 ## Requirement
 - Linux or MacOS
-- Python 2.7
+- Python 3.7+
 - mongoDB
+- Celery
+- RabbitMQ
 
 ## Installation
 
@@ -35,8 +39,11 @@ REST API penetration testing is complex due to continuous changes in existing AP
 $ git clone https://github.com/flipkart-incubator/Astra
 
 $ cd Astra
-
 $ sudo pip install -r requirements.txt
+$ sudo rabbitmq-server
+$ celery -A worker -loglevel=INFO
+$ cd API
+$ python3 api.py
 
 ```
 
@@ -77,6 +84,8 @@ $ docker run --rm -it --link astra-mongo:mongo astra-cli
 - pyjwt
 - flask
 - sqlmap
+- celery
+
 ```
 ## Documentation
 [https://www.astra-security.info](https://www.astra-security.info)
@@ -129,6 +138,14 @@ $ cd API
 $ python api.py
 
 ```
+
+NOTE:
+On macOS 10.13+ you must use the flag `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` to prevent scanning processes from being killed due to the way `fork()` and `exec()` has been changed. See [here](http://www.sealiesoftware.com/blog/archive/2017/6/5/Objective-C_and_fork_in_macOS_1013.html) for more information.
+```
+$ cd API
+$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES python api.py
+
+```
 ## Screenshots 
 ### New scan
 ![alt text](https://raw.githubusercontent.com/flipkart-incubator/Astra/dev/Dashboard/static/new%20scan.png)
@@ -149,3 +166,4 @@ $ python api.py
 - Harsh Grover
 - Flipkart security team
 - Pardeep Battu
+- Rajasekar

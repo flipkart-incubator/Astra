@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
         <link rel="icon" href="{{ url_for('static', filename='astra.png') }}" type="image/png" sizes="16x16">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Astra</title>
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -32,24 +32,70 @@
 					var method = document.getElementById("method").value;
 					var req_headers = document.getElementById("req_headers").value;
 					var req_body = document.getElementById("req_body").value;
-				  	
-				  	body_data = {"appname" : appname, "url":url, "headers" : req_headers, "body" : req_body, "method" : method};
+				  	var auth_header = document.getElementById("authheader").value;
+					//var auth_url = document.getElementById("authurl").value;
+					var auth_url = '';
+				  	body_data = {"appname" : appname, "url":url, "headers" : req_headers, "body" : req_body, "method" : method, "auth_header": auth_header, "auth_url":auth_url};
 
 				  	json_body = JSON.stringify(body_data);
 
 				  	var xhttp = new XMLHttpRequest();
 				  	xhttp.onreadystatechange = function() {
 				    if (this.readyState == 4 && this.status == 200)
-				     {
-				    		alert(xhttp.responseText);
-                            recent_scans();
-				    		
-		    	 	}
-		  	   };
-				  xhttp.open("POST", "/scan/", true);
-				   xhttp.setRequestHeader("Content-type", "application/json");
+						{
+							alert(xhttp.responseText);
+							recent_scans();
+						}
+		  	   		};
+				  	xhttp.open("POST", "/scan/", true);
+				   	xhttp.setRequestHeader("Content-type", "application/json");
 		  			xhttp.send(json_body);
-}
+				}
+				
+				function loadPostman() 
+				{
+                    var appname = document.getElementById("appname").value;
+					var url = document.getElementById("url").value;
+					//var auth_url = document.getElementById("authurl").value;
+					var auth_url = '';
+					const files = document.querySelector('[name=file]').files;
+					var auth_header = document.getElementById("authheader").value;
+					const formData = new FormData();
+					console.log(files);
+					formData.append('file', files[0]);
+					formData.append('appname', appname);
+					formData.append('url', url);
+					formData.append('auth_url',auth_url);
+					formData.append('authheader',auth_header);
+				  	var xhttp = new XMLHttpRequest();
+					xhttp.open("POST", "/scan/postman/", true);
+					//xhttp.responseType = 'json';
+				  	xhttp.onreadystatechange = function() {
+				    if (this.readyState == 4 && this.status == 200)
+						{
+							alert(xhttp.responseText);
+							recent_scans();
+						}
+		  	   		};
+				   	//xhttp.setRequestHeader("Content-type", "application/json");
+		  			xhttp.send(formData);
+				}
+				function singleOrPostman()
+				{
+					var checkBox = document.getElementById("check");
+  					// Get the output text
+					var single = document.getElementById("single-scan");
+					var postman = document.getElementById("multiple-scan"); 
+
+					// If the checkbox is checked, display the output text
+					if (checkBox.checked == true){
+						single.style.display = "none";
+						postman.style.display = "block";
+					} else {
+						single.style.display = "block";
+						postman.style.display = "none";
+					}
+				}
 </script>
 		<div class="side-nav" id="side">
 			<div class="logo"
@@ -90,32 +136,51 @@
 	      		   				<label for="url">URL</label>
 	       		  				<input type="text" class="form-control" name="url" id="url">
 	     	   				</div>
+							<label for="req_headers">Authorization Token</label>
+							<input type="text" class="form-control" name="Auth_header" id="authheader" required /><br>
+							<span style="margin-right: 5px;">Single Endpoint</span>
+							<label class="switch">
+								<input id="check" type="checkbox" onclick="singleOrPostman();">
+								<span class="slider round"></span>
+							</label>
+							<span style="margin-left: 5px;"> Postman Collection</span><br>
+							<div id="single-scan">
+								<div class="form-group">
+									<label for="method">Method</label>
+									<select class="form-control" name="method" id="method">
+										<option value="GET">GET</option>
+										<option value="POST">POST</option>
+										<option value="POST">PUT</option>
+										<option value="POST">DEL</option>
+									</select>
+								</div>
 
-	     	  				<div class="form-group">
-        						<label for="method">Method</label>
-        						<select class="form-control" name="method" id="method">
-        							<option value="GET">GET</option>
-							        <option value="POST">POST</option>
-                                    <option value="POST">PUT</option>
-                                    <option value="POST">DEL</option>
-							     </select>
-          					</div>
+								<div class="form-group">
+									<label for="req_headers">Headers</label>
+									<textarea class="form-control" rows="5" name="req_headers" id="req_headers" placeholder='{"Content-type" : "application/json", "access_token" : "X123B12DF"}'></textarea>
+									
+									<!-- <pre class="col-md-5">Example:<br> {"Content-type" : "application/json", "access_token" : "X123B12DF"}</pre> -->
 
-          					<div class="form-group">
-          					    <label for="req_headers">Headers</label>
-						        <textarea class="form-control" rows="5" name="req_headers" id="req_headers" placeholder='{"Content-type" : "application/json", "access_token" : "X123B12DF"}'></textarea>
+								</div>
 
-						        <!-- <pre class="col-md-5">Example:<br> {"Content-type" : "application/json", "access_token" : "X123B12DF"}</pre> -->
-
-          					</div>
-
-          					 <div class="form-group">
-						        <label for="req_body">Body</label>
-						        <textarea class="form-control" rows="5" name="req_body" id="req_body" placeholder='{"first_name":"flipkart","last_name":"appsec"}'></textarea>
-						     </div>
-						     
-						     <button type="button" name="btn_report" class="btn btn-primary" onclick=loadDoc();>Submit</button><br><br>
-          					
+								<div class="form-group">
+									<label for="req_body">Body</label>
+									<textarea class="form-control" rows="5" name="req_body" id="req_body" placeholder='{"first_name":"flipkart","last_name":"appsec"}'></textarea>
+								</div>
+								
+								<button type="button" name="btn_report" class="btn btn-primary" onclick=loadDoc();>Submit</button><br><br>
+							 </div>
+							 <div id="multiple-scan" style="display: none;">
+							 <!-- <label for="req_headers">Authorization Token</label> 
+								<input type="text" class="form-control" name="Auth_url" id="authurl" required /><br>-->
+								<div class="mb-3">
+									<label for="formFile" class="form-label">Postman File</label>
+									<input class="form-control btn" type="file" id="formFile" name="file">
+								</div> <br>
+								<button type="button" role="btn_report2" class="btn btn-primary" onclick=loadPostman();>Upload Postman</button><br><br>
+								
+								
+							</div>
                             <label>Recent Scans:</label><br><br>
           					
                             <div class="container">

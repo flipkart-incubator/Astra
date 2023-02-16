@@ -2,8 +2,8 @@ import re
 
 from utils.logger import logger
 from utils.db import Database_update
-import sendrequest as req
-
+from . import sendrequest as req
+from celery_app import app
 
 dbupdate = Database_update()
 api_logger = logger()
@@ -34,13 +34,13 @@ def x_frame_options_check(url, method, req_headers, req_body, scan_id, res_heade
 	if 'X-Frame-Options' not in res_headers:
 		attack_result = { "id" : 19, "scanid" : scan_id, "url" : url, "alert": "X-Frame-Options Header Missing", "impact": "Low", "req_headers": req_headers, "req_body": req_body, "res_headers": res_headers ,"res_body": res_body}
 		dbupdate.insert_record(attack_result)
-
+'''
 def x_content_type_options_check(url, method, req_headers, req_body, scan_id, res_headers, res_body):
 	# check if Content-Type-Options header is present
 	if 'X-Content-Type-Options' not in res_headers:
 		attack_result = { "id" : 20, "scanid" : scan_id, "url" : url, "alert": "X-Content-Type-Options Header Missing", "impact": "Low", "req_headers": req_headers, "req_body": req_body, "res_headers": res_headers ,"res_body": res_body}
 		dbupdate.insert_record(attack_result)
-
+'''
 def hsts_check(url, method, req_headers, req_body, scan_id, res_headers, res_body):
 	# check if Strict-Transport-Security header is present
 	if 'Strict-Transport-Security' not in res_headers:
@@ -66,6 +66,7 @@ def check_version_disclosure(url, method, req_headers, req_body, scan_id, res_he
 				dbupdate.insert_record(attack_result)
 				break
 
+@app.task
 def security_headers_missing(url, method, headers, body, scan_id=None):
 	# checks if a security header is missing
 	resp = req.api_request(url, method, headers, body)
@@ -75,7 +76,7 @@ def security_headers_missing(url, method, headers, body, scan_id=None):
 	csp_check(url, method, headers, body, scan_id, res_headers, res_body)
 	xss_protection_check(url, method, headers, body, scan_id, res_headers, res_body)
 	x_frame_options_check(url, method, headers, body, scan_id, res_headers, res_body)
-	x_content_type_options_check(url, method, headers, body, scan_id, res_headers, res_body)
+	#x_content_type_options_check(url, method, headers, body, scan_id, res_headers, res_body)
 	hsts_check(url, method, headers, body, scan_id, res_headers, res_body)
 	cookies_check(cookies, url, method, headers, body, scan_id, res_headers, res_body)
 	check_version_disclosure(url, method, headers, body, scan_id, res_headers, res_body)

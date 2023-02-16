@@ -22,7 +22,7 @@ class PostmanParser:
 		if "item" in postman_data:
 			requests_collection = postman_data["item"]
 		else:
-			print " 'item' not found in the postman collection."
+			print(" 'item' not found in the postman collection.")
 			return
 		for each_request in requests_collection:
 			api = {}
@@ -42,7 +42,7 @@ class PostmanParser:
 							if each_request["body"]:
 								if "raw" in each_request["body"]:
 									# Body will be base64 encoding of a raw string.
-									api["body"] = base64.b64encode(bytes(each_request["body"]["raw"]), 'utf-8')
+									api["body"] = base64.b64encode(bytes(each_request["body"]["raw"],'utf-8'))
 						if "header" in each_request:
 							headers = each_request["header"]
 							for each_header in headers:

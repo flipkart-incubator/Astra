@@ -1,0 +1,2472 @@
+{
+	"info": {
+		"_postman_id": "274147ad-4e95-4c19-b3a7-67b32d6dc9ed",
+		"name": "Swagger to Postman",
+		"description": "EmptyDescription",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24809792"
+	},
+	"item": [
+		{
+			"name": "addresses",
+			"item": [
+				{
+					"name": "get all addresses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-ACCOUNT-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/addresses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/addresses",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"addresses"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"customer_name\": \"irure eu enim deserunt\",\n  \"address\": [\n    {\n      \"address_id\": \"velit voluptate quis\",\n      \"address1\": \"sed exercitation ullamco enim ipsum\",\n      \"address2\": \"in labore est\",\n      \"city\": \"inci\",\n      \"state\": \"nisi ad proident\",\n      \"country\": \"ullamco dolor sunt sed proident\",\n      \"pincode\": \"aliq\",\n      \"name\": \"veniam Excepteur quis esse consequat\",\n      \"landmark\": \"est\",\n      \"tag_name\": \"dolore anim laborum\",\n      \"mobile\": \"Excepteur amet\",\n      \"alternate_number\": \"sit\",\n      \"servicibility\": false,\n      \"default\": true\n    },\n    {\n      \"address_id\": \"aute dolor proident pariatur\",\n      \"address1\": \"dolor velit eu\",\n      \"address2\": \"commodo sed esse in\",\n      \"city\": \"minim sed exercitation proident\",\n      \"state\": \"elit fugiat\",\n      \"country\": \"tempor sit nulla adipisicing\",\n      \"pincode\": \"non nulla in\",\n      \"name\": \"dolor deserunt\",\n      \"landmark\": \"ea exercitation quis\",\n      \"tag_name\": \"veniam Duis officia\",\n      \"mobile\": \"consec\",\n      \"alternate_number\": \"eiusmod laboris cupidatat veniam\",\n      \"servicibility\": false,\n      \"default\": true\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Add address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "(Required) ",
+								"key": "X-ACCOUNT-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address_id\": \"aliqua\",\n  \"address1\": \"non ut\",\n  \"address2\": \"dolore id voluptate aliqua magna\",\n  \"city\": \"aliqua elit\",\n  \"state\": \"incididunt ad\",\n  \"country\": \"qui\",\n  \"pincode\": \"minim Lorem quis dolor\",\n  \"full_name\": \"enim tempor\",\n  \"tag_name\": \"voluptate\",\n  \"mobile\": \"consequat dolor id Ut\",\n  \"landmark\": \"exercitation velit\",\n  \"alternate_number\": \"pariatur Ut cillum dolor consequa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/addresses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"addresses"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "(Required) ",
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"address_id\": \"aliqua\",\n  \"address1\": \"non ut\",\n  \"address2\": \"dolore id voluptate aliqua magna\",\n  \"city\": \"aliqua elit\",\n  \"state\": \"incididunt ad\",\n  \"country\": \"qui\",\n  \"pincode\": \"minim Lorem quis dolor\",\n  \"full_name\": \"enim tempor\",\n  \"tag_name\": \"voluptate\",\n  \"mobile\": \"consequat dolor id Ut\",\n  \"landmark\": \"exercitation velit\",\n  \"alternate_number\": \"pariatur Ut cillum dolor consequa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/addresses",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"addresses"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"address_id\": \"officia anim\",\n  \"address1\": \"dolor\",\n  \"address2\": \"laborum ut \",\n  \"city\": \"eu n\",\n  \"state\": \"nulla ut\",\n  \"country\": \"incididunt aliquip\",\n  \"pincode\": \"deserunt aliqua sed la\",\n  \"name\": \"laborum sed voluptat\",\n  \"landmark\": \"laboris Excepteur nisi ex\",\n  \"tag_name\": \"non elit occaecat vol\",\n  \"mobile\": \"anim proident\",\n  \"alternate_number\": \"ut labore ullamco sed enim\",\n  \"servicibility\": true,\n  \"default\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "reverse-geocode address",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/addresses/reverse-geocode?lat=amet eiusmod ex in&lng=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"addresses",
+								"reverse-geocode"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								},
+								{
+									"key": "lng",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/addresses/reverse-geocode?lat=amet eiusmod ex in&lng=amet eiusmod ex in",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"addresses",
+										"reverse-geocode"
+									],
+									"query": [
+										{
+											"key": "lat",
+											"value": "amet eiusmod ex in"
+										},
+										{
+											"key": "lng",
+											"value": "amet eiusmod ex in"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"search_address_response_list\": [\n    {\n      \"addressText\": \"dolor ut \",\n      \"type\": \"eu reprehenderit officia\",\n      \"poi\": \"amet proident\",\n      \"sublocality\": \"dolor in deserunt\",\n      \"locality\": \"adipisicing pariatur\",\n      \"city\": \"deserunt u\",\n      \"state\": \"occaecat non\",\n      \"pincode\": \"fugiat laborum veniam sunt\",\n      \"road\": \"deserunt nostrud ut\"\n    },\n    {\n      \"addressText\": \"reprehenderit elit\",\n      \"type\": \"in qui ad nostrud\",\n      \"poi\": \"aute\",\n      \"sublocality\": \"Ut Excepteur\",\n      \"locality\": \"nulla cillum\",\n      \"city\": \"non et Duis nisi\",\n      \"state\": \"consequat commodo quis\",\n      \"pincode\": \"dolore\",\n      \"road\": \"ea in\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "get  address by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "(Required) ",
+								"key": "X-ACCOUNT-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/addresses/:addressId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"addresses",
+								":addressId"
+							],
+							"variable": [
+								{
+									"key": "addressId",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "(Required) ",
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/addresses/:addressId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"addresses",
+										":addressId"
+									],
+									"variable": [
+										{
+											"key": "addressId",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"address_id\": \"officia anim\",\n  \"address1\": \"dolor\",\n  \"address2\": \"laborum ut \",\n  \"city\": \"eu n\",\n  \"state\": \"nulla ut\",\n  \"country\": \"incididunt aliquip\",\n  \"pincode\": \"deserunt aliqua sed la\",\n  \"name\": \"laborum sed voluptat\",\n  \"landmark\": \"laboris Excepteur nisi ex\",\n  \"tag_name\": \"non elit occaecat vol\",\n  \"mobile\": \"anim proident\",\n  \"alternate_number\": \"ut labore ullamco sed enim\",\n  \"servicibility\": true,\n  \"default\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "auto suggest address",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/addresses/auto-suggest?text=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"addresses",
+								"auto-suggest"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/addresses/auto-suggest?text=amet eiusmod ex in",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"addresses",
+										"auto-suggest"
+									],
+									"query": [
+										{
+											"key": "text",
+											"value": "amet eiusmod ex in"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"search_address_response_list\": [\n    {\n      \"addressText\": \"aliquip aute\",\n      \"type\": \"aliquip do nisi\",\n      \"poi\": \"dolore do laboris\",\n      \"sublocality\": \"quis aute laboris et\",\n      \"locality\": \"labore id sint\",\n      \"city\": \"dolor cillum\",\n      \"state\": \"minim tempor\",\n      \"pincode\": \"voluptate anim velit\",\n      \"road\": \"commodo in\"\n    },\n    {\n      \"addressText\": \"qui commodo consectetur adi\",\n      \"type\": \"in sit reprehenderit\",\n      \"poi\": \"sit voluptate pariatur velit est\",\n      \"sublocality\": \"do qui ex ea\",\n      \"locality\": \"veniam voluptate in dolor\",\n      \"city\": \"occaecat anim ad mollit\",\n      \"state\": \"sint ex consectetur\",\n      \"pincode\": \"non sit esse\",\n      \"road\": \"eiusmod ullamco anim\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "get pincode info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/addresses/pincodeInfo?pincode=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"addresses",
+								"pincodeInfo"
+							],
+							"query": [
+								{
+									"key": "pincode",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/addresses/pincodeInfo?pincode=amet eiusmod ex in",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"addresses",
+										"pincodeInfo"
+									],
+									"query": [
+										{
+											"key": "pincode",
+											"value": "amet eiusmod ex in"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"city\": \"nisi tempor est\",\n  \"state\": \"laboris dolore\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "bookings",
+			"item": [
+				{
+					"name": "{booking id}",
+					"item": [
+						{
+							"name": "get booking details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/:booking_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										":booking_id"
+									],
+									"variable": [
+										{
+											"key": "booking_id",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-ACCOUNT-ID",
+												"value": "amet eiusmod ex in"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:booking_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":booking_id"
+											],
+											"variable": [
+												{
+													"key": "booking_id",
+													"value": "amet eiusmod ex in",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"scroll_id\": \"do sed nostrud veniam Ut\",\n  \"bookings\": [\n    {\n      \"booking_id\": \"aliqua\",\n      \"case_id\": \"eu id\",\n      \"order_id\": \"in dolor id\",\n      \"sku_name\": \"irure et\",\n      \"status\": \"irure deserunt\",\n      \"status_context\": {},\n      \"rating\": \"ullamco\"\n    },\n    {\n      \"booking_id\": \"anim irure nisi officia\",\n      \"case_id\": \"sunt minim\",\n      \"order_id\": \"ea enim laborum sit\",\n      \"sku_name\": \"pariatur anim non aliquip\",\n      \"status\": \"et nisi ad irure\",\n      \"status_context\": {},\n      \"rating\": \"laborum eiusmod mollit dolor\"\n    }\n  ]\n}"
+								}
+							]
+						},
+						{
+							"name": "reschedule booking",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"slot_id\": \"culpa voluptate sed aliquip\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings/:booking_id/reschedule",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										":booking_id",
+										"reschedule"
+									],
+									"variable": [
+										{
+											"key": "booking_id",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-ACCOUNT-ID",
+												"value": "amet eiusmod ex in"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"slot_id\": \"culpa voluptate sed aliquip\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:booking_id/reschedule",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":booking_id",
+												"reschedule"
+											],
+											"variable": [
+												{
+													"key": "booking_id",
+													"value": "amet eiusmod ex in",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "cancel booking",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"reason\": \"culpa officia consectetur laborum\",\n  \"comment\": \"incididunt ut\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings/:booking_id/cancel",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										":booking_id",
+										"cancel"
+									],
+									"variable": [
+										{
+											"key": "booking_id",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-ACCOUNT-ID",
+												"value": "amet eiusmod ex in"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"reason\": \"culpa officia consectetur laborum\",\n  \"comment\": \"incididunt ut\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:booking_id/cancel",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":booking_id",
+												"cancel"
+											],
+											"variable": [
+												{
+													"key": "booking_id",
+													"value": "amet eiusmod ex in",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get all bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-ACCOUNT-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bookings?size=-34628432&status=incididunt&status=amet ipsum in dolor&scroll_id=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "-34628432"
+								},
+								{
+									"key": "status",
+									"value": "incididunt"
+								},
+								{
+									"key": "status",
+									"value": "amet ipsum in dolor"
+								},
+								{
+									"key": "scroll_id",
+									"value": "amet eiusmod ex in"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings?size=-34628432&status=enim exercitation minim quis ex&status=officia&scroll_id=amet eiusmod ex in",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "size",
+											"value": "-34628432"
+										},
+										{
+											"key": "status",
+											"value": "enim exercitation minim quis ex"
+										},
+										{
+											"key": "status",
+											"value": "officia"
+										},
+										{
+											"key": "scroll_id",
+											"value": "amet eiusmod ex in"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"scroll_id\": \"aliqua sit minim nulla\",\n  \"bookings\": [\n    {\n      \"booking_id\": \"in proident in cupidatat magna\",\n      \"case_id\": \"eli\",\n      \"order_id\": \"ut\",\n      \"sku_name\": \"quis nulla\",\n      \"status\": \"reprehenderit id proident\",\n      \"status_context\": {},\n      \"rating\": \"eu commodo culpa ipsum\"\n    },\n    {\n      \"booking_id\": \"Excepteur ex\",\n      \"case_id\": \"cillum commodo Duis\",\n      \"order_id\": \"ex incididunt ut ullamco\",\n      \"sku_name\": \"ut\",\n      \"status\": \"dolor magna nostrud dolore laborum\",\n      \"status_context\": {},\n      \"rating\": \"ea\"\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "capacity",
+			"item": [
+				{
+					"name": "get time slots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/capacity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"capacity"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/capacity",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"capacity"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"available_time_slots\": [\n    {\n      \"item_id\": \"aliquip Duis laboris Excepteur\",\n      \"time_slots\": [\n        {\n          \"date\": \"minim ut fugiat\",\n          \"slot_id\": \"non nulla sit et\",\n          \"slot_status\": \"Ut pariatur Excepteur\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"date\": \"exercitation\",\n          \"slot_id\": \"commodo\",\n          \"slot_status\": \"anim ex ad\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"item_id\": \"sit ad ipsum in\",\n      \"time_slots\": [\n        {\n          \"date\": \"aliquip commodo est\",\n          \"slot_id\": \"aute quis pariatur\",\n          \"slot_status\": \"enim eu laborum aliqua\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"date\": \"dolor qui\",\n          \"slot_id\": \"sunt ad cillum do\",\n          \"slot_status\": \"sunt tempor elit\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "get available time slots for booking",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-ACCOUNT-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/capacity/booking/:booking_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"capacity",
+								"booking",
+								":booking_id"
+							],
+							"variable": [
+								{
+									"key": "booking_id",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-ACCOUNT-ID",
+										"value": "amet eiusmod ex in"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/capacity/booking/:booking_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"capacity",
+										"booking",
+										":booking_id"
+									],
+									"variable": [
+										{
+											"key": "booking_id",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"available_time_slots\": [\n    {\n      \"item_id\": \"Lorem commodo\",\n      \"time_slots\": [\n        {\n          \"date\": \"ex\",\n          \"slot_id\": \"irure\",\n          \"slot_status\": \"sit\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"date\": \"sed nisi anim aliquip nulla\",\n          \"slot_id\": \"enim ut culpa\",\n          \"slot_status\": \"qui est nulla\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"item_id\": \"laborum laboris\",\n      \"time_slots\": [\n        {\n          \"date\": \"est et in enim\",\n          \"slot_id\": \"mollit id quis\",\n          \"slot_status\": \"velit\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"date\": \"labore enim dolore\",\n          \"slot_id\": \"incididunt mollit nisi ex ipsum\",\n          \"slot_status\": \"ullamco id enim\",\n          \"time_slot\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "get cart",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/cart",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/cart",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cart"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"cart_id\": \"qui ex ani\",\n  \"total_amount\": -58867405.73633467,\n  \"address\": {\n    \"address_id\": \"consequat in dolore magna culpa\",\n    \"address1\": \"lab\",\n    \"address2\": \"eiusmod sed aliqua\",\n    \"city\": \"mollit laborum do et in\",\n    \"state\": \"laboris\",\n    \"country\": \"enim cillum Excepteur\",\n    \"pincode\": \"pariatur\",\n    \"name\": \"ea dolore elit\",\n    \"landmark\": \"qui\",\n    \"tag_name\": \"sint ut enim dolore\",\n    \"mobile\": \"do qui nostrud\",\n    \"alternate_number\": \"qui dolor\",\n    \"servicibility\": true,\n    \"default\": false\n  },\n  \"price_details\": {\n    \"items_total\": {\n      \"name\": \"eu consectetur ad\",\n      \"value\": -76159329.49779412\n    },\n    \"miscellaneous_charges\": [\n      {\n        \"name\": \"adipisicing dolor est\",\n        \"value\": -6988895.126491502\n      },\n      {\n        \"name\": \"commodo Lorem consequat veniam in\",\n        \"value\": -49555953.65903891\n      }\n    ],\n    \"discounts\": [\n      {\n        \"name\": \"adipisicing in\",\n        \"value\": -19601376.16099131\n      },\n      {\n        \"name\": \"proident\",\n        \"value\": 29264495.916404963\n      }\n    ]\n  },\n  \"line_items\": [\n    {\n      \"quantity\": -45481354,\n      \"item_id\": \"sint elit ullamco voluptate\",\n      \"list_price\": -75078280.10294998,\n      \"item_name\": \"Duis exercitation\",\n      \"discount\": 44423983.18667334,\n      \"item_total\": -78536069.54853615,\n      \"slot_info\": {\n        \"id\": \"esse dolor et aute\",\n        \"date\": \"cupidatat nostrud amet minim\"\n      }\n    },\n    {\n      \"quantity\": 65548322,\n      \"item_id\": \"deserunt sed ut aliquip\",\n      \"list_price\": -43544041.25351348,\n      \"item_name\": \"incididunt c\",\n      \"discount\": 78729930.52002376,\n      \"item_total\": -90769552.84827362,\n      \"slot_info\": {\n        \"id\": \"deserunt proident\",\n        \"date\": \"reprehenderit Excepteur in qui\"\n      }\n    }\n  ],\n  \"remarks\": [\n    {\n      \"type\": \"fugiat do\",\n      \"discount_value\": \"laborum dolor deserunt ea\"\n    },\n    {\n      \"type\": \"anim cillum aliquip\",\n      \"discount_value\": \"et ipsum\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "update cart slots",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"slots\": [\n    {\n      \"item_id\": \"ut irur\",\n      \"slot_id\": \"enim fugiat aute\"\n    },\n    {\n      \"item_id\": \"ea ad tempor\",\n      \"slot_id\": \"amet \"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/slots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								"slots"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"slots\": [\n    {\n      \"item_id\": \"culpa commodo ullamco voluptate\",\n      \"slot_id\": \"cupidatat dolor ut commodo\"\n    },\n    {\n      \"item_id\": \"laboris\",\n      \"slot_id\": \"labore nulla do ex amet\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/cart/slots",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cart",
+										"slots"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"item_id\": \"in ullamco ad commodo\",\n  \"quantity\": 81043369\n}"
+						}
+					]
+				},
+				{
+					"name": "create cart / update cart items",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"item_id\": \"in ullamco ad commodo\",\n  \"quantity\": 81043369\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/cart/items",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cart",
+								"items"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"item_id\": \"in ullamco ad commodo\",\n  \"quantity\": 81043369\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/cart/items",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cart",
+										"items"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"item_id\": \"in ullamco ad commodo\",\n  \"quantity\": 81043369\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "catalog",
+			"item": [
+				{
+					"name": "get service details for catatlog name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/:catalog_name",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								":catalog_name"
+							],
+							"variable": [
+								{
+									"key": "catalog_name",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/catalog/:catalog_name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"catalog",
+										":catalog_name"
+									],
+									"variable": [
+										{
+											"key": "catalog_name",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"service_name\": \"eiusmod elit in sed\",\n  \"service_title\": \"eiusmod dolor labor\",\n  \"service_image\": \"in dolore id\",\n  \"long_description\": \"laborum\",\n  \"description\": \"reprehenderit dolore aliq\",\n  \"time_estimate\": \"ea Lorem ullamco consectetur\",\n  \"service_rating\": {\n    \"overall_rating\": 91336749.29813057,\n    \"total_rating\": -37028804,\n    \"ratings\": [\n      {\n        \"type\": 17602714,\n        \"count\": -15961904\n      },\n      {\n        \"type\": 77754774,\n        \"count\": -13203353\n      }\n    ]\n  },\n  \"warranty_days\": 23347463,\n  \"service_price\": 49946505.06297895,\n  \"service_discount\": -43239667.828711115,\n  \"service_final_price\": 44154485.74548361\n}"
+						}
+					]
+				},
+				{
+					"name": "Get ALl Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/allCategories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"allCategories"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/catalog/allCategories",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"catalog",
+										"allCategories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"categories\": [\n    {\n      \"category_name\": \"enim ea aliquip commodo\",\n      \"category_image\": \"anim in est velit\",\n      \"category_id\": 31122606,\n      \"sub_category\": [\n        {\n          \"sub_category_name\": \"est sed\",\n          \"sub_category_id\": -69655762,\n          \"sub_category_image\": \"magn\"\n        },\n        {\n          \"sub_category_name\": \"dolor sed dolore officia consequat\",\n          \"sub_category_id\": 85660683,\n          \"sub_category_image\": \"ipsum veniam laborum\"\n        }\n      ]\n    },\n    {\n      \"category_name\": \"pariatur\",\n      \"category_image\": \"ea laboris\",\n      \"category_id\": -36306903,\n      \"sub_category\": [\n        {\n          \"sub_category_name\": \"reprehenderit elit sunt veniam\",\n          \"sub_category_id\": 27471068,\n          \"sub_category_image\": \"elit aute\"\n        },\n        {\n          \"sub_category_name\": \"officia non cillum labore\",\n          \"sub_category_id\": -66761987,\n          \"sub_category_image\": \"ea pariatur consequat\"\n        }\n      ]\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get ALl Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/list/subcategory/:sub_cat_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"list",
+								"subcategory",
+								":sub_cat_id"
+							],
+							"variable": [
+								{
+									"key": "sub_cat_id",
+									"value": "-34628432",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/catalog/list/subcategory/:sub_cat_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"catalog",
+										"list",
+										"subcategory",
+										":sub_cat_id"
+									],
+									"variable": [
+										{
+											"key": "sub_cat_id",
+											"value": "-34628432",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"categories\": [\n    {\n      \"category_name\": \"anim Excepteur\",\n      \"category_image\": \"enim\",\n      \"category_id\": 83769451,\n      \"sub_category\": [\n        {\n          \"sub_category_name\": \"veniam\",\n          \"sub_category_id\": 43972861,\n          \"sub_category_image\": \"in sint dolor culpa\"\n        },\n        {\n          \"sub_category_name\": \"laboris esse\",\n          \"sub_category_id\": -41222908,\n          \"sub_category_image\": \"ea proident veniam\"\n        }\n      ]\n    },\n    {\n      \"category_name\": \"sit non in\",\n      \"category_image\": \"et proident in dolor Lorem\",\n      \"category_id\": -3318339,\n      \"sub_category\": [\n        {\n          \"sub_category_name\": \"dolor Lorem exercitation ut consequat\",\n          \"sub_category_id\": -7745290,\n          \"sub_category_image\": \"ad Lorem officia\"\n        },\n        {\n          \"sub_category_name\": \"tempor nulla\",\n          \"sub_category_id\": -15251514,\n          \"sub_category_image\": \"sed\"\n        }\n      ]\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get ALl Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/search?q=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/catalog/search?q=amet eiusmod ex in",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"catalog",
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "amet eiusmod ex in"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"categories\": [\n    {\n      \"category_name\": \"anim Excepteur\",\n      \"category_image\": \"enim\",\n      \"category_id\": 83769451,\n      \"sub_category\": [\n        {\n          \"sub_category_name\": \"veniam\",\n          \"sub_category_id\": 43972861,\n          \"sub_category_image\": \"in sint dolor culpa\"\n        },\n        {\n          \"sub_category_name\": \"laboris esse\",\n          \"sub_category_id\": -41222908,\n          \"sub_category_image\": \"ea proident veniam\"\n        }\n      ]\n    },\n    {\n      \"category_name\": \"sit non in\",\n      \"category_image\": \"et proident in dolor Lorem\",\n      \"category_id\": -3318339,\n      \"sub_category\": [\n        {\n          \"sub_category_name\": \"dolor Lorem exercitation ut consequat\",\n          \"sub_category_id\": -7745290,\n          \"sub_category_image\": \"ad Lorem officia\"\n        },\n        {\n          \"sub_category_name\": \"tempor nulla\",\n          \"sub_category_id\": -15251514,\n          \"sub_category_image\": \"sed\"\n        }\n      ]\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "checkout",
+			"item": [
+				{
+					"name": "{checkout Id}",
+					"item": [
+						{
+							"name": "Get the checkout details.",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/checkout/:checkoutId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"checkout",
+										":checkoutId"
+									],
+									"variable": [
+										{
+											"key": "checkoutId",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/checkout/:checkoutId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"checkout",
+												":checkoutId"
+											],
+											"variable": [
+												{
+													"key": "checkoutId",
+													"value": "amet eiusmod ex in",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"checkoutId\": \"in\",\n  \"paymentOption\": \"PayLater\",\n  \"checkoutStatus\": \"Completed\",\n  \"paymentStatus\": \"Pending\",\n  \"paymentLink\": \"ea minim\",\n  \"paymentGatewayIdentifier\": \"proident do deserunt dolore\"\n}"
+								}
+							]
+						},
+						{
+							"name": "cancel the checkout.",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/checkout/:checkoutId/cancel",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"checkout",
+										":checkoutId",
+										"cancel"
+									],
+									"variable": [
+										{
+											"key": "checkoutId",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "successful operation",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/checkout/:checkoutId/cancel",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"checkout",
+												":checkoutId",
+												"cancel"
+											],
+											"variable": [
+												{
+													"key": "checkoutId",
+													"value": "amet eiusmod ex in",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"checkoutId\": \"in\",\n  \"paymentOption\": \"PayLater\",\n  \"checkoutStatus\": \"Completed\",\n  \"paymentStatus\": \"Pending\",\n  \"paymentLink\": \"ea minim\",\n  \"paymentGatewayIdentifier\": \"proident do deserunt dolore\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Initiate a checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"paymentOption\": \"PayNow\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/checkout/initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"checkout",
+								"initiate"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"paymentOption\": \"PayNow\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/checkout/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"checkout",
+										"initiate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"checkoutId\": \"in\",\n  \"paymentOption\": \"PayLater\",\n  \"checkoutStatus\": \"Completed\",\n  \"paymentStatus\": \"Pending\",\n  \"paymentLink\": \"ea minim\",\n  \"paymentGatewayIdentifier\": \"proident do deserunt dolore\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "v1/app",
+			"item": [
+				{
+					"name": "Get all to render on home screen",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/app/home_screen",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"app",
+								"home_screen"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/app/home_screen",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"app",
+										"home_screen"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"version\": \"ex proident esse exercitation Ut\",\n  \"widgets_to_load\": [\n    \"WHY_US\",\n    \"BANNER_SCROLL\"\n  ],\n  \"widget_config\": {\n    \"proident_\": {},\n    \"Utc\": {}\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get quick action widgets on home screen",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/app/home/quick_actions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"app",
+								"home",
+								"quick_actions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/app/home/quick_actions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"app",
+										"home",
+										"quick_actions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"quick_actions\": [\n    {\n      \"type\": \"CART\",\n      \"context\": {\n        \"commodo_\": {}\n      }\n    },\n    {\n      \"type\": \"CART\",\n      \"context\": {\n        \"laborum093\": {}\n      }\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ratings/booking/{booking ID}",
+			"item": [
+				{
+					"name": "get rating and review for bookingId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/ratings/booking/:bookingID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings",
+								"booking",
+								":bookingID"
+							],
+							"variable": [
+								{
+									"key": "bookingID",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/ratings/booking/:bookingID",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ratings",
+										"booking",
+										":bookingID"
+									],
+									"variable": [
+										{
+											"key": "bookingID",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"group_id\": \"consequat et laborum dolore\",\n  \"campaign\": \"deserunt officia in enim\",\n  \"attributes\": {\n    \"adipisicing_d6\": {},\n    \"quis_e\": {}\n  },\n  \"ratings\": [\n    {\n      \"rating_type\": \"proident ullamco ad in\",\n      \"rating\": \"anim\"\n    },\n    {\n      \"rating_type\": \"occaecat do ullamco \",\n      \"rating\": \"veniam aliqua\"\n    }\n  ],\n  \"reviews\": [\n    {\n      \"review_type\": \"ullamco quis occaecat in amet\",\n      \"review\": \"laborum esse est Duis nisi\",\n      \"review_status\": \"enim in aliquip nulla\"\n    },\n    {\n      \"review_type\": \"proident fugiat ut sunt\",\n      \"review\": \"nisi fugiat\",\n      \"review_status\": \"sit qui pariatur\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "add rating and review for bookingId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"group_id\": \"consequat et laborum dolore\",\n  \"campaign\": \"deserunt officia in enim\",\n  \"attributes\": {\n    \"adipisicing_d6\": {},\n    \"quis_e\": {}\n  },\n  \"ratings\": [\n    {\n      \"rating_type\": \"proident ullamco ad in\",\n      \"rating\": \"anim\"\n    },\n    {\n      \"rating_type\": \"occaecat do ullamco \",\n      \"rating\": \"veniam aliqua\"\n    }\n  ],\n  \"reviews\": [\n    {\n      \"review_type\": \"ullamco quis occaecat in amet\",\n      \"review\": \"laborum esse est Duis nisi\",\n      \"review_status\": \"enim in aliquip nulla\"\n    },\n    {\n      \"review_type\": \"proident fugiat ut sunt\",\n      \"review\": \"nisi fugiat\",\n      \"review_status\": \"sit qui pariatur\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ratings/booking/:bookingID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings",
+								"booking",
+								":bookingID"
+							],
+							"variable": [
+								{
+									"key": "bookingID",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"group_id\": \"ut proident\",\n  \"campaign\": \"dolore consequat et officia amet\",\n  \"attributes\": {\n    \"dolore199\": {}\n  },\n  \"ratings\": [\n    {\n      \"rating_type\": \"eu nostrud\",\n      \"rating\": \"non eiusmod et velit\"\n    },\n    {\n      \"rating_type\": \"nostrud nisi dolore\",\n      \"rating\": \"sint dolor aute\"\n    }\n  ],\n  \"reviews\": [\n    {\n      \"review_type\": \"eu commodo est n\",\n      \"review\": \"laboris Duis in l\",\n      \"review_status\": \"est eu exercitati\"\n    },\n    {\n      \"review_type\": \"ut nulla Lorem exerc\",\n      \"review\": \"aliquip magna irure\",\n      \"review_status\": \"consequat incididunt \"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ratings/booking/:bookingID",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ratings",
+										"booking",
+										":bookingID"
+									],
+									"variable": [
+										{
+											"key": "bookingID",
+											"value": "amet eiusmod ex in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"group_id\": \"proident tempor in\",\n  \"review_status\": \"velit ea\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "session/location",
+			"item": [
+				{
+					"name": "Get current session location",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/session/location",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"session",
+								"location"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/session/location",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"session",
+										"location"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"address_id\": \"i\",\n  \"pincode\": \"labore ea\",\n  \"city\": \"adipisicing mollit Excepteur minim\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update session or location",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address_id\": \"i\",\n  \"pincode\": \"labore ea\",\n  \"city\": \"adipisicing mollit Excepteur minim\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/session/location",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"session",
+								"location"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successful operation",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"address_id\": \"i\",\n  \"pincode\": \"labore ea\",\n  \"city\": \"adipisicing mollit Excepteur minim\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/session/location",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"session",
+										"location"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "get contact-us",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/contact-us",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"contact-us"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/contact-us",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"contact-us"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"email\": \"proident tempor adipisicing Lorem\",\n  \"mobileNo\": \"eu esse\"\n}"
+				}
+			]
+		},
+		{
+			"name": "get all faqs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/faqs",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"faqs"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/faqs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"faqs"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"answer\": \"ullamco ipsum pariatur quis officia\",\n  \"question\": \"fugiat id\",\n  \"faqId\": -41405363,\n  \"orderNo\": -48539372,\n  \"active\": true\n}"
+				}
+			]
+		},
+		{
+			"name": "testing kevlar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-DEVICE-ID",
+						"value": "amet eiusmod ex in"
+					},
+					{
+						"description": "(Required) ",
+						"key": "X-PLATFORM",
+						"value": "AndroidUltra"
+					},
+					{
+						"key": "X-ACCESS-TOKEN",
+						"value": "amet eiusmod ex in"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"refresh_token\": \"consectetur mollit\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/refresh_token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"refresh_token"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-DEVICE-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"description": "(Required) ",
+								"key": "X-PLATFORM",
+								"value": "AndroidUltra"
+							},
+							{
+								"key": "X-ACCESS-TOKEN",
+								"value": "amet eiusmod ex in"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"consectetur mollit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/refresh_token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"refresh_token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"access_token\": \"sed aliquip aliqua \",\n  \"access_token_expire_in\": -25597161\n}"
+				}
+			]
+		},
+		{
+			"name": "testing kevlar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-DEVICE-ID",
+						"value": "amet eiusmod ex in"
+					},
+					{
+						"description": "(Required) ",
+						"key": "X-PLATFORM",
+						"value": "AndroidUltra"
+					},
+					{
+						"key": "X-ACCESS-TOKEN",
+						"value": "amet eiusmod ex in"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/login/ultra?code=amet eiusmod ex in",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login",
+						"ultra"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "amet eiusmod ex in"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-DEVICE-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"description": "(Required) ",
+								"key": "X-PLATFORM",
+								"value": "AndroidUltra"
+							},
+							{
+								"key": "X-ACCESS-TOKEN",
+								"value": "amet eiusmod ex in"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/login/ultra?code=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login",
+								"ultra"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "amet eiusmod ex in"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"access_token\": \"sed aliquip aliqua \",\n  \"access_token_expire_in\": -25597161\n}"
+				}
+			]
+		},
+		{
+			"name": "testing kevlar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-DEVICE-ID",
+						"value": "amet eiusmod ex in"
+					},
+					{
+						"description": "(Required) ",
+						"key": "X-PLATFORM",
+						"value": "AndroidUltra"
+					},
+					{
+						"key": "X-ACCESS-TOKEN",
+						"value": "amet eiusmod ex in"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/generate_token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"generate_token"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-DEVICE-ID",
+								"value": "amet eiusmod ex in"
+							},
+							{
+								"description": "(Required) ",
+								"key": "X-PLATFORM",
+								"value": "AndroidUltra"
+							},
+							{
+								"key": "X-ACCESS-TOKEN",
+								"value": "amet eiusmod ex in"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/generate_token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"generate_token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"access_token\": \"sed aliquip aliqua \",\n  \"access_token_expire_in\": -25597161\n}"
+				}
+			]
+		},
+		{
+			"name": "get incidents of particular status for a caseId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/incidents/:caseId?status=amet eiusmod ex in",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"incidents",
+						":caseId"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "amet eiusmod ex in"
+						}
+					],
+					"variable": [
+						{
+							"key": "caseId",
+							"value": "amet eiusmod ex in",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/incidents/:caseId?status=amet eiusmod ex in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"incidents",
+								":caseId"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "amet eiusmod ex in"
+								}
+							],
+							"variable": [
+								{
+									"key": "caseId",
+									"value": "amet eiusmod ex in",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/",
+			"type": "string"
+		}
+	]
+}

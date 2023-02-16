@@ -1,17 +1,18 @@
 import utils.logger as logger
 import utils.logs as logs
 import base64
-import sendrequest as req
+from . import sendrequest as req
 import sys
 import random
 import string
 
-from urlparse import urlparse
+from urllib.parse import urlparse
 from utils.db import Database_update
-from headers import request_headers, csrf_headers
+from .headers import request_headers, csrf_headers
 from utils.config import get_value
 from utils.logger import logger
-from cors import check_custom_header
+from .cors import check_custom_header
+from celery_app import app
 
 dbupdate = Database_update()
 api_logger = logger()
@@ -67,7 +68,7 @@ def csrf_attack_body(url,method,headers,body,csrf_param,scanid):
 					impact = "High"
 					headers = tmp_headers
 				
-				print "%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W)
+				print("%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W))
 				attack_result = { "id" : 6, "scanid" : scanid, "url" : url, "alert" : "CSRF", "impact" : impact, "req_headers": headers, "req_body":body, "res_headers": json_csrf.headers, "res_body" : json_csrf.text}
 				dbupdate.insert_record(attack_result)
 
@@ -86,7 +87,7 @@ def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type,scanid
 
 		if csrf_req.status_code == http_status_code:
 			if len(csrf_req.text) == response_size:
-				print "%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W)
+				print("%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W))
 				attack_result = { "id" : 6, "scanid" : scanid, "url" : url, "alert": "CSRF", "impact": "High", "req_headers": headers, "res_headers": csrf_req.headers,"res_body": csrf_req.text}
 				dbupdate.insert_record(attack_result)
 				return
@@ -105,7 +106,7 @@ def csrf_attack_header(url,method,headers,body,csrf_header,csrf_test_type,scanid
 					# Check for CORS 
 					result = check_custom_header(url, csrf_header) 
 					if result == True:
-						print "%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W)
+						print("%s[-]{0} is vulnerable to CSRF attack%s".format(url)% (api_logger.R, api_logger.W))
 						attack_result = { "id" : 6, "scanid" : scanid, "url" : url, "alert": "CSRF", "impact": "High", "req_headers": headers, "req_body":body, "res_headers": csrf_req.headers,"res_body": csrf_req.text}
 						dbupdate.insert_record(attack_result)
 
@@ -122,7 +123,7 @@ def verify_body(body):
 	# Return the param name of CSRF
 	common_names = fetch_csrf_names()
 	for csrf_name in common_names:
-		for key,value in body.items():
+		for key,value in list(body.items()):
 			if csrf_name == key:
 				return csrf_name
 	return False
@@ -150,6 +151,7 @@ def verify_headers(headers):
 
 	return custom_header
 
+@app.task
 def csrf_check(url,method,headers,body,scanid=None):
 	try:
 		if method == "POST" or method == "PUT" or method == "DEL":

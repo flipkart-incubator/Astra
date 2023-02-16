@@ -9,7 +9,7 @@ class logger(object):
 
 	
 	def banner(self):
-	    print '''%s
+	    print('''%s
      	                _             
 		    /\       | |            
 		   /  \   ___| |_ _ __ __ _ 
@@ -18,4 +18,4 @@ class logger(object):
 		/_/    \_\___/\__|_|  \__,_|
 		                            
 
-              %s'''% (self.G,self.W)
+              %s'''% (self.G,self.W))

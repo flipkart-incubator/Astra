@@ -1,0 +1,23 @@
+[scan-policy]
+attack = {
+          "cors" : "n",
+          "Broken auth" : "n",
+          "Rate limit" : "y",
+          "csrf" : 'y',
+          "zap" : 'n',
+          "jwt" : 'n',
+          "sqli" : 'y',
+          "xss" : 'y',
+          "open-redirection" : "y",
+          "xxe" : "y",
+	  "crlf" : "y",
+          "security_headers": "y"
+    }
+
+
+[modules]
+csrftoken-names = csrf,csrftoken,xsrftoken,token
+open-redirection-names = url,redirect,login,logout,uri,redirection,next,returnto, return_to, origin,callback,authorize_callback, target,link
+auth_headers = Cookie,Authorization,Authentication,X-API-Key
+auth_fail = Unauthorized,Denied,not logged in,not unauthorized
+jwt_brute = N

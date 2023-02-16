@@ -11,7 +11,7 @@ def check_scan_status(data):
     # Return the Scan status
     total_scan = data['total_scan']
     count = 0
-    for key,value in data.items():
+    for key,value in list(data.items()):
         if value == 'Y' or value == 'y':
             count += 1
 

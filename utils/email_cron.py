@@ -35,7 +35,7 @@ def send_email_notification():
                         email = data['to_email']
                         email_result = emails.main_email(scan_id,email)
                         if email_result is False:
-                            print "failed to connect to SMTP server"
+                            print("failed to connect to SMTP server")
                             return
                         email_db.db.email.update({'email_notification' : 'N'},{"$set" : {'email_notification' : 'Y'}})
                     except:
