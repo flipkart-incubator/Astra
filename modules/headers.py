@@ -32,8 +32,8 @@ request_headers = ['Accept',
 				   'User-Agent',
 				   'Upgrade',
 				   'Via',
-				   'Warning'
-				   'X-Requested-With'
+				   'Warning',
+				   'X-Requested-With',
 				   'X-Forwarded-For',
 				   'X-Forwarded-Host',
 				   'X-Forwarded-Proto',
