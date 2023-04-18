@@ -8,7 +8,7 @@ from pymongo.errors import ServerSelectionTimeoutError
 def db_connect():
     maxSevSelDelay = 1
     try:
-        mongo_host = 'localhost'
+        mongo_host = 'mongo'
         mongo_port = 27017
 
         if 'MONGO_PORT_27017_TCP_ADDR' in os.environ :
