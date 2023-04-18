@@ -74,6 +74,17 @@ $ docker build -t astra-cli .
 $ docker run --rm -it --link astra-mongo:mongo astra-cli 
 ```
 
+## Vscode 
+
+> Enable docker-compose v2 for --wait support on the docker compose up command, allowing waiting for health checks.
+
+Open the repository directory root in Visual Studio Code, click the prompt to open the container or issue the following command:
+
+```
+> Dev Containers: Rebuild container
+```
+
+
 ## Dependencies
 
 ```
