@@ -11,7 +11,6 @@ app = Celery('celery_app', broker='amqp://guest@rabbit//')
 # app.conf.accept_content = ['application/json', 'application/x-python-serialize']
 app.autodiscover_tasks(['astra.modules_scan'])
 app.conf.task_eager_propagates = True
-print("hello")
 
 # dbupdate = Database_update()
 

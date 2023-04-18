@@ -5,7 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "command": "celery -A celery_app worker --loglevel=INFO",
+            "name": "Start worker",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Start python api",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/API/",
