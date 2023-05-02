@@ -9,7 +9,7 @@ click==8.1.3
 click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.2.0
-Flask==2.2.2
+Flask==2.3.2
 idna==2.8
 importlib-metadata==5.0.0
 itsdangerous==2.1.2
@@ -48,7 +48,7 @@ click==8.1.3
 click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.2.0
-Flask==2.2.2
+Flask==2.3.2
 idna==2.8
 importlib-metadata==5.0.0
 itsdangerous==2.1.2
@@ -70,7 +70,7 @@ vine==5.0.0
 wcwidth==0.2.5
 Werkzeug==2.2.2
 zipp==3.10.0
-Flask==2.2.2
+Flask==2.3.2
 Jinja2==3.0.3
 PyJWT==2.6.0
 pymongo==3.13.0
