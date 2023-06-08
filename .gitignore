@@ -1,5 +1,4 @@
-*.pyc
-*.log
 
 .idea/
 venv/
+/logs/scan.log

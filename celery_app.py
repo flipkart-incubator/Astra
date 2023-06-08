@@ -5,6 +5,7 @@ import sys
 import os
 
 sys.path.append(os.getcwd())
+# app = Celery('celery_app', broker='amqp://guest@rabbit//')
 app = Celery('celery_app', broker='amqp://guest@localhost//')
 # app.conf.task_serializer = 'pickle'
 # app.conf.result_serializer = 'pickle'
