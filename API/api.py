@@ -303,7 +303,7 @@ def get_postman():
     appname = request.form['appname']
     url = request.form['url']
     auth_token =request.form['authheader']
-    print(url)
+
     if not url:
         return jsonify({"status" : "Failed! (add URL)"})
     # print(request.files)
@@ -329,7 +329,7 @@ def get_postman():
         return jsonify(msg)
     try:
         scan_id = generate_hash()
-        db.scanids.insert({"scanid" : scan_id, "name" : appname, "url" : url})
+        db.scanids.insert_one({"scanid" : scan_id, "name" : appname, "url" : url})
         scan_result = scan_postman_collection(filename,scan_id,auth_token,url)
         print(scan_result)
     except Exception as e:
@@ -343,7 +343,6 @@ def get_postman():
         # db.email.insert({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
         msg = {"status" : "Success", "scanid" : scan_id}
     else:
-
         msg = {"status" : "Failed!"}
 
     return jsonify(msg)
