@@ -115,7 +115,7 @@ def start_scan():
             # Success
             msg = {"status" : scanid}
             try:
-                db.scanids.insert({"scanid" : scanid, "name" : name, "url" : url})
+                db.scanids.insert_one({"scanid" : scanid, "name" : name, "url" : url})
             except:
                 print("Failed to update DB")
         else:
@@ -329,7 +329,7 @@ def get_postman():
         return jsonify(msg)
     try:
         scan_id = generate_hash()
-        db.scanids.insert({"scanid" : scan_id, "name" : appname, "url" : url})
+        db.scanids.insert_one({"scanid" : scan_id, "name" : appname, "url" : url})
         scan_result = scan_postman_collection(filename,scan_id,auth_token,url)
         print(scan_result)
     except Exception as e:
@@ -340,7 +340,7 @@ def get_postman():
         return jsonify(msg)
     if scan_result == True:
             # Update the email notification collection 
-        # db.email.insert({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
+        # db.email.insert_one({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
         msg = {"status" : "Success", "scanid" : scan_id}
     else:
 
@@ -391,7 +391,7 @@ def scan_postman():
         else:
             try:
                 scan_id = generate_hash()
-                db.scanids.insert({"scanid" : scan_id, "name" : appname, "url" : postman_url,"env_type": env_type, "url" : url,"email" : email})
+                db.scanids.insert_one({"scanid" : scan_id, "name" : appname, "url" : postman_url,"env_type": env_type, "url" : url,"email" : email})
                 if ip_result == 1:
                     scan_result = scan_postman_collection(result,scan_id,url)
                 else:
@@ -402,7 +402,7 @@ def scan_postman():
 
             if scan_result == True:
                  # Update the email notification collection 
-                db.email.insert({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
+                db.email.insert_one({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
                 msg = {"status" : "Success", "scanid" : scan_id}
             else:
                 msg = {"status" : "Failed!"}

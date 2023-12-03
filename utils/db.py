@@ -5,9 +5,9 @@ import os
 class Database_update:
 	def __init__(self):
 		# Mongo DB connection
-		mongo_host = 'localhost'
-		mongo_port = 27017
-		
+		mongo_host = os.environ.get('MONGO_HOST', 'localhost')
+		mongo_port = os.environ.get('MONGO_PORT', 27017)
+
 		maxSevSelDelay = 1
 
 		if 'MONGO_PORT_27017_TCP_ADDR' in os.environ :
