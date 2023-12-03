@@ -49,25 +49,19 @@ $ python3 api.py
 
 ## Docker Installation
 
-### Run Mongo Container:
-
-```
-$ docker pull mongo
-$ docker run --name astra-mongo -d mongo
-```
-
-### Installing GUI Docker: 
+### Installing Mongo & GUI Docker: 
 
 ```
 $ git clone https://github.com/flipkart-incubator/Astra.git
 $ cd Astra
-$ docker build -t astra .
-$ docker run --rm -it --link astra-mongo:mongo -p 8094:8094 astra
+$ docker-compose up -d --build
 ```
 
-### Installing CLI Docker :
+### Installing CLI-only Docker :
 
 ```
+$ docker pull mongo
+$ docker run --name astra-mongo -d mongo
 $ git clone -b docker-cli https://github.com/flipkart-incubator/Astra.git
 $ cd Astra
 $ docker build -t astra-cli .
