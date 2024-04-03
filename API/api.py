@@ -115,7 +115,7 @@ def start_scan():
             # Success
             msg = {"status" : scanid}
             try:
-                db.scanids.insert({"scanid" : scanid, "name" : name, "url" : url})
+                db.scanids.insert_one({"scanid" : scanid, "name" : name, "url" : url})
             except:
                 print("Failed to update DB")
         else:
