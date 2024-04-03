@@ -5,7 +5,7 @@ import os
 class Database_update:
 	def __init__(self):
 		# Mongo DB connection
-		mongo_host = 'localhost'
+		mongo_host = 'mongo'
 		mongo_port = 27017
 		
 		maxSevSelDelay = 1
@@ -28,7 +28,7 @@ class Database_update:
 
 	def insert_record(self,data):
 		try:
-			self.db.vulnerabilities.insert(data)
+			self.db.vulnerabilities.insert_one(data)
 		except Exception as e:
 			raise e
 
