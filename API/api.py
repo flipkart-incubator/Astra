@@ -340,7 +340,7 @@ def get_postman():
         return jsonify(msg)
     if scan_result == True:
             # Update the email notification collection 
-        # db.email.insert({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
+        # db.email.insert_one({"email" : email, "scanid" : scan_id, "to_email" : email, "email_notification" : 'N'})
         msg = {"status" : "Success", "scanid" : scan_id}
     else:
 
