@@ -1,6 +1,6 @@
 requests
 logger
-pymongo==3.13.0
+pymongo==4.6.3
 ConfigParser
 pyjwt
 flask
